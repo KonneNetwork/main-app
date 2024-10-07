@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { TextInput, View, Text } from 'react-native'
+import { TextInput, View, Text, TouchableOpacity } from 'react-native'
 import Ionicons from '@expo/vector-icons/Ionicons';
 import classNames from 'classnames';
 
@@ -10,6 +10,7 @@ interface InputProps {
 }
 
 function Input({ label, password = false }: InputProps) {
+  console.log("🚀 ~ Input ~ password:", password)
   const [visiblePassword, setVisiblePassword] = useState(true)
 
   function handleVisiblePassword() {
@@ -29,34 +30,27 @@ function Input({ label, password = false }: InputProps) {
           {label}
         </Text>
       </View>
-      <View className='flex-row items-center   w-full'>
+      <View className='flex-row items-center w-full min-h-14 justify-around'>
         <TextInput
-          className={classNames('color-white p-3  w-full ',
+          className={classNames('color-white p-3 w-[85%]',
             {
-              'w-[90%]': password === true
+              'w-full': !password
             }
           )}
           secureTextEntry={(password && visiblePassword) && visiblePassword}
           autoCapitalize='none'
         />
         {password &&
-
-          (visiblePassword ?
+          <TouchableOpacity onPress={handleVisiblePassword}>
             <Ionicons
-              name="eye"
+              name={visiblePassword ? "eye" : "eye-off-sharp"}
               size={26}
               color="white"
-              onPress={handleVisiblePassword}
-            />
-            : <Ionicons
-              name="eye-off-sharp"
-              size={26}
-              color="white"
-              onPress={handleVisiblePassword}
-            />
-          )
-        }
 
+            />
+          </TouchableOpacity>
+
+        }
       </View>
     </View>
   );
