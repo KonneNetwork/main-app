@@ -1,15 +1,13 @@
 import { Text, View, Image, TouchableOpacity, StyleSheet, ScrollView } from "react-native";
-import logo from "../../assets/images/logo.png"
+import logo from "../../assets/images/logo.png";
 import Input from "@/components/Input";
 import Button from "@/components/Button";
 import Feather from '@expo/vector-icons/Feather';
-import Linkeding from '../../assets/images/linkeding.svg'
+import Linkeding from '../../assets/images/linkeding.svg';
 import { StatusBar } from "react-native";
 import { useState } from "react";
-import AntDesign from '@expo/vector-icons/AntDesign';
 import classNames from "classnames";
 import { useRouter } from "expo-router";
-import InputFloatLabel from "@/components/NewInput";
 import SignUp from "./sign-up";
 
 export default function Index() {
