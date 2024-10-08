@@ -25,9 +25,13 @@ module.exports = {
         'surface-Subdued-default': '#199ED81A',
         'surface-Subdued-houver': '##1C2D4C',
         'surface-Subdued-selected': '##1C2D4C',
-
-
-      }
+      },
+      borderWidth: {
+        "1": '1px',
+      },
+      height: {
+        "1": '1px'
+      },
     },
   },
   plugins: [],
