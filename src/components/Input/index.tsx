@@ -1,16 +1,18 @@
 import React, { useState } from 'react'
-import { TextInput, View, Text, TouchableOpacity } from 'react-native'
+import { TextInput, View, Text, TouchableOpacity, TextInputProps } from 'react-native'
 import Ionicons from '@expo/vector-icons/Ionicons';
 import classNames from 'classnames';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 
-interface InputProps {
+interface InputProps extends TextInputProps {
   label: string;
   password?: boolean;
+  templateWhite?: boolean;
+  style?: any
 }
 
-function Input({ label, password = false }: InputProps) {
-  console.log("🚀 ~ Input ~ password:", password)
+function Input({ label, password = false, templateWhite = false, style, ...rest }: InputProps) {
   const [visiblePassword, setVisiblePassword] = useState(true)
 
   function handleVisiblePassword() {
@@ -19,22 +21,30 @@ function Input({ label, password = false }: InputProps) {
 
   return (
     <View
-      className='mt-5 mb-2 border-gray-500 border-2 bg-[#ffffff2b] rounded-xl w-full '
+      className='mt-5 mb-2 border-[#506773] border-2 bg-[#ffffff2b] rounded-xl min-w-max'
+      style={style}
     >
       <View
-        className='absolute top-[-14px] left-[15px] px-2'
+        className={classNames('absolute top-[-14px] left-[15px] px-2', {
+          'bg-white': !templateWhite
+        })}
       >
         <Text
-          className='text-base color-white'
+          className={classNames('text-base color-[#506773]', {
+            'color-white': templateWhite
+          })}
         >
           {label}
         </Text>
       </View>
       <View className='flex-row items-center w-full min-h-14 justify-around'>
         <TextInput
-          className={classNames('color-white p-3 w-[85%]',
+          className={classNames('color-black p-3 w-[85%]',
             {
               'w-full': !password
+            },
+            {
+              'color-white': templateWhite
             }
           )}
           secureTextEntry={(password && visiblePassword) && visiblePassword}
