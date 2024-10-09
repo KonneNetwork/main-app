@@ -28,6 +28,18 @@ module.exports = {
         'surface-Subdued-houver': '##1C2D4C',
         'surface-Subdued-selected': '##1C2D4C',
       },
+      fontFamily: {
+        'inter-thin100': 'Inter_100Thin',
+        'inter-extraLight200': 'Inter_200ExtraLight',
+        'inter-light300': 'Inter_300Light',
+        'inter-regular400': 'Inter_400Regular',
+        'inter-medium500': ' Inter_500Medium',
+        'inter-semibold600': 'Inter_600SemiBold',
+        'inter-bold700': 'Inter_700Bold',
+        'inter-extrabold800': '  Inter_800ExtraBold',
+        'inter-black900': 'Inter_900Black',
+      },
+
       borderWidth: {
         "1": '1px',
       },

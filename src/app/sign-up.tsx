@@ -26,10 +26,10 @@ function SignUp({ signUp, setSignUp }: SignUpProps) {
       <View className="flex-row items-center justify-between">
         <View>
           <Text
-            className="text-base font-medium color-[#528A8C]">
+            className="text-base font-inter-medium500 color-[#528A8C]">
             Novo por aqui?
           </Text>
-          <Text className='text-3xl font-bold'>
+          <Text className='text-3xl font-inter-bold700'>
             Criar conta
           </Text>
         </View >

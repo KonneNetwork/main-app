@@ -6,7 +6,7 @@ export default function TabLayout() {
   return (
     <Tabs screenOptions={{
       tabBarActiveTintColor: "#1C2D4C",
-      headerPressColor: '#1C2D4C'
+      headerPressColor: '#1C2D4C',
     }}>
       <Tabs.Screen name="buscar" options={{
         headerShown: false, title: 'Buscar', tabBarIcon: ({ color }) => (
