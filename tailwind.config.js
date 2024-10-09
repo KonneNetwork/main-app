@@ -6,6 +6,8 @@ module.exports = {
     './src/**/*.tsx',
     './src/**/**/*.tsx',
     './src/**/*.{js,jsx,ts,tsx}',
+    "./app/**/*.{js,jsx,ts,tsx}", // Para expo-router
+    "./node_modules/nativewind/**/*.js", // Para o NativeWind
   ],
   presets: [require("nativewind/preset")],
   theme: {
