@@ -4,6 +4,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from "react";
 import { Image, SafeAreaView } from "react-native";
 import { Slot } from 'expo-router';
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
@@ -29,9 +30,11 @@ export default function RootLayout() {
   }
   return (
     <>
-      <SafeAreaView className="flex-1">
-        <Slot />
-      </SafeAreaView>
+      <GestureHandlerRootView>
+        <SafeAreaView className="flex-1">
+          <Slot />
+        </SafeAreaView>
+      </GestureHandlerRootView>
     </>
   );
 }

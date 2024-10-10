@@ -1,10 +1,9 @@
-import { Text, View, Image, TouchableOpacity, StyleSheet, ScrollView } from "react-native";
+import { Text, View, Image, TouchableOpacity, StyleSheet, ScrollView, StatusBar } from "react-native";
 import logo from "../../assets/images/logo.png";
 import Input from "@/components/Input";
 import Button from "@/components/Button";
 import Feather from '@expo/vector-icons/Feather';
 import Linkeding from '../../assets/images/svgs/linkeding.svg';
-import { StatusBar } from "react-native";
 import { useState } from "react";
 import classNames from "classnames";
 import { useRouter } from "expo-router";

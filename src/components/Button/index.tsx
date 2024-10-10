@@ -11,6 +11,7 @@ function Button({ title, onPress, ...rest }: ButtonProps) {
     <TouchableOpacity
       className="bg-[#528A8C] justify-center items-center py-6 rounded-xl mt-8"
       onPress={onPress}
+      {...rest}
     >
       <Text
         className="color-white text-lg font-inter-medium500 "

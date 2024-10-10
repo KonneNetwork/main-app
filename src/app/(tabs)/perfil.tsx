@@ -1,9 +1,14 @@
 import React from 'react'
-import { View, Text } from 'react-native'
+import { Text, SafeAreaView, StatusBar, View } from 'react-native'
 
 function Perfil() {
   return (
-    <View className='flex-1 bg-white'><Text>Perfil</Text></View>
+
+    <View className='flex-1 bg-white'>
+      <StatusBar barStyle='dark-content' />
+      <Text className=''>Perfil</Text>
+
+    </View>
   )
 }
 
