@@ -30,8 +30,9 @@ export default function RootLayout() {
   }
   return (
     <>
-      <GestureHandlerRootView>
+      <GestureHandlerRootView className='flex-1'>
         <SafeAreaView className="flex-1">
+
           <Slot />
         </SafeAreaView>
       </GestureHandlerRootView>

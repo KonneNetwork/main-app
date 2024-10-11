@@ -4,7 +4,7 @@ import TabBarIcon from "@/components/TabBarIcon";
 
 export default function TabLayout() {
   return (
-    <Tabs initialRouteName="perfil" screenOptions={{
+    <Tabs screenOptions={{
       tabBarStyle: { height: 56 },
       tabBarActiveTintColor: "#1C2D4C",
       tabBarIconStyle: {

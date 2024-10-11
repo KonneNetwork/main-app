@@ -1,5 +1,5 @@
-import React, { useRef, useState } from 'react'
-import { TextInput, View, Text, TouchableOpacity, TextInputProps, Animated, StyleSheet, TouchableWithoutFeedback, StyleProp, ViewStyle, TextStyle } from 'react-native'
+import React, { useEffect, useRef, useState } from 'react'
+import { TextInput, View, Text, TouchableOpacity, TextInputProps, Animated, StyleSheet, TouchableWithoutFeedback, StyleProp, ViewStyle, TextStyle, Platform } from 'react-native'
 import Ionicons from '@expo/vector-icons/Ionicons';
 import classNames from 'classnames';
 
@@ -63,6 +63,7 @@ function Input({ label, password = false, variant = 'default', styleContainer, s
     if (!val) {
       moveToBottom();
     }
+    setIsFocused(false);
     rest?.onBlur ? rest?.onBlur() : () => { };
   };
 
@@ -81,18 +82,21 @@ function Input({ label, password = false, variant = 'default', styleContainer, s
     ]
   }
 
+
+
   return (
     <View
-      className={classNames(' mt-5 mb-2 border-2 bg-white/30 rounded-xl min-w-max -z-10', {
-        'border-white/30': variant === 'white' && !isFocused,
-        'border-[#506773]/30': variant === 'default' && !isFocused,
-        'border-[#528A8C]': isFocused
+      className={classNames(' mt-5 mb-2 border-2 rounded-xl bg-white/30 min-w-max -z-10', {
+        'border-white/30': !isFocused && variant === 'white',    // Aplica cor branca quando não focado e variante é branca
+        'border-[#506773]/30': !isFocused && variant === 'default', // Aplica cor padrão quando não focado
+        'border-[#528A8C]': isFocused, // Aplica a cor de foco somente quando o input está focado
       })}
+
       style={styleContainer}
       ref={inputRef}
     >
       <Animated.View style={[animStyle]}
-        className={classNames('absolute top-[-14px] left-[15px] px-2 bg-blend-screenz-10 rounded-lg', {
+        className={classNames('absolute top-[-14px] left-[15px] px-2 -z-10 rounded-lg', {
           'bg-white': variant === 'default',
           'bg-background': isFocused
         })}
@@ -100,7 +104,14 @@ function Input({ label, password = false, variant = 'default', styleContainer, s
         <Text
           className={classNames('text-base', {
             'color-white': variant === 'white'
-          })}
+          },
+            {
+              'color-[#506773]': variant === 'default'
+            },
+            {
+              'color-[#528A8C]': isFocused
+            }
+          )}
         >
           {label}
         </Text>
@@ -109,9 +120,15 @@ function Input({ label, password = false, variant = 'default', styleContainer, s
         <TextInput
           ref={inputRef}
           style={styleInput}
-          className={classNames(' color-black  w-[85%]',
+          className={classNames(' color-black w-[85%] text-lg font-inter-regular400 min-h-14',
             {
-              'w-full p-2': !password
+              'w-full': !password
+            },
+            {
+              'p-2': Platform.OS === "android"
+            },
+            {
+              'px-2 pb-2': Platform.OS === "ios"
             },
             {
               'color-white': variant === 'white'

@@ -14,7 +14,7 @@ function Button({ title, onPress, ...rest }: ButtonProps) {
       {...rest}
     >
       <Text
-        className="color-white text-lg font-inter-medium500 "
+        className="color-white text-lg font-inter-medium500"
       >
         {title}
       </Text>

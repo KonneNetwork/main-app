@@ -1,4 +1,4 @@
-import { Text, View, Image, TouchableOpacity, StyleSheet, ScrollView, StatusBar } from "react-native";
+import { Text, View, Image, TouchableOpacity, StyleSheet, ScrollView, StatusBar, KeyboardAvoidingView, Platform } from "react-native";
 import logo from "../../assets/images/logo.png";
 import Input from "@/components/Input";
 import Button from "@/components/Button";
@@ -66,9 +66,9 @@ export default function Index() {
               onPress={() => router.push('/(tabs)')}
             />
 
-            <View className="flex-row items-center self-center my-5 " style={{ gap: 20 }}>
+            <View className="flex-row items-center self-center my-5 " style={{ gap: 20 }} >
               <Text className="text-base font-medium color-white">Continuar sem login</Text>
-              <TouchableOpacity className="bg-[#ffffff2b] p-3 rounded-lg">
+              <TouchableOpacity className="bg-[#ffffff2b] p-3 rounded-lg" onPress={() => router.push('/(tabs)')}>
                 <Feather name="arrow-right" size={24} color="white" />
               </TouchableOpacity>
 
@@ -87,7 +87,7 @@ export default function Index() {
             </View>
 
             <View
-              className="bg-[#ffffff2b] rounded-lg items-center p-3 w-20 self-center mt-5 mb-3 border-2 border-white"
+              className="bg-[#ffffff2b] rounded-lg items-center px-3 py-2 w-20 self-center mt-5 mb-3 border-2 border-[#EEEEEE]"
             >
               <Linkeding
                 width={42}
@@ -98,9 +98,7 @@ export default function Index() {
 
 
         </View>
-
         <SignUp signUp={signUp} setSignUp={setSignUp} />
-
       </ScrollView >
     </View >
   );
