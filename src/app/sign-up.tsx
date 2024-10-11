@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { View, Text, TouchableOpacity } from 'react-native'
 import Input from '@/components/Input'
 import classNames from 'classnames'
@@ -12,9 +12,19 @@ interface SignUpProps {
 }
 
 function SignUp({ signUp, setSignUp }: SignUpProps) {
+  const [codCountry, setCodCountry] = useState<string | undefined>(undefined);
+  const [numberPhone, setNumberPhone] = useState<string | undefined>(undefined);
+  const [stage, setStage] = useState<'phone' | 'cod' | 'sign-up'>('phone')
 
   function handleSignUp() {
     setSignUp(!signUp)
+    setStage('phone')
+  }
+
+  function handleSubmitPhoneNumber() {
+    if (codCountry != undefined && codCountry !== '' && numberPhone != undefined && numberPhone !== '') {
+      setStage('cod')
+    }
   }
 
   return (
@@ -49,18 +59,21 @@ function SignUp({ signUp, setSignUp }: SignUpProps) {
         </TouchableOpacity>
       </View >
 
-      {signUp && <>
-        <View className="flex-row gap-3 mt-6">
+      {(signUp && stage == 'phone') && <>
+        <View className="flex-row gap-3 mt-6 ">
           <Input
-
+            value={codCountry}
+            onChangeText={setCodCountry}
             label='País'
-            style={{ width: '30%' }} />
+            styleContainer={{ width: '25%' }} styleInput={{ textAlign: 'center' }} />
           <Input
+            value={numberPhone}
+            onChangeText={setNumberPhone}
             label='DDD + telefone'
-            style={{ width: '68%' }} />
+            styleContainer={{ width: '74%' }} />
 
         </View>
-        <Button title="Enviar" />
+        <Button title="Enviar" onPress={handleSubmitPhoneNumber} />
 
       </>}
 

@@ -1,21 +1,24 @@
 import React, { useRef, useState } from 'react'
-import { TextInput, View, Text, TouchableOpacity, TextInputProps, Animated, StyleSheet, TouchableWithoutFeedback } from 'react-native'
+import { TextInput, View, Text, TouchableOpacity, TextInputProps, Animated, StyleSheet, TouchableWithoutFeedback, StyleProp, ViewStyle, TextStyle } from 'react-native'
 import Ionicons from '@expo/vector-icons/Ionicons';
 import classNames from 'classnames';
 
 
 interface InputProps extends TextInputProps {
+  value?: string | undefined;
   label: string;
   password?: boolean;
   templateWhite?: boolean;
-  style?: any
+  variant?: 'default' | 'white';
+  styleContainer?: StyleProp<ViewStyle>;
+  styleInput?: StyleProp<TextInputProps>;
   error?: string;
   onFocus?: () => void;
   onBlur?: () => void;
   onChangeText?: (text: string) => void;
 }
 
-function Input({ label, password = false, templateWhite = false, style, ...rest }: InputProps) {
+function Input({ label, password = false, variant = 'default', styleContainer, styleInput, value, ...rest }: InputProps) {
   const [visiblePassword, setVisiblePassword] = useState(true)
   const inputRef = useRef<TextInput | null>(null);
   const [isFocused, setIsFocused] = useState(false);
@@ -24,8 +27,8 @@ function Input({ label, password = false, templateWhite = false, style, ...rest 
     setVisiblePassword(!visiblePassword)
   }
 
-  const moveText = useRef(new Animated.Value(rest.value ? 1 : 0)).current
-  const [val, setVal] = useState(rest.value ? rest.value : '')
+  const moveText = useRef(new Animated.Value(value ? 1 : 0)).current
+  const [val, setVal] = useState(value ? value : '')
 
 
   const moveToTop = () => {
@@ -81,22 +84,22 @@ function Input({ label, password = false, templateWhite = false, style, ...rest 
   return (
     <View
       className={classNames(' mt-5 mb-2 border-2 bg-white/30 rounded-xl min-w-max -z-10', {
-        'border-white/30': templateWhite,
-        'border-[#506773]': !templateWhite,
+        'border-white/30': variant === 'white' && !isFocused,
+        'border-[#506773]/30': variant === 'default' && !isFocused,
         'border-[#528A8C]': isFocused
       })}
-      style={style}
+      style={styleContainer}
       ref={inputRef}
     >
       <Animated.View style={[animStyle]}
         className={classNames('absolute top-[-14px] left-[15px] px-2 bg-blend-screenz-10 rounded-lg', {
-          'bg-white': !templateWhite,
+          'bg-white': variant === 'default',
           'bg-background': isFocused
         })}
       >
         <Text
           className={classNames('text-base', {
-            'color-white': templateWhite
+            'color-white': variant === 'white'
           })}
         >
           {label}
@@ -105,12 +108,13 @@ function Input({ label, password = false, templateWhite = false, style, ...rest 
       <View className='flex-row items-center w-full min-h-14 justify-around'>
         <TextInput
           ref={inputRef}
+          style={styleInput}
           className={classNames(' color-black  w-[85%]',
             {
               'w-full p-2': !password
             },
             {
-              'color-white': templateWhite
+              'color-white': variant === 'white'
             }
           )}
           secureTextEntry={(password && visiblePassword) && visiblePassword}

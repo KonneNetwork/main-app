@@ -49,11 +49,11 @@ export default function Index() {
 
             <Input
               label="E-mail"
-              templateWhite={true} />
+              variant="white" />
             <Input
               label="Senha"
               password={true}
-              templateWhite={true} />
+              variant="white" />
 
             <Text
               className="text-base color-white text-right underline"
