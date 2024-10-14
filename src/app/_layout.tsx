@@ -2,9 +2,11 @@ import { Inter_100Thin, Inter_200ExtraLight, Inter_300Light, Inter_400Regular, I
 import '../../global.css'
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from "react";
-import { Image, SafeAreaView } from "react-native";
+import { Image, Platform } from "react-native";
 import { Slot } from 'expo-router';
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { StatusBar } from 'expo-status-bar';
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
@@ -31,10 +33,8 @@ export default function RootLayout() {
   return (
     <>
       <GestureHandlerRootView className='flex-1'>
-        <SafeAreaView className="flex-1">
-
-          <Slot />
-        </SafeAreaView>
+        <StatusBar style="light" />
+        <Slot />
       </GestureHandlerRootView>
     </>
   );
