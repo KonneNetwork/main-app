@@ -46,7 +46,7 @@ function SignUp({ signUp, setSignUp }: SignUpProps) {
   }
 
   return (
-    <View className={classNames("bg-white  rounded-t-[30px] py-10 px-8",
+    <View className={classNames("bg-white  rounded-t-[30px] py-10 px-8 ",
       {
         'flex-grow': signUp
       }
@@ -117,7 +117,7 @@ function SignUp({ signUp, setSignUp }: SignUpProps) {
 
 
       {(signUp && stage == 'cod') && <>
-        <View className=" mt-9 ">
+        <View className=" mt-9 flex-1">
           <VerificationCodeInput setCodeNumber={setCode} />
         </View>
         <View className='flex-row mt-1'>
