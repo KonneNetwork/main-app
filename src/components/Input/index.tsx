@@ -120,7 +120,7 @@ function Input({ label, password = false, variant = 'default', styleContainer, s
         <TextInput
           ref={inputRef}
           style={styleInput}
-          className={classNames(' color-black w-[85%] text-lg font-inter-regular400 min-h-14',
+          className={classNames(' color-black w-[85%] text-lg font-inter-400 min-h-14',
             {
               'w-full': !password
             },

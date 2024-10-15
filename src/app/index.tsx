@@ -39,11 +39,11 @@ export default function Index() {
             />
             {!signUp && <>
               <Text
-                className="font-inter-bold700 text-3xl leading-9 color-white my-5">
+                className="font-inter-700 text-3xl leading-9 color-white my-5">
                 Boas Vindas
               </Text>
               <Text
-                className="text-lg font-inter-regular400 leading-5 mb-8 color-white"
+                className="text-lg font-inter-400 leading-5 mb-8 color-white"
               >
                 Faça login e comece a se conectar com pessoas próximas a você.
               </Text>

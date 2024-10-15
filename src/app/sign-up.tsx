@@ -5,7 +5,7 @@ import classNames from 'classnames'
 import AntDesign from '@expo/vector-icons/AntDesign'
 import Feather from '@expo/vector-icons/Feather'
 import Button from '@/components/Button'
-import VerificationCodeInput from '@/components/VerificationInput'
+import VerificationCodeInput from '@/components/InputVerification'
 
 interface SignUpProps {
   signUp: boolean;
@@ -54,10 +54,10 @@ function SignUp({ signUp, setSignUp }: SignUpProps) {
       <View className="flex-row items-center justify-between">
         <View>
           <Text
-            className="text-base font-inter-medium500 color-surface-brand-default">
+            className="text-base font-inter-500 color-surface-brand-default">
             Novo por aqui?
           </Text>
-          <Text className='text-3xl font-inter-bold700'>
+          <Text className='text-3xl font-inter-700'>
             {Titulos[0][stage]}
           </Text>
         </View >
@@ -98,7 +98,7 @@ function SignUp({ signUp, setSignUp }: SignUpProps) {
 
 
           </View>
-          <Text className='w-full font-inter-regular400 text-base color-[#506773]'>Você vai receber um código via SMS para confirmar seu número</Text>
+          <Text className='w-full font-inter-400 text-base color-[#506773]'>Você vai receber um código via SMS para confirmar seu número</Text>
           <Button title="Enviar" onPress={handleSubmitPhoneNumber} />
         </View>
 
@@ -121,8 +121,8 @@ function SignUp({ signUp, setSignUp }: SignUpProps) {
           <VerificationCodeInput setCodeNumber={setCode} />
         </View>
         <View className='flex-row mt-1'>
-          <Text className=' font-inter-regular400 text-base color-[#506773]' >Enviamos um código para </Text>
-          <Text className=' font-inter-regular400 text-base'>{codCountry} {numberPhone}</Text>
+          <Text className=' font-inter-400 text-base color-[#506773]' >Enviamos um código para </Text>
+          <Text className=' font-inter-400 text-base'>{codCountry} {numberPhone}</Text>
         </View>
 
 

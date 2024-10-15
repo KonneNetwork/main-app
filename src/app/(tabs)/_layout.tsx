@@ -11,6 +11,7 @@ export default function TabLayout() {
       <SafeAreaView style={{ flex: 1 }}>
         <StatusBar style='dark' translucent={true} backgroundColor='#fff' hideTransitionAnimation='fade' animated={true} />
         <Tabs screenOptions={{
+          tabBarHideOnKeyboard: true,
           tabBarStyle: { height: 56 },
           tabBarActiveTintColor: "#1C2D4C",
           tabBarIconStyle: {
