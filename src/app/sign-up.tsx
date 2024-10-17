@@ -99,7 +99,7 @@ function SignUp({ signUp, setSignUp }: SignUpProps) {
 
           </View>
           <Text className='w-full font-inter-400 text-base color-[#506773]'>Você vai receber um código via SMS para confirmar seu número</Text>
-          <Button title="Enviar" onPress={handleSubmitPhoneNumber} />
+          <Button variant='active' title="Enviar" onPress={handleSubmitPhoneNumber} />
         </View>
 
         <View className='self-center flex-row gap-2'>
@@ -117,7 +117,7 @@ function SignUp({ signUp, setSignUp }: SignUpProps) {
 
 
       {(signUp && stage == 'cod') && <>
-        <View className=" mt-9 flex-1">
+        <View className=" mt-9 ">
           <VerificationCodeInput setCodeNumber={setCode} />
         </View>
         <View className='flex-row mt-1'>
@@ -126,7 +126,7 @@ function SignUp({ signUp, setSignUp }: SignUpProps) {
         </View>
 
 
-        <Button title="Enviar" onPress={handleSubmitCod} />
+        <Button variant='active' title="Enviar" onPress={handleSubmitCod} />
 
       </>}
 
@@ -137,7 +137,7 @@ function SignUp({ signUp, setSignUp }: SignUpProps) {
           <Input label='E-mail' />
           <Input label='CPF' />
           <Input label='Defina uma senha' />
-          <Button title="Concluir Cadastro" onPress={handleSubmitCod} />
+          <Button variant='active' title="Concluir Cadastro" onPress={handleSubmitCod} />
         </View>
 
 
