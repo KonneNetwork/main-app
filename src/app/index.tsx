@@ -1,4 +1,4 @@
-import { Text, View, Image, TouchableOpacity, StyleSheet, ScrollView, StatusBar, KeyboardAvoidingView, Platform } from "react-native";
+import { Text, View, Image, TouchableOpacity, StyleSheet, ScrollView, KeyboardAvoidingView, Platform } from "react-native";
 import logo from "../../assets/images/logo.png";
 import Input from "@/components/Input";
 import Button from "@/components/Button";
@@ -8,6 +8,7 @@ import { useState } from "react";
 import classNames from "classnames";
 import { useRouter } from "expo-router";
 import SignUp from "./sign-up";
+import { StatusBar } from "expo-status-bar";
 
 export default function Index() {
   const [signUp, setSignUp] = useState(false);
@@ -21,13 +22,13 @@ export default function Index() {
     >
       <KeyboardAvoidingView className="flex-1" behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
         <ScrollView
-          className="bg-background "
+          className="bg-surface-brand-main-selected"
           contentContainerStyle={{ flexGrow: 1, justifyContent: 'space-between' }}
           showsVerticalScrollIndicator={false}
           bounces={false}
         >
           <StatusBar
-            barStyle='light-content'
+            style='light'
           />
 
           <View className={classNames("p-5 justify-between", {
@@ -63,6 +64,7 @@ export default function Index() {
               </Text>
 
               <Button
+                variant='active'
                 title="Entrar"
                 onPress={() => router.push('/(tabs)')}
               />

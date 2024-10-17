@@ -9,7 +9,7 @@ export default function TabLayout() {
   return (
     <>
       <SafeAreaView style={{ flex: 1 }}>
-        <StatusBar style='dark' translucent={true} backgroundColor='#fff' hideTransitionAnimation='fade' animated={true} />
+        <StatusBar style='dark' />
         <Tabs screenOptions={{
           tabBarHideOnKeyboard: true,
           tabBarStyle: { height: 56 },
@@ -37,7 +37,7 @@ export default function TabLayout() {
               </TabBarIcon>
             )
           }} />
-          < Tabs.Screen name="perfil" options={{
+          < Tabs.Screen name="(perfil)" options={{
             headerShown: false, title: 'Perfil', tabBarIcon: ({ color, focused }) => (
               <TabBarIcon color={color} focused={focused} >
                 <Icons.perfil color={color} width={24} height={24} />
