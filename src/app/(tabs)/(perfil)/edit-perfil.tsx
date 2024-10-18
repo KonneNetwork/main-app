@@ -56,14 +56,18 @@ export default function EditPerfil({ onClosed }: EditPerfilProps) {
                     key={item.id}
                     onPress={() => handleSelectItem(item.id)}
                     style={{
-                      height: 80, width: 80, backgroundColor: item.color, borderRadius: 100, marginHorizontal: 5, borderWidth: selectedId === item.id ? 6 : 0,
+                      height: 80,
+                      width: 80,
+                      backgroundColor: item.color,
+                      borderRadius: 100,
+                      marginHorizontal: 5,
+                      borderWidth: selectedId === item.id ? 6 : 0,
                       borderColor: selectedId === item.id ? '#17D7B5' : 'transparent'
                     }}
                   />
                 )
               }}
           />
-
 
           <View className='flex-row gap-3 w-full'>
             <Button
@@ -79,8 +83,6 @@ export default function EditPerfil({ onClosed }: EditPerfilProps) {
               onPress={onClosed}
             />
           </View>
-
-
         </View>
       </ScrollView>
     </KeyboardAvoidingView>
