@@ -1,9 +1,10 @@
 import Button from '@/components/Button'
 import InputImage from '@/components/InputImage'
 import InputPerfil from '@/components/InputPerfil'
-import { useNavigation, useRouter, usePathname } from 'expo-router'
-import React, { useEffect, useLayoutEffect, useState } from 'react'
-import { FlatList, KeyboardAvoidingView, Modal, Platform, Pressable, ScrollView, Text, View } from 'react-native'
+import { palleteColors } from '@/constants/paletteColor'
+import { useRouter } from 'expo-router'
+import React, { useState } from 'react'
+import { FlatList, KeyboardAvoidingView, Platform, Pressable, ScrollView, Text, View } from 'react-native'
 
 
 interface EditPerfilProps {
@@ -14,32 +15,7 @@ export default function EditPerfil({ onClosed }: EditPerfilProps) {
   const router = useRouter()
   const [selectedId, setSelectedId] = useState<number | null>(null);
 
-  const [data, setData] = useState([
-    {
-      id: 1,
-      color: '#ffffaa'
-    },
-    {
-      id: 2,
-      color: '#c4aaff'
-    },
-    {
-      id: 3,
-      color: '#32b932'
-    },
-    {
-      id: 4,
-      color: '#0000d4'
-    },
-    {
-      id: 5,
-      color: '#f0a417'
-    },
-    {
-      id: 6,
-      color: '#1e1a29'
-    },
-  ])
+
 
   const handleSelectItem = (id: number) => {
     setSelectedId(id) // Atualiza o estado com o ID do item selecionado
@@ -71,7 +47,7 @@ export default function EditPerfil({ onClosed }: EditPerfilProps) {
             style={{ width: '100%' }}
             bounces={false}
             showsHorizontalScrollIndicator={false}
-            data={data}
+            data={palleteColors}
             horizontal
             renderItem={
               ({ item }) => {
