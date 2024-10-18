@@ -66,9 +66,7 @@ function Perfil() {
               )}
               numColumns={3}
             />
-            {/* {addLink?.map((item) => { return <View><Text>{item.icon}</Text> <Text>{item.name}</Text></View> })} */}
-            {addLink && (addLink !== undefined) && addLink.map((item) => { return (<View key={item?.name}>{item?.icon}<Text>{item?.name}</Text></View>) })}
-            {/* <Link href={'/(tabs)/(perfil)/add-link'} asChild> */}
+
             <TouchableOpacity
               className='flex-row bg-[#F4F4F4] w-full justify-center items-center p-4 gap-3 rounded-lg'
               onPress={hadleOpenModalLinks}
