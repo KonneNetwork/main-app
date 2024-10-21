@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, TextInput, StyleSheet, Text, Button, TextInputProps } from 'react-native';
+import { View, TextInput, StyleSheet, TextInputProps } from 'react-native';
 
 interface CodeInputProps extends TextInputProps {
   setCodeNumber: React.Dispatch<React.SetStateAction<string>>

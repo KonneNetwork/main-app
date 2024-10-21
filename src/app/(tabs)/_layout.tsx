@@ -3,16 +3,22 @@ import { Icons } from "@/components/Icons";
 import TabBarIcon from "@/components/TabBarIcon";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
 
 
 export default function TabLayout() {
+  const insets = useSafeAreaInsets();
   return (
     <>
       <SafeAreaView style={{ flex: 1 }}>
         <StatusBar style='dark' />
         <Tabs screenOptions={{
           tabBarHideOnKeyboard: true,
-          tabBarStyle: { height: 56 },
+          tabBarStyle: {
+            height: 56,
+            paddingBottom: insets.bottom,
+          },
           tabBarActiveTintColor: "#1C2D4C",
           tabBarIconStyle: {
             marginBottom: -8,

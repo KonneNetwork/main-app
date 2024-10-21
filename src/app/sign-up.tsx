@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, Text, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native'
+import { View, Text, TouchableOpacity } from 'react-native'
 import Input from '@/components/Input'
 import classNames from 'classnames'
 import AntDesign from '@expo/vector-icons/AntDesign'

@@ -10,7 +10,7 @@ interface Props {
 function TabBarIcon
   ({ children, focused, color }: Props) {
   return (
-    <View className="justify-between items-center">
+    <View className="justify-between items-center flex-1 h-full w-full">
       {focused && <View className="h-[4px] w-14 rounded-b-3xl absolute top-0" style={{ backgroundColor: `${color}` }} />}
       <View className="flex-1 justify-center items-center">
         {children}
