@@ -8,6 +8,7 @@ export default function PerfilLayout() {
       <Stack.Screen name='index' />
       <Stack.Screen name='edit-perfil' />
       <Stack.Screen name='add-link' />
+      <Stack.Screen name='edit-link' />
     </Stack>
   )
 }

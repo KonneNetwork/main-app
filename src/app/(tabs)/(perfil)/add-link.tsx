@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { View, Text, SectionList, TouchableOpacity, StyleSheet, Dimensions, Platform } from 'react-native';
+import { View, Text, SectionList } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { FlatList } from 'react-native-gesture-handler';
-import { router } from 'expo-router';
 import InputSearch from '@/components/InputSearch';
 import { dataLinks } from '@/constants/mediasLink';
+import CardMedia from '@/components/CardMedia';
 
 interface AddLinksProps {
   onClose: () => void;
@@ -14,8 +14,6 @@ interface AddLinksProps {
 
 export default function AddLink({ onClose, selectingLinks, selectedLinks }: AddLinksProps) {
 
-  const dimenssaoWidth = Dimensions.get('screen').width;
-  const itemWidth = (dimenssaoWidth - 100) / 3;
   const [search, setSearch] = useState('');
 
   const handleItemPress = (item: { name: string, icon: React.JSX.Element }) => {
@@ -26,8 +24,6 @@ export default function AddLink({ onClose, selectingLinks, selectedLinks }: AddL
         return updatedLinks;
       });
     }
-
-    console.log(selectedLinks)
     onClose();
   };
 
@@ -42,7 +38,7 @@ export default function AddLink({ onClose, selectingLinks, selectedLinks }: AddL
               <Ionicons name="chevron-back-outline" size={30} color="black" onPress={onClose} />
               <Text className='flex-1 text-center text-xl font-roboto-700'>Adicionar Link</Text>
             </View>
-            <InputSearch value={search} onChangeText={setSearch} />
+            <InputSearch value={search} onChangeText={setSearch} placeholder='Buscar por links' />
           </View>
         }
         sections={dataLinks}
@@ -61,10 +57,7 @@ export default function AddLink({ onClose, selectingLinks, selectedLinks }: AddL
               showsVerticalScrollIndicator={false}
               keyExtractor={(item) => item.name}
               renderItem={({ item }) => (
-                <TouchableOpacity style={[styles.item, { width: itemWidth }]} onPress={() => handleItemPress(item)}>
-                  {item.icon}
-                  <Text className='font-roboto-500 text-sm'>{item.name}</Text>
-                </TouchableOpacity>
+                <CardMedia infoCard={item} onPress={() => handleItemPress(item)} />
               )}
               numColumns={3}
             />
@@ -74,18 +67,3 @@ export default function AddLink({ onClose, selectingLinks, selectedLinks }: AddL
     </View>
   );
 }
-const styles = StyleSheet.create({
-  item: {
-    borderRadius: 10,
-    justifyContent: 'center',
-    height: 99,
-    alignItems: 'center',
-    marginTop: 20,
-    marginRight: 20,
-    backgroundColor: '#F4F4F4'
-  },
-  itemText: {
-    marginTop: 5,
-    fontSize: 16,
-  },
-});
