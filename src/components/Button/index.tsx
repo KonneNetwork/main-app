@@ -6,19 +6,21 @@ interface ButtonProps extends TouchableOpacityProps {
   title: string;
   onPress?: () => void;
   variant: 'active' | 'inactive';
-  adaptative?: boolean;
+  smallButton?: boolean;
+  mediumButton?: boolean;
 }
 
-function Button({ title, onPress, variant, adaptative, ...rest }: ButtonProps) {
+function Button({ title, onPress, variant, mediumButton = false, smallButton = false, ...rest }: ButtonProps) {
   return (
     <TouchableOpacity
-      className={classNames('justify-center items-center mt-8', {
+      className={classNames('justify-center items-center', {
         'bg-[#528A8C] ': variant === 'active'
       }, {
         'border-1 border-[#222222] ': variant === 'inactive'
       },
-        { 'flex-1 py-3 rounded': adaptative },
-        { 'w-full py-6 rounded-xl': !adaptative }
+        { 'flex-1 py-3 rounded mt-8': mediumButton },
+        { 'w-full py-6 rounded-xl mt-8': !mediumButton && !smallButton },
+        { 'rounded-full px-2 py-1': smallButton }
       )}
       onPress={onPress}
       {...rest}

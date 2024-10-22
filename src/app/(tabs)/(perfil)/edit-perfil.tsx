@@ -73,13 +73,13 @@ export default function EditPerfil({ onClosed }: EditPerfilProps) {
             <Button
               variant='inactive'
               title=' Cancelar'
-              adaptative={true}
+              mediumButton={true}
               onPress={onClosed}
             />
             <Button
               variant='active'
               title=' Salvar'
-              adaptative={true}
+              mediumButton={true}
               onPress={onClosed}
             />
           </View>

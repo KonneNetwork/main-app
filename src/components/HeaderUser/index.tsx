@@ -1,6 +1,5 @@
 import React from 'react'
-import { View, Text, TouchableOpacity } from 'react-native'
-import { Icons } from '../Icons'
+import { View, Text } from 'react-native'
 import InputImage from '../InputImage'
 import IconEdit from '../IconEdit'
 

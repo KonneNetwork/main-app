@@ -29,13 +29,13 @@ export default function EditLink({ onClosed }: EditLinkProps) {
             <Button
               variant='inactive'
               title=' Cancelar'
-              adaptative={true}
+              mediumButton={true}
               onPress={onClosed}
             />
             <Button
               variant='active'
               title=' Salvar'
-              adaptative={true}
+              mediumButton={true}
               onPress={onClosed}
             />
           </View>

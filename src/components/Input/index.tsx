@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { TextInput, View, Text, TouchableOpacity, TextInputProps, Animated, StyleSheet, TouchableWithoutFeedback, StyleProp, ViewStyle, TextStyle, Platform } from 'react-native'
+import React, { useRef, useState } from 'react';
+import { TextInput, View, Text, TouchableOpacity, TextInputProps, Animated, StyleSheet, StyleProp, ViewStyle, Platform } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import classNames from 'classnames';
 
