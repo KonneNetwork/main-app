@@ -13,8 +13,7 @@ function Perfil() {
   const [openAddLinks, setOpenAddLinks] = useState(false);
   const [openEditLinks, setOpenEditLinks] = useState(false);
   const [addLink, setAddLink] = useState<{ name: string, icon: React.JSX.Element }[] | undefined | null>(null);
-  const [editLink, setEditLink] = useState<{ name: string, icon: React.JSX.Element }[] | undefined | null>(null);
-
+  const [editLink, setEditLink] = useState<{ name: string, icon: React.JSX.Element } | null>(null);
   function handleCloseModalPerfil() {
     setOpenPerfil(false)
   }
@@ -35,8 +34,16 @@ function Perfil() {
     setOpenEditLinks(false)
   }
 
-  function hadleOpenModalEditLinks() {
+  function hadleOpenModalEditLinks(link: { name: string, icon: React.JSX.Element } | null) {
+    setEditLink(link)
     setOpenEditLinks(true)
+  }
+
+  function removeLink(link: string | undefined) {
+    console.log("🚀 ~ removeLink ~ link:", link)
+    const itemRemove = addLink?.findIndex(item => item.name === link)
+    console.log("🚀 ~ removeLink ~ itemRemove:", typeof itemRemove)
+    addLink?.splice(itemRemove!, 1)
   }
 
   return (
@@ -102,7 +109,7 @@ function Perfil() {
           <View className=''
             style={{ flex: 1, backgroundColor: "#0000002f" }}
           >
-            <EditLink onClosed={handleCloseModalEditLinks} />
+            <EditLink onClosed={handleCloseModalEditLinks} linkedit={editLink} remove={removeLink} />
           </View>
         </Modal>
       </KeyboardAvoidingView>

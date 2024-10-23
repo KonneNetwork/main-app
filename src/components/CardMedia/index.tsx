@@ -5,10 +5,10 @@ import IconEdit from '../IconEdit';
 interface CardMedia extends TouchableOpacityProps {
   infoCard: { name: string, icon: React.JSX.Element };
   isEditabled?: boolean;
-  openModal?: () => void
+  openModal?: (link: { name: string, icon: React.JSX.Element } | null) => void
 }
 
-export default function CardMedia({ infoCard, isEditabled = true, openModal, ...rest }: CardMedia) {
+export default function CardMedia({ infoCard, isEditabled = true, openModal = () => { }, ...rest }: CardMedia) {
 
   const dimenssaoWidth = Dimensions.get('screen').width;
   const itemWidth = (dimenssaoWidth - 100) / 3;
@@ -23,7 +23,7 @@ export default function CardMedia({ infoCard, isEditabled = true, openModal, ...
           colorIcon='#fff'
           sizeIcon={20}
           className='absolute top-[-15] right-[-15] bg-[#222222]/30 p-2 rounded-full m-2'
-          onPress={openModal}
+          onPress={() => openModal(infoCard)}
         />
       }
     </TouchableOpacity>

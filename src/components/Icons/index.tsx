@@ -25,6 +25,7 @@ import Dribble from '../../../assets/images/svgs/dribble.svg';
 import Website from '../../../assets/images/svgs/website.svg';
 import GoogleReviews from '../../../assets/images/svgs/googlereview.svg';
 import AppLinks from '../../../assets/images/svgs/applink.svg';
+import Trash from '../../../assets/images/svgs/trash.svg';
 
 export const Icons = {
   heart: (props: SvgProps) => <Heart {...props} />,
@@ -52,4 +53,5 @@ export const Icons = {
   website: (props: SvgProps) => <Website {...props} />,
   googlereviews: (props: SvgProps) => <GoogleReviews {...props} />,
   applink: (props: SvgProps) => <AppLinks {...props} />,
+  trash: (props: SvgProps) => <Trash {...props} />,
 }

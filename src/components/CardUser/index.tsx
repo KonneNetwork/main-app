@@ -5,19 +5,19 @@ import Button from '../Button'
 interface UserCardProps {
   name: string;
   occupation?: string;
-  distance: number;
-  titleButton: string;
+  distance?: number;
+  titleButton?: string;
 }
 
-export default function CardUser({ name, distance, occupation, titleButton }: UserCardProps) {
+export default function CardUser({ name, distance, occupation, titleButton = '' }: UserCardProps) {
 
   const [distanceConvert, setDistanceConvert] = useState('')
 
 
   useEffect(() => {
-    if (distance >= 1000) {
+    if (distance && distance >= 1000) {
       setDistanceConvert(`${distance / 1000}kms`)
-    } else if (distance >= 1 && distance < 1000) {
+    } else if (distance && distance >= 1 && distance < 1000) {
       setDistanceConvert(`${distance}mts`)
     }
   }, [])
@@ -43,7 +43,6 @@ export default function CardUser({ name, distance, occupation, titleButton }: Us
             <Text className='font-inter-400 text-base text-[#3C3C4399]/60'>{occupation} - {distanceConvert}</Text>
           </View>
         </View>
-
         <Button smallButton title={titleButton} variant='active' />
       </View>
     </>
