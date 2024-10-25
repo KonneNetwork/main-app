@@ -1,18 +1,13 @@
 import Button from '@/components/Button'
 import { Icons } from '@/components/Icons'
-import InputImage from '@/components/InputImage'
 import InputSearch from '@/components/InputSearch'
-import CardUser from '@/components/CardUser'
 import Ionicons from '@expo/vector-icons/Ionicons'
 import classNames from 'classnames'
 import React, { useState } from 'react'
-import { View, Text, TextInput, TouchableOpacity, FlatList } from 'react-native'
-import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
-
-import { LinearGradient } from 'expo-linear-gradient';
+import { View, Text, TouchableOpacity, FlatList } from 'react-native'
 import { userData } from '../mock/userData'
-import Tab from '@/components/Tab'
 import Card from '@/components/Card'
+import CardUsers from '@/components/CardUsers'
 
 function Index() {
 
@@ -88,7 +83,7 @@ function Index() {
       data={filteredData}
       renderItem={({ item }) => {
         return (
-          <CardUser titleButton={konnectionAba ? 'mensagem' : 'aceitar'} name={item.nome} distance={item.distancia} occupation={item.ocupacao} />
+          <CardUsers titleButton={konnectionAba ? 'mensagem' : 'aceitar'} name={item.nome} distance={item.distancia} occupation={item.ocupacao} />
         )
       }}
       contentContainerStyle={{
