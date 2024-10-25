@@ -12,8 +12,8 @@ function Perfil() {
   const [openPerfil, setOpenPerfil] = useState(false);
   const [openAddLinks, setOpenAddLinks] = useState(false);
   const [openEditLinks, setOpenEditLinks] = useState(false);
-  const [addLink, setAddLink] = useState<{ name: string, icon: React.JSX.Element }[] | undefined | null>(null);
-  const [editLink, setEditLink] = useState<{ name: string, icon: React.JSX.Element } | null>(null);
+  const [addLink, setAddLink] = useState<{ label: string, icon: React.JSX.Element, category: string }[] | undefined | null>(null);
+  const [editLink, setEditLink] = useState<{ label: string, icon: React.JSX.Element, category: string } | null>(null);
   function handleCloseModalPerfil() {
     setOpenPerfil(false)
   }
@@ -34,15 +34,13 @@ function Perfil() {
     setOpenEditLinks(false)
   }
 
-  function hadleOpenModalEditLinks(link: { name: string, icon: React.JSX.Element } | null) {
+  function hadleOpenModalEditLinks(link: { label: string, icon: React.JSX.Element, category: string } | null) {
     setEditLink(link)
     setOpenEditLinks(true)
   }
 
   function removeLink(link: string | undefined) {
-    console.log("🚀 ~ removeLink ~ link:", link)
-    const itemRemove = addLink?.findIndex(item => item.name === link)
-    console.log("🚀 ~ removeLink ~ itemRemove:", typeof itemRemove)
+    const itemRemove = addLink?.findIndex(item => item.label === link)
     addLink?.splice(itemRemove!, 1)
   }
 
@@ -89,7 +87,7 @@ function Perfil() {
           }}
           bounces={false}
           showsVerticalScrollIndicator={false}
-          keyExtractor={(item) => item.name}
+          keyExtractor={(item) => item.label}
           renderItem={({ item }) => (
             <CardMedia infoCard={item} isEditabled={false} openModal={hadleOpenModalEditLinks} />
           )}
@@ -109,7 +107,7 @@ function Perfil() {
           <View className=''
             style={{ flex: 1, backgroundColor: "#0000002f" }}
           >
-            <EditLink onClosed={handleCloseModalEditLinks} linkedit={editLink} remove={removeLink} />
+            <EditLink onClosed={handleCloseModalEditLinks} linkEdit={editLink} remove={removeLink} />
           </View>
         </Modal>
       </KeyboardAvoidingView>

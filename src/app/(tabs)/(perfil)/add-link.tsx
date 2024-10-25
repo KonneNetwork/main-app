@@ -3,22 +3,22 @@ import { View, Text, SectionList } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { FlatList } from 'react-native-gesture-handler';
 import InputSearch from '@/components/InputSearch';
-import { dataLinks } from '@/constants/mediasLink';
+import { Categorias, dataLinks } from '@/constants/mediasLink';
 import CardMedia from '@/components/CardMedia';
 
 interface AddLinksProps {
   onClose: () => void;
-  selectingLinks: React.Dispatch<React.SetStateAction<{ name: string, icon: React.JSX.Element }[] | undefined | null>>;
-  selectedLinks: { name: string, icon: React.JSX.Element }[] | undefined | null
+  selectingLinks: React.Dispatch<React.SetStateAction<{ label: string, icon: React.JSX.Element, category: string }[] | undefined | null>>;
+  selectedLinks: { label: string, icon: React.JSX.Element, category: string }[] | undefined | null
 }
 
 export default function AddLink({ onClose, selectingLinks, selectedLinks }: AddLinksProps) {
 
   const [search, setSearch] = useState('');
 
-  const handleItemPress = (item: { name: string, icon: React.JSX.Element }) => {
+  const handleItemPress = (item: { label: string, icon: React.JSX.Element, category: string }) => {
 
-    if (!selectedLinks?.find(link => link.name === item.name)) {
+    if (!selectedLinks?.find(link => link.label === item.label)) {
       selectingLinks((prevState) => {
         const updatedLinks = prevState ? [...prevState, item] : [item];
         return updatedLinks;
@@ -41,28 +41,36 @@ export default function AddLink({ onClose, selectingLinks, selectedLinks }: AddL
             <InputSearch value={search} onChangeText={setSearch} placeholder='Buscar por links' />
           </View>
         }
-        sections={dataLinks}
-        keyExtractor={(item, index) => item.name + index}
+        sections={Categorias.map(item => ({
+          title: item,
+          data: Object.values(dataLinks).filter(link => link?.category === item)
+        }))}
+        keyExtractor={(item, index) => item.label + index}
         renderItem={() => null}
-        renderSectionHeader={({ section: { title, data } }) => (
-          <View className=' my-6 mx-8'>
-            <Text className='font-roboto-400 text-xl'>{title}</Text>
-            <FlatList
-              data={data.filter(data => { return data.name.includes(search) })}
-              contentContainerStyle={{
-                flex: 1,
-                justifyContent: 'space-between',
-              }}
-              bounces={false}
-              showsVerticalScrollIndicator={false}
-              keyExtractor={(item) => item.name}
-              renderItem={({ item }) => (
-                <CardMedia infoCard={item} onPress={() => handleItemPress(item)} />
-              )}
-              numColumns={3}
-            />
-          </View>
-        )}
+
+        renderSectionHeader={({ section }) => {
+          return (
+            <View className=' my-6 mx-8'>
+              <Text className='font-roboto-400 text-xl'>{section.title}</Text>
+              <FlatList
+                data={section.data.filter(data => { return data.label.includes(search) })}
+                contentContainerStyle={{
+                  flex: 1,
+                  justifyContent: 'space-between',
+                }}
+                bounces={false}
+                showsVerticalScrollIndicator={false}
+                keyExtractor={(item) => item.label}
+                renderItem={({ item }) => (
+
+                  <CardMedia infoCard={item} onPress={() => handleItemPress(item)} />
+                )}
+                numColumns={3}
+              />
+            </View>
+
+          )
+        }}
       />
     </View>
   );
