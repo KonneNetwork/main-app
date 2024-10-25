@@ -50,7 +50,7 @@ export default function TabLayout() {
               </TabBarIcon>
             )
           }} />
-          < Tabs.Screen name="menu" options={{
+          < Tabs.Screen name="(menu)" options={{
             headerShown: false, title: 'Menu', tabBarIcon: ({ color, focused }) => (
               <TabBarIcon color={color} focused={focused} >
                 <Icons.menu color={color} width={24} height={24} />

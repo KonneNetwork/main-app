@@ -3,9 +3,9 @@ import { TouchableOpacity, Text, TouchableOpacityProps, Dimensions, StyleSheet }
 import IconEdit from '../IconEdit';
 
 interface CardMedia extends TouchableOpacityProps {
-  infoCard: { name: string, icon: React.JSX.Element };
+  infoCard: { label: string, icon: React.JSX.Element, category: string };
   isEditabled?: boolean;
-  openModal?: (link: { name: string, icon: React.JSX.Element } | null) => void
+  openModal?: (link: { label: string, icon: React.JSX.Element, category: string } | null) => void
 }
 
 export default function CardMedia({ infoCard, isEditabled = true, openModal = () => { }, ...rest }: CardMedia) {
@@ -17,7 +17,7 @@ export default function CardMedia({ infoCard, isEditabled = true, openModal = ()
 
     <TouchableOpacity style={[styles.item, { width: itemWidth }]} {...rest} disabled={!isEditabled} >
       {infoCard?.icon}
-      <Text className='font-roboto-500 text-sm'>{infoCard?.name}</Text>
+      <Text className='font-roboto-500 text-sm'>{infoCard?.label}</Text>
       {!isEditabled &&
         <IconEdit
           colorIcon='#fff'

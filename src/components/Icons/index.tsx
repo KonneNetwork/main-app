@@ -25,7 +25,14 @@ import Dribble from '../../../assets/images/svgs/dribble.svg';
 import Website from '../../../assets/images/svgs/website.svg';
 import GoogleReviews from '../../../assets/images/svgs/googlereview.svg';
 import AppLinks from '../../../assets/images/svgs/applink.svg';
+import Rate from '../../../assets/images/svgs/rate.svg';
+import Update from '../../../assets/images/svgs/update.svg';
+import Translate from '../../../assets/images/svgs/translate.svg';
+import Feedback from '../../../assets/images/svgs/feedback.svg';
+import Preference from '../../../assets/images/svgs/preference.svg';
 import Trash from '../../../assets/images/svgs/trash.svg';
+
+
 
 export const Icons = {
   heart: (props: SvgProps) => <Heart {...props} />,
@@ -34,7 +41,7 @@ export const Icons = {
   map: (props: SvgProps) => <Map {...props} />,
   user: (props: SvgProps) => <User {...props} />,
   pencil: (props: SvgProps) => <Pencil {...props} />,
-  intagram: (props: SvgProps) => <Instagram {...props} />,
+  instagram: (props: SvgProps) => <Instagram {...props} />,
   linkeding: (props: SvgProps) => <Linkeding {...props} />,
   skype: (props: SvgProps) => <Skype {...props} />,
   snapchat: (props: SvgProps) => <Snapchat {...props} />,
@@ -54,4 +61,10 @@ export const Icons = {
   googlereviews: (props: SvgProps) => <GoogleReviews {...props} />,
   applink: (props: SvgProps) => <AppLinks {...props} />,
   trash: (props: SvgProps) => <Trash {...props} />,
+  rate: (props: SvgProps) => <Rate {...props} />,
+  update: (props: SvgProps) => <Update {...props} />,
+  translate: (props: SvgProps) => <Translate {...props} />,
+  preference: (props: SvgProps) => <Preference {...props} />,
+  feedback: (props: SvgProps) => <Feedback {...props} />,
+
 }

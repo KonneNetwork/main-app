@@ -5,7 +5,7 @@ import { TouchableOpacityProps, Text, TouchableOpacity } from 'react-native'
 interface ButtonProps extends TouchableOpacityProps {
   title: string;
   onPress?: () => void;
-  variant: 'active' | 'inactive';
+  variant: 'active' | 'inactive' | 'exit';
   smallButton?: boolean;
   mediumButton?: boolean;
 }
@@ -18,6 +18,9 @@ function Button({ title, onPress, variant, mediumButton = false, smallButton = f
       }, {
         'border-1 border-[#222222] ': variant === 'inactive'
       },
+        {
+          'bg-[#EB4646] ': variant === 'exit'
+        },
         { 'flex-1 py-3 rounded mt-8': mediumButton },
         { 'w-full py-6 rounded-xl mt-8': !mediumButton && !smallButton },
         { 'rounded-full px-2 py-1': smallButton }
@@ -30,7 +33,7 @@ function Button({ title, onPress, variant, mediumButton = false, smallButton = f
           'color-[#222222]': variant === 'inactive'
         },
           {
-            'color-white': variant === 'active'
+            'color-white': variant === 'active' || variant === 'exit'
           }
         )}
       >
