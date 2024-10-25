@@ -10,7 +10,7 @@ import { useRouter } from "expo-router";
 import SignUp from "./sign-up";
 import { StatusBar } from "expo-status-bar";
 
-export default function Index() {
+export default function SignIn() {
   const [signUp, setSignUp] = useState(false);
   const router = useRouter();
 
@@ -49,33 +49,35 @@ export default function Index() {
                 Faça login e comece a se conectar com pessoas próximas a você.
               </Text>
 
-              <Input
-                label="E-mail"
-                variant="white" />
-              <Input
-                label="Senha"
-                password={true}
-                variant="white" />
+              <View>
+                <Input
+                  label="E-mail"
+                  variant="white" />
+                <Input
+                  label="Senha"
+                  password={true}
+                  variant="white" />
 
-              <Text
-                className="text-base color-white text-right underline"
-              >
-                Esqueci minha senha
-              </Text>
+                <Text
+                  className="text-base color-white text-right underline"
+                >
+                  Esqueci minha senha
+                </Text>
+              </View>
 
               <Button
                 variant='active'
                 title="Entrar"
                 onPress={() => router.push('/(tabs)')}
               />
-
+              {/* 
               <View className="flex-row items-center self-center my-5 " style={{ gap: 20 }} >
                 <Text className="text-base font-medium color-white">Continuar sem login</Text>
                 <TouchableOpacity className="bg-[#ffffff2b] p-3 rounded-lg" onPress={() => router.push('/(tabs)')}>
                   <Feather name="arrow-right" size={24} color="white" />
                 </TouchableOpacity>
 
-              </View>
+              </View> */}
 
 
               <View style={styles.container}>

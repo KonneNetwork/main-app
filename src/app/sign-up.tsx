@@ -39,10 +39,13 @@ function SignUp({ signUp, setSignUp }: SignUpProps) {
   }
 
   function handleSubmitCod() {
-    console.log('code', codeVerification)
     if (codeVerification.length === 6) {
       setStage('sign-up')
     }
+  }
+
+  function handleSubmitAccount() {
+    setSignUp(false)
   }
 
   return (
@@ -135,9 +138,9 @@ function SignUp({ signUp, setSignUp }: SignUpProps) {
         <View className=" mt-9 ">
           <Input label='Nome Completo' />
           <Input label='E-mail' />
-          <Input label='CPF' />
+          <Input label='CPF' keyboardType='number-pad' />
           <Input label='Defina uma senha' />
-          <Button variant='active' title="Concluir Cadastro" onPress={handleSubmitCod} />
+          <Button variant='active' title="Concluir Cadastro" onPress={handleSubmitAccount} />
         </View>
 
 
