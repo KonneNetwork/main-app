@@ -7,17 +7,21 @@ import IconEdit from '../IconEdit'
 interface InputImageProps extends TouchableOpacityProps {
   image?: string,
   isEdit?: boolean,
-  onOpen?: () => void
+  onOpen?: () => void,
+  color?: string,
 }
-export default function InputImage({ image, isEdit, onOpen, ...rest }: InputImageProps) {
-  return (
-    <TouchableOpacity {...rest} onPress={onOpen}>
+export default function InputImage({ image, isEdit, onOpen, color = "#528A8C", ...rest }: InputImageProps) {
 
-      <View className='border-8 border-[#528A8C] h-44 w-44 rounded-full items-center overflow-hidden'>
+  const disabledTouch = image ? true : false
+
+  return (
+    <TouchableOpacity {...rest} onPress={onOpen} disabled={disabledTouch}>
+
+      <View className='border-8 h-44 w-44 rounded-full items-center overflow-hidden' style={{ borderColor: color }}>
         {image ?
           <Image
-            source={require('../../../assets/images/favicon.png')}
-            resizeMode='contain'
+            source={{ uri: image }}
+            resizeMode='cover'
             className=' h-full w-full'
           />
           :

@@ -1,15 +1,15 @@
 import { FontAwesome5 } from '@expo/vector-icons'
 import { LinearGradient } from 'expo-linear-gradient'
 import React, { useEffect, useState } from 'react'
-import { View, Text } from 'react-native'
+import { View, Text, TouchableOpacity, TouchableOpacityProps } from 'react-native'
 
-interface CardProps {
+interface CardProps extends TouchableOpacityProps {
   nome: string;
   descricao: string;
   distance: number;
 }
 
-export default function Card({ nome, descricao, distance }: CardProps) {
+export default function Card({ nome, descricao, distance, ...rest }: CardProps) {
   const [distanceConvert, setDistanceConvert] = useState('')
 
 
@@ -22,7 +22,7 @@ export default function Card({ nome, descricao, distance }: CardProps) {
   }, [])
   return (
 
-    <View className='rounded-2xl overflow-hidden' style={{ width: 286, height: 233 }} >
+    <TouchableOpacity className='rounded-2xl overflow-hidden' style={{ width: 286, height: 233 }} {...rest}>
       <LinearGradient
         colors={['#00000000', '#0000006f']}
         style={{ width: 286, height: 233, justifyContent: 'flex-end' }}
@@ -32,11 +32,16 @@ export default function Card({ nome, descricao, distance }: CardProps) {
             <Text className='color-[#F9F9F9] font-inter-600 text-lg'>{nome}</Text>
             <FontAwesome5 name="heart" size={22} color="#9E9E9E" />
           </View>
-          <Text className='color-[#EBEBF5CC] font-inter-400 text-sm' style={{ flexShrink: 1 }}>{descricao}</Text>
+          <Text
+            className="color-[#EBEBF5CC] font-inter-400 text-sm"
+            style={{ flexShrink: 1 }}
+          >
+            {descricao.length > 150 ? `${descricao.substring(0, 147)}...` : descricao}
+          </Text>
           <Text className='color-[#F9F9F9] text-xs'>{distanceConvert}</Text>
         </View>
       </LinearGradient>
-    </View>
+    </TouchableOpacity>
 
   )
 }

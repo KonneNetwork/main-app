@@ -5,9 +5,10 @@ import Ionicons from '@expo/vector-icons/Ionicons'
 import classNames from 'classnames'
 import React, { useState } from 'react'
 import { View, Text, TouchableOpacity, FlatList } from 'react-native'
-import { userData } from '../mock/userData'
+import { usersData } from '@/mock/userData'
 import Card from '@/components/Card'
 import CardUsers from '@/components/CardUsers'
+import { router } from 'expo-router'
 
 function Index() {
 
@@ -16,7 +17,7 @@ function Index() {
   const konnectionAba = activeAba === 'konnectados';
   const [search, setSearch] = useState('')
 
-  const filteredData = userData.filter((item) => {
+  const filteredData = usersData.filter((item) => {
     // Filtra pela lógica de konnectado e pela pesquisa de texto
     const matchesKonnectado = item.konnectado === (konnectionAba ? true : false);
     const matchesSearch = item.nome.toLowerCase().includes(search.toLowerCase());
@@ -25,7 +26,7 @@ function Index() {
   });
 
 
-  if (userData.length <= 0) {
+  if (usersData.length <= 0) {
     return (
       <View className='flex-1 bg-white p-8'>
         <View className='flex-row justify-between mt-10'>
@@ -114,7 +115,7 @@ function Index() {
             })} onPress={() => setActiveAba('pedido-konnexao')}>
               <Text className={classNames({ 'font-inter-500 text-lg color-[#000] text-center ': activeAba === 'pedido-konnexao' },
                 { 'font-inter-500 text-lg color-[#506773] text-center': activeAba !== 'pedido-konnexao' })}>
-                Pedidos de Konnexão
+                Pedidos de Konnexão{(filteredData.length > 0) && `(${filteredData.length})`}
               </Text>
             </TouchableOpacity>
           </View>
@@ -133,12 +134,12 @@ function Index() {
             <FlatList
               showsHorizontalScrollIndicator={false}
               className='flex-grow'
-              data={userData.filter(item => item.distancia < 1000 && item.konnectado === false)}
+              data={usersData.filter(item => item.distancia < 1000 && item.konnectado === false)}
               contentContainerStyle={{ gap: 16, flexGrow: 1 }}
               horizontal
               keyExtractor={item => item.cpf}
               renderItem={({ item }) => {
-                return <Card key={item.cpf} nome={item.nome} descricao={item.descricao} distance={item.distancia} />
+                return <Card key={item.cpf} nome={item.nome} descricao={item.descricao} distance={item.distancia} onPress={() => router.navigate('/(tabs)/buscar')} />
               }}
             /></>}
         </>

@@ -6,16 +6,17 @@ interface ButtonTesteProps {
   id: number;
   title: string;
   selectTheme: (title: string, setValue: React.Dispatch<React.SetStateAction<boolean>>, value: boolean) => void
+  isSelected: boolean
 }
 
-export default function ButtonTeste({ id, title, selectTheme }: ButtonTesteProps) {
+export default function ButtonTeste({ id, title, selectTheme, isSelected }: ButtonTesteProps) {
   const [select, setSelect] = useState(false)
   return (<TouchableOpacity
     key={id}
     className={
       classNames(' my-2 justify-center items-center p-6 rounded-xl ',
         {
-          "bg-surface-brand-main-selected border-2 border-surface-brand-main-selected": select
+          "bg-surface-brand-main-selected border-2 border-surface-brand-main-selected": select || isSelected
         }, {
         'border-2 border-[#528A8C] bg-[#EEEEEE]': !select
       })

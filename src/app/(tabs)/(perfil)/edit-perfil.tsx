@@ -1,10 +1,11 @@
 import Button from '@/components/Button'
+import ImagePickerComponent from '@/components/ImagePickerComponent'
 import InputImage from '@/components/InputImage'
 import InputPerfil from '@/components/InputPerfil'
 import { palleteColors } from '@/constants/paletteColor'
 import { useRouter } from 'expo-router'
 import React, { useState } from 'react'
-import { FlatList, KeyboardAvoidingView, Platform, Pressable, ScrollView, Text, View } from 'react-native'
+import { FlatList, KeyboardAvoidingView, Modal, Platform, Pressable, ScrollView, Text, View } from 'react-native'
 
 
 interface EditPerfilProps {
@@ -14,7 +15,7 @@ interface EditPerfilProps {
 export default function EditPerfil({ onClosed }: EditPerfilProps) {
   const router = useRouter()
   const [selectedId, setSelectedId] = useState<number | null>(null);
-
+  const [openImage, setOpenImage] = useState(false);
 
 
   const handleSelectItem = (id: number) => {
@@ -30,7 +31,7 @@ export default function EditPerfil({ onClosed }: EditPerfilProps) {
       <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'flex-end' }} showsVerticalScrollIndicator={false} bounces={false} keyboardShouldPersistTaps="handled">
 
         <View className='  w-full items-center gap-2 bg-surface-primary pt-8 px-8 pb-4 rounded-t-[30px]'>
-          <InputImage isEdit={true} />
+          <InputImage isEdit={true} onPress={() => setOpenImage(true)} />
           <InputPerfil
             isEditable={true}
             label='Nome'
@@ -84,6 +85,7 @@ export default function EditPerfil({ onClosed }: EditPerfilProps) {
             />
           </View>
         </View>
+
       </ScrollView>
     </KeyboardAvoidingView>
   )

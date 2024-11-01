@@ -1,20 +1,21 @@
 import Button from '@/components/Button'
 import React from 'react'
-import { View, Text, Image, TouchableOpacity, TouchableWithoutFeedback, Platform } from 'react-native'
+import { View, Text, Image, TouchableOpacity, TouchableWithoutFeedback, Platform, ScrollView, StyleSheet } from 'react-native'
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { Icons } from '@/components/Icons';
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import { router } from 'expo-router';
+import { router, useNavigation } from 'expo-router';
 import CardConfiguration from '@/components/CardConfiguration';
 import classNames from 'classnames';
-import { ScrollView } from 'react-native-gesture-handler';
+import { BlurView } from 'expo-blur';
 
 
 
 function Menu() {
 
+  const navigation = useNavigation();
+
   return (
-    <ScrollView bounces={false} showsVerticalScrollIndicator={false} contentContainerStyle={{ flex: 1, flexGrow: 1 }}>
+    <ScrollView bounces={false} showsVerticalScrollIndicator={false} contentContainerStyle={{ flexGrow: 1 }}>
       <View className='flex-1 bg-white p-8 justify-between'>
 
         <View className='gap-10  items-center justify-between'>
@@ -28,8 +29,9 @@ function Menu() {
           })}>
 
             <View className='flex-row justify-between items-center gap-4'>
-              <View className='rounded-full'>
-                <Image source={require('../../../../assets/images/userImage.png')} width={44} height={44} />
+              <View className='rounded-full overflow-hidden'>
+                <Image source={require('../../../../assets/images/userImage.jpeg')} className=' w-16 h-16 ' />
+                {/* <BlurView intensity={10} style={StyleSheet.absoluteFill} blurReductionFactor={3} experimentalBlurMethod='dimezisBlurView' /> */}
               </View>
               <View>
                 <Text className='color-[#374151] font-inter-600'>Gabriela J</Text>
@@ -70,14 +72,12 @@ function Menu() {
 
           </View>
         </View>
-        <Button title='Sair da Conta' variant='exit' />
+        <Button title='Sair da Conta' variant='exit' onPress={() => {
+          router.replace('/sign-in')
+        }} />
       </View >
     </ScrollView>
   )
 }
 
 export default Menu
-
-function useState(arg0: string): [any, any] {
-  throw new Error('Function not implemented.');
-}
