@@ -11,10 +11,6 @@ export default function TabLayout() {
       <StatusBar style='dark' />
       <Tabs screenOptions={{
         tabBarHideOnKeyboard: true,
-        tabBarStyle: {
-          height: 56,
-          borderWidth: 1,
-        },
         tabBarActiveTintColor: "#1C2D4C",
         tabBarIconStyle: {
 
