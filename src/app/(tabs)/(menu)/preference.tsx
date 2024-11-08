@@ -5,8 +5,8 @@ import { Ionicons } from '@expo/vector-icons'
 import classNames from 'classnames'
 import { router } from 'expo-router'
 import React, { useState } from 'react'
-import { View, Text, FlatList, TouchableOpacity } from 'react-native'
-import { ScrollView } from 'react-native-gesture-handler'
+import { View, Text, FlatList, TouchableOpacity, useWindowDimensions } from 'react-native'
+import Slider from '@react-native-community/slider';
 
 const etapas = [
   {
@@ -29,9 +29,9 @@ const etapas = [
   },
   {
     id: "2",
-    title: "Quais seus objetivos?",
-    subtitle: "Selecione seus objetivos por aqui:",
-    maxSelections: 5,
+    title: "Quais são seus objetivos?",
+    subtitle: "Selecione até 2:",
+    maxSelections: 2,
     options: [
       { id: 1, title: "Networking" },
       { id: 2, title: "Contratar" },
@@ -41,8 +41,8 @@ const etapas = [
   },
   {
     id: "3",
-    title: "Quero me Konnectar com:",
-    subtitle: "Escolha até 5 áreas de interesse:",
+    title: "Quero me Konnectar com pessoas das seguintes áreas:",
+    subtitle: "Escolha até 5:",
     maxSelections: 5,
     options: [
       { id: 1, title: 'Design' },
@@ -63,25 +63,26 @@ const etapas = [
     options: [
       { id: 1, title: 'Homem' },
       { id: 2, title: 'Mulher' },
-      { id: 3, title: 'Não binário' },
       { id: 4, title: 'Prefiro não informar' },
     ]
   },
-
+  {
+    id: "5",
+    title: "Qual a sua idade?",
+    slider: [18, 101]
+  }
 ]
-// {
-//   id: "5",
-//   title: "Qual a sua idade?",
-//   slider: [18, 101]
-// }
+
 
 export default function Preference() {
   const statusBarInitialValue = 100 / etapas.length
   const [stage, setStage] = useState(0)
   const [statusBarProgress, setStatusBarProgress] = useState(statusBarInitialValue)
   const [selectedOptions, setSelectedOptions] = useState<{ [key: string]: string[] }>({})
-  console.log("🚀 ~ Preference ~ selectedOptions:", selectedOptions)
-
+  const [age, setAge] = useState<number>(18)
+  const { width, } = useWindowDimensions()
+  // console.log("🚀 ~ Preference ~ selectedOptions:", selectedOptions)
+  const lastQuestion = etapas.length - 1;
 
   const handleSelectOption = (stageId: string, optionId: string) => {
     setSelectedOptions((prev) => {
@@ -121,10 +122,10 @@ export default function Preference() {
   // }
 
   function nextProgress() {
-    if (stage === (etapas.length - 1)) {
+    if (stage === (lastQuestion)) {
       router.back()
     }
-    if (stage < (etapas.length - 1)) {
+    if (stage < (lastQuestion)) {
       setStage(stage + 1)
       setStatusBarProgress(statusBarProgress + statusBarInitialValue)
     }
@@ -178,11 +179,30 @@ export default function Preference() {
           <Text className='text-4xl font-inter-500 color-[#528A8C]'>{etapas[stage].title}</Text>
           {etapas[stage]?.subtitle && <Text>{etapas[stage].subtitle}</Text>}
           {/* <AgeSelector /> */}
+          {/* <View className='w-full bg-surface-brand-main-default h-12'>
+            <Text className=''>Ola</Text>
+          </View> */}
+          {stage === lastQuestion &&
+
+            <View className='justify-center items-center mt-9 '>
+              <Text className='font-outfit-700 text-2xl'>{age}</Text>
+              <Slider
+                value={age}
+                onValueChange={(e) => { setAge(Math.trunc(Number(e))) }}
+                style={{ width: width * 0.9, height: 40 }}
+                className='w-full absolute'
+
+                minimumValue={0}
+                maximumValue={150}
+
+              />
+            </View>
+          }
         </>
       }
       ListFooterComponentStyle={{ marginTop: 30, flex: 1, justifyContent: 'flex-end', alignItems: 'center' }}
       ListFooterComponent={
-        <View className='flex-row'>
+        < View className='flex-row' >
           {statusBarProgress > statusBarInitialValue &&
             // <Button mediumButton variant='inactive' title='voltar' onPress={backProgress} /> 
             <TouchableOpacity
@@ -193,16 +213,16 @@ export default function Preference() {
               </Text>
             </TouchableOpacity>
           }
-          {/* <Button mediumButton variant='active' title={(etapas.length - 1) === stage ? "Concluir" : "Próximo"} onPress={nextProgress} disabled={currentStageOptions.length === 0} /> */}
+          {/* <Button mediumButton variant='active' title={(lastQuestion) === stage ? "Concluir" : "Próximo"} onPress={nextProgress} disabled={currentStageOptions.length === 0} /> */}
           <TouchableOpacity
             className='justify-center items-center border-1 p-6 border-[#528A8C] rounded-3xl'
-            style={{ backgroundColor: currentStageOptions.length === 0 ? '#708788' : '#528A8C', width: '48%' }}
+            style={{ backgroundColor: currentStageOptions.length === 0 ? '#708788' : '#528A8C', flex: 1 }}
             onPress={nextProgress} disabled={currentStageOptions.length === 0} >
             <Text className='color-[#FFFFFF] font-inter-500 text-lg'>
-              {(etapas.length - 1) === stage ? "Concluir" : "Próximo"}
+              {(lastQuestion) === stage ? "Concluir" : "Próximo"}
             </Text>
           </TouchableOpacity>
-        </View>
+        </View >
       }
     />
   )
