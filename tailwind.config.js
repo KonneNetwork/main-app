@@ -68,6 +68,7 @@ module.exports = {
         'roboto-500': 'Roboto_500Medium',
         'roboto-700': 'Roboto_700Bold',
         'outfit-600': 'Outfit_600SemiBold',
+        'outfit-700': 'Outfit_700Bold'
       },
 
       borderWidth: {
