@@ -29,6 +29,7 @@ export default function SignIn() {
         >
           <StatusBar
             style='light'
+            translucent
           />
 
           <View className={classNames("p-5 justify-between", {

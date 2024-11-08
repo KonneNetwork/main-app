@@ -13,16 +13,16 @@ const AgeSelector = () => {
   const [selectedAge, setSelectedAge] = useState(20);
 
   useEffect(() => {
-    if (scrollRef.current) {
+    if (scrollRef?.current) {
       // Posiciona o seletor na idade inicial centralizada ao carregar
-      scrollRef.current.scrollTo({
-        x: (ageRange + selectedAge - 1) * itemWidth,
-        animated: false,
+      scrollRef?.current?.scrollTo({
+        x: (ageRange + selectedAge + 1) * itemWidth,
+        animated: true,
       });
     }
   }, []);
 
-  const handleScroll = (event) => {
+  const handleScroll = (event: { nativeEvent: { contentOffset: { x: any; }; }; }) => {
     const offsetX = event.nativeEvent.contentOffset.x;
     const index = Math.round(offsetX / itemWidth);
     const age = repeatedAges[index];
@@ -30,33 +30,37 @@ const AgeSelector = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.selectorOverlay} />
-      <ScrollView
-        ref={scrollRef}
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        snapToInterval={itemWidth}
-        decelerationRate="fast"
-        onScroll={handleScroll}
-        scrollEventThrottle={16}
-        contentContainerStyle={{ paddingHorizontal: centerOffset }}
-      >
-        {repeatedAges.map((age, index) => (
-          <View key={index} style={styles.ageItem}>
-            <Text style={[styles.ageText, age === selectedAge && styles.selectedAgeText]}>
-              {age}
-            </Text>
-          </View>
-        ))}
-      </ScrollView>
+    <>
+      <View style={styles.container}>
+        <View style={styles.selectorOverlay} />
+        <ScrollView
+          ref={scrollRef}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          snapToInterval={itemWidth}
+          decelerationRate="fast"
+          onScroll={handleScroll}
+          scrollEventThrottle={10}
+          contentContainerStyle={{ paddingHorizontal: centerOffset }}
+        >
+          {repeatedAges.map((age, index) => (
+            <View key={index} style={styles.ageItem}>
+              <Text style={[styles.ageText, age === selectedAge && styles.selectedAgeText]}>
+                {age}
+              </Text>
+            </View>
+          ))}
+        </ScrollView>
+      </View>
       <Text style={styles.selectedLabel}>Idade selecionada: {selectedAge}</Text>
-    </View>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    borderWidth: 1,
+    borderRadius: 50,
     alignItems: 'center',
     marginTop: 50,
   },
