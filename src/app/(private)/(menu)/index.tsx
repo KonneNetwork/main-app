@@ -43,7 +43,7 @@ function Menu() {
             </TouchableOpacity>
           </View>
 
-          <CardConfiguration bigContainer={true} title='Preferências' onPress={() => router.navigate('/(tabs)/(menu)/preference')}>
+          <CardConfiguration bigContainer={true} title='Preferências' onPress={() => router.navigate('/(private)/(menu)/preference')}>
             <Icons.preference width={25} height={25} />
           </CardConfiguration>
 

@@ -140,7 +140,7 @@ function Index() {
                 horizontal
                 keyExtractor={item => item.cpf}
                 renderItem={({ item }) => {
-                  return <Card key={item.cpf} nome={item.nome} descricao={item.descricao} distance={item.distancia} onPress={() => router.navigate('/(tabs)/buscar')} />
+                  return <Card key={item.cpf} nome={item.nome} descricao={item.descricao} distance={item.distancia} onPress={() => router.navigate('/(private)/buscar')} />
                 }}
               /></>}
           </>

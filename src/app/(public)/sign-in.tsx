@@ -1,9 +1,9 @@
 import { Text, View, Image, TouchableOpacity, StyleSheet, ScrollView, KeyboardAvoidingView, Platform } from "react-native";
-import logo from "../../assets/images/logo.png";
+import logo from "../../../assets/images/logo.png";
 import Input from "@/components/Input";
 import Button from "@/components/Button";
 import Feather from '@expo/vector-icons/Feather';
-import Linkeding from '../../assets/images/svgs/linkeding.svg';
+import Linkeding from '../../../assets/images/svgs/linkeding.svg';
 import { useState } from "react";
 import classNames from "classnames";
 import { useRouter } from "expo-router";
@@ -69,12 +69,12 @@ export default function SignIn() {
               <Button
                 variant='active'
                 title="Entrar"
-                onPress={() => router.push('/(tabs)')}
+                onPress={() => router.push('/(private)')}
               />
               {/* 
               <View className="flex-row items-center self-center my-5 " style={{ gap: 20 }} >
                 <Text className="text-base font-medium color-white">Continuar sem login</Text>
-                <TouchableOpacity className="bg-[#ffffff2b] p-3 rounded-lg" onPress={() => router.push('/(tabs)')}>
+                <TouchableOpacity className="bg-[#ffffff2b] p-3 rounded-lg" onPress={() => router.push('/(private)')}>
                   <Feather name="arrow-right" size={24} color="white" />
                 </TouchableOpacity>
 
