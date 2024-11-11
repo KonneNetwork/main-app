@@ -79,7 +79,7 @@ function Index() {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
       <FlatList
         className='flex-1 bg-surface-primary'
         data={filteredData}

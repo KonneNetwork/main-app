@@ -14,7 +14,7 @@ function Button({ title, onPress, variant, mediumButton = false, smallButton = f
   return (
     <TouchableOpacity
       className={classNames('justify-center items-center', {
-        'bg-[#528A8C] ': variant === 'active'
+        'bg-surface-brand-main-default ': variant === 'active'
       }, {
         'border-1 border-[#222222] ': variant === 'inactive'
       },

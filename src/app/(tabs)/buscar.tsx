@@ -97,7 +97,7 @@ function Buscar() {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
       <View style={styles.container}>
         <MapView
           // provider={PROVIDER_GOOGLE}
@@ -172,7 +172,7 @@ function Buscar() {
                     Konnecte-se para entrar em contato
                   </Text>
 
-                  <TouchableOpacity className='flex-row  items-center gap-3 bg-[#528A8C] p-5  justify-center w-full rounded-md '
+                  <TouchableOpacity className='flex-row  items-center gap-3 bg-surface-brand-main-default p-5  justify-center w-full rounded-md '
                     onPress={() => { setOpenInvite(false); setOpenPerfil(true); setEnableLinks(false) }}
                   >
                     <Icons.heart color={"#fcf9f967"} />
@@ -235,7 +235,7 @@ function Buscar() {
                     {selectedUser?.nome.split(" ").slice(0, 1).join("")} fez um pedido de Konnexão
                   </Text>
 
-                  <TouchableOpacity className='flex-row  items-center gap-3 bg-[#528A8C] p-5  justify-center w-full rounded-md '
+                  <TouchableOpacity className='flex-row  items-center gap-3 bg-surface-brand-main-default p-5  justify-center w-full rounded-md '
                     onPress={() => setEnableLinks(true)}
                   >
                     <Icons.heart color={"#fcf9f967"} />
