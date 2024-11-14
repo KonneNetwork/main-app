@@ -2,8 +2,8 @@ import { ExpoConfig, ConfigContext } from 'expo/config';
 
 export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
-  name: "konne-app",
-  slug: "konne-app",
+  name: "konne",
+  slug: "konne",
   version: "1.0.0",
   orientation: "portrait",
   icon: "./assets/images/logoKonneSquare.png",
