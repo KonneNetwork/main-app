@@ -6,6 +6,7 @@ export default function PerfilLayout() {
     <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
       <Stack screenOptions={{
         headerShown: false,
+        contentStyle: { flex: 1 }
       }}>
         <Stack.Screen name='index' />
         <Stack.Screen name='edit-perfil' />

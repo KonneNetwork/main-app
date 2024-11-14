@@ -1,4 +1,4 @@
-import { Tabs } from "expo-router";
+import { Tabs, Stack } from "expo-router";
 import { Icons } from "@/components/Icons";
 import TabBarIcon from "@/components/TabBarIcon";
 import { StatusBar } from "expo-status-bar";
@@ -31,7 +31,7 @@ export default function TabLayout() {
             </TabBarIcon>
           )
         }} />
-        <Tabs.Screen name="index" options={{
+        <Tabs.Screen name="(index)" options={{
           headerShown: false, title: 'Konnexões', tabBarIcon: ({ color, focused }) => (
             <TabBarIcon color={color} focused={focused} >
               <Icons.heart color={color} width={24} height={24} />
@@ -54,6 +54,7 @@ export default function TabLayout() {
         }} />
 
       </Tabs >
+
     </>
   )
 

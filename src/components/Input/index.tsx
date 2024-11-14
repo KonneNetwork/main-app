@@ -120,6 +120,7 @@ function Input({ label, password = false, variant = 'default', styleContainer, s
         <TextInput
           ref={inputRef}
           style={styleInput}
+          autoCapitalize={'none'}
           className={classNames(' color-black w-[85%] text-lg font-inter-400 min-h-14',
             {
               'w-full': !password

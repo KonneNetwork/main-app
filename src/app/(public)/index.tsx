@@ -9,12 +9,20 @@ import classNames from "classnames";
 import { useRouter } from "expo-router";
 import SignUp from "./sign-up";
 import { StatusBar } from "expo-status-bar";
+import { userStore } from "@/store/userStore";
 
 export default function SignIn() {
   const [signUp, setSignUp] = useState(false);
   const router = useRouter();
+  const [email, setEmail] = useState<string>();
+  const [password, setPassword] = useState<string>();
+  const { login } = userStore()
 
 
+
+  function handleLogin(email: string | undefined, password: string | undefined) {
+    login("fb@email.com", "123")
+  }
 
   return (
     <View
@@ -53,11 +61,17 @@ export default function SignIn() {
               <View>
                 <Input
                   label="E-mail"
-                  variant="white" />
+                  variant="white"
+                  value={email}
+                  onChangeText={(e) => setEmail(e)}
+                />
                 <Input
                   label="Senha"
                   password={true}
-                  variant="white" />
+                  variant="white"
+                  value={password}
+                  onChangeText={(e) => setPassword(e)}
+                />
 
                 <Text
                   className="text-base color-white text-right underline"
@@ -69,7 +83,7 @@ export default function SignIn() {
               <Button
                 variant='active'
                 title="Entrar"
-                onPress={() => router.push('/(private)')}
+                onPress={() => handleLogin(email, password)}
               />
               {/* 
               <View className="flex-row items-center self-center my-5 " style={{ gap: 20 }} >

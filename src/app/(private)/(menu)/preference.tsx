@@ -216,8 +216,8 @@ export default function Preference() {
           {/* <Button mediumButton variant='active' title={(lastQuestion) === stage ? "Concluir" : "Próximo"} onPress={nextProgress} disabled={currentStageOptions.length === 0} /> */}
           <TouchableOpacity
             className='justify-center items-center border-1 p-6 border-[#528A8C] rounded-3xl'
-            style={{ backgroundColor: currentStageOptions.length === 0 ? '#708788' : '#528A8C', flex: 1 }}
-            onPress={nextProgress} disabled={currentStageOptions.length === 0} >
+            style={{ backgroundColor: lastQuestion !== stage && currentStageOptions.length === 0 ? '#708788' : '#528A8C', flex: 1 }}
+            onPress={nextProgress} disabled={lastQuestion !== stage && currentStageOptions.length === 0} >
             <Text className='color-[#FFFFFF] font-inter-500 text-lg'>
               {(lastQuestion) === stage ? "Concluir" : "Próximo"}
             </Text>

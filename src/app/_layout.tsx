@@ -10,6 +10,7 @@ import { Slot } from 'expo-router';
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaView } from "react-native-safe-area-context";
+import { UserProvider } from '@/store/userStore';
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
@@ -27,7 +28,7 @@ export default function RootLayout() {
     if (loaded || error) {
       SplashScreen.hideAsync();
     }
-  }, [loaded, error]);
+  }, [loaded, error,]);
 
   if (!loaded && !error) {
     return <Image source={require('../../assets/images/splash.png')} resizeMode="cover" className="flex-1 w-full" />
@@ -36,10 +37,10 @@ export default function RootLayout() {
   return (
     <>
       <GestureHandlerRootView className='flex-1'>
-        {/* <SafeAreaView style={{ flex: 1 }} > */}
-        <StatusBar style="light" />
-        <Slot />
-        {/* </SafeAreaView> */}
+        <UserProvider>
+          <StatusBar style="light" />
+          <Slot />
+        </UserProvider>
       </GestureHandlerRootView>
     </>
   );
