@@ -7,12 +7,14 @@ import { router, useNavigation } from 'expo-router';
 import CardConfiguration from '@/components/CardConfiguration';
 import classNames from 'classnames';
 import { BlurView } from 'expo-blur';
+import { userStore } from '@/store/userStore';
 
 
 
 function Menu() {
 
   const navigation = useNavigation();
+  const { profile, logout } = userStore()
 
   return (
     <ScrollView bounces={false} showsVerticalScrollIndicator={false} contentContainerStyle={{ flexGrow: 1 }}>
@@ -30,12 +32,12 @@ function Menu() {
 
             <View className='flex-row justify-between items-center gap-4'>
               <View className='rounded-full overflow-hidden'>
-                <Image source={require('../../../../assets/images/userImage.jpeg')} className=' w-16 h-16 ' />
+                <Image source={{ uri: profile?.image }} className=' w-16 h-16 ' />
                 {/* <BlurView intensity={10} style={StyleSheet.absoluteFill} blurReductionFactor={3} experimentalBlurMethod='dimezisBlurView' /> */}
               </View>
               <View>
-                <Text className='color-[#374151] font-inter-600'>Gabriela J</Text>
-                <Text className='color-[#6B7280] font-inter-500'>UX / UI designer</Text>
+                <Text className='color-[#374151] font-inter-600'>{profile?.nome}</Text>
+                <Text className='color-[#6B7280] font-inter-500'>{profile?.ocupacao}</Text>
               </View>
             </View>
             <TouchableOpacity className='bg-[#F9F9F9] p-3 rounded-full'>
@@ -43,7 +45,7 @@ function Menu() {
             </TouchableOpacity>
           </View>
 
-          <CardConfiguration bigContainer={true} title='Preferências' onPress={() => router.navigate('/(tabs)/(menu)/preference')}>
+          <CardConfiguration bigContainer={true} title='Preferências' onPress={() => router.navigate('/(private)/(menu)/preference')}>
             <Icons.preference width={25} height={25} />
           </CardConfiguration>
 
@@ -73,7 +75,7 @@ function Menu() {
           </View>
         </View>
         <Button title='Sair da Conta' variant='exit' onPress={() => {
-          router.replace('/sign-in')
+          logout()
         }} />
       </View >
     </ScrollView>

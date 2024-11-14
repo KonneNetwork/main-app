@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text } from 'react-native'
+import { View, Text, Image } from 'react-native'
 import Button from '../Button'
 
 interface UserCardProps {
@@ -7,9 +7,13 @@ interface UserCardProps {
   occupation?: string;
   distance?: number;
   titleButton?: string;
+  image?: string;
+  onChange?: () => void
+  thema: string;
+  imageCardSize?: number;
 }
 
-export default function CardUsers({ name, distance, occupation, titleButton = '' }: UserCardProps) {
+export default function CardUsers({ name, distance, occupation, titleButton = '', image, onChange, thema, imageCardSize = 80 }: UserCardProps) {
 
   const [distanceConvert, setDistanceConvert] = useState('')
 
@@ -26,13 +30,18 @@ export default function CardUsers({ name, distance, occupation, titleButton = ''
     <>
       <View className='flex-row items-center justify-between py-3 gap-2'>
         <View className='flex-row items-center  flex-1 gap-5'>
-          <View className='bg-[#D9D9D9] w-20 h-20 rounded-full' />
+          <View className='bg-[#D9D9D9] rounded-full overflow-hidden' style={{ borderWidth: 2, borderColor: thema, height: imageCardSize, width: imageCardSize }}>
+            {image && <Image source={{ uri: image }} className='w-full h-full' />}
+
+          </View>
           <View className=' flex-1'>
             <Text className='font-inter-600 text-lg'>{name}</Text>
-            <Text className='font-inter-400 text-base text-[#3C3C4399]/60'>{occupation} - {distanceConvert}</Text>
+            {occupation && <Text className='font-inter-400 text-base text-[#3C3C4399]/60'>{occupation} - {distanceConvert}</Text>}
+
           </View>
         </View>
-        <Button smallButton title={titleButton} variant='active' />
+        {onChange && <Button smallButton title={titleButton} variant='active' onPress={onChange} />}
+
       </View>
     </>
   )

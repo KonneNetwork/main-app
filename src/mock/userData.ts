@@ -118,8 +118,8 @@ export const usersData = [
     idade: 18,
     cpf: "745.413.160-30",
     rg: "40.289.499-6",
-    email: "fabrizzio.n@ime.unicamp.br",
-    senha: "LjJRG7ZzM0",
+    email: "fb@email.com",
+    senha: "123",
     celular: "(83) 99801-0080",
     ocupacao: "Design",
     distancia: 3000,
@@ -136,6 +136,8 @@ export const usersData = [
     image: "https://media.istockphoto.com/id/1309328823/pt/foto/headshot-portrait-of-smiling-male-employee-in-office.webp?a=1&b=1&s=612x612&w=0&k=20&c=nxXP21qckuF3ICnpy9bUHTz8cVSL6oM5pG0BwgTkNLM=",
     colorTheme: "#000000",
     coordenadas: { latitude: 0, longitude: 0 },
+    konnexoes: [],
+    pendKonnection: false
   },
   {
     id: 2,
@@ -161,6 +163,8 @@ export const usersData = [
     image: "https://media.istockphoto.com/id/1300512215/pt/foto/headshot-portrait-of-smiling-ethnic-businessman-in-office.webp?a=1&b=1&s=612x612&w=0&k=20&c=LO1SJFvQjYnARLcotd8GwLNXAaIpOCVr7peFvdBDOWM=",
     colorTheme: "#ff0000",
     coordenadas: { latitude: 0, longitude: 0 },
+    konnexoes: [],
+    pendKonnection: false
   },
   {
     id: 3,
@@ -182,10 +186,12 @@ export const usersData = [
       { label: "Email", link: "mailto:cintia.neves@bidoul.eng.br" },
       { label: "WhatsApp", link: "https://wa.me/5579988513317" }
     ],
-    konnectado: true,
+    konnectado: false,
     image: "https://media.istockphoto.com/id/1386479313/pt/foto/happy-millennial-afro-american-business-woman-posing-isolated-on-white.webp?a=1&b=1&s=612x612&w=0&k=20&c=8ZzZ3NOnlZSCm-Kgjyd234tTlFdUsBT0ETvix9Oqp6Q=",
     colorTheme: "#ffffff",
     coordenadas: { latitude: -23.541646, longitude: -46.46846913 },
+    konnexoes: [],
+    pendKonnection: false
   },
   {
     id: 4,
@@ -211,6 +217,8 @@ export const usersData = [
     image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8aW1hZ2VucyUyMGRlJTIwcGVyZmlsfGVufDB8fDB8fHww",
     colorTheme: "#0000ff",
     coordenadas: { latitude: 0, longitude: 0 },
+    konnexoes: [],
+    pendKonnection: false
   },
   {
     id: 5,
@@ -232,10 +240,12 @@ export const usersData = [
       { label: "Email", link: "mailto:gabriel.sergio@ygui.com.br" },
       { label: "WhatsApp", link: "https://wa.me/5595992992119" }
     ],
-    konnectado: false,
+    konnectado: true,
     image: "https://media.istockphoto.com/id/1476170969/pt/foto/portrait-of-young-man-ready-for-job-business-concept.webp?a=1&b=1&s=612x612&w=0&k=20&c=Q6gx9eLSHirTMjJSVlzR6WhuzRoTzG13CCCImh1Bh_8=",
     colorTheme: "#00ff00",
     coordenadas: { latitude: 0, longitude: 0 },
+    konnexoes: [],
+    pendKonnection: false
   },
   {
     id: 6,
@@ -257,9 +267,12 @@ export const usersData = [
       { label: "Email", link: "mailto:joana.hadassa@galpaoestofados.com.br" },
       { label: "WhatsApp", link: "https://wa.me/5528981883886" }
     ],
-    konnectado: false,
-    image: "https://media.istockphoto.com/id/1098376504/pt/foto/happy-senior-lady-isolated-on-white-background.webp?a=1&b=1&s=612x612&w=0&k=20&c=fLGloBjyH9VvcsDZBpBr_fU0TFOL9XjOs5mX-8Tw-qk=",
+    konnectado: true,
+
+    image: "https://media.istockphoto.com/id/1911998428/pt/foto/beautiful-business-woman-working-with-laptop-while-looking-at-camera-in-living-room-at-home.webp?a=1&b=1&s=612x612&w=0&k=20&c=5LdXfi_i85B6E7CeBnzi--8O1K7IIsQAla8luTwAJe4=",
     colorTheme: "#ffff00",
     coordenadas: { latitude: -23.541646, longitude: -46.46846913 },
+    konnexoes: [],
+    pendKonnection: false
   }
 ];
