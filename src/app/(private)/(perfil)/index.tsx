@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { KeyboardAvoidingView, Modal, Platform, Text, TouchableOpacity, View, FlatList } from 'react-native';
 import Feather from '@expo/vector-icons/Feather';
 import InputPerfil from '@/components/InputPerfil';
@@ -7,13 +7,17 @@ import EditPerfil from './edit-perfil';
 import AddLink from './add-link';
 import CardMedia from '@/components/CardMedia';
 import EditLink from './edit-link';
+import { useStore } from 'zustand';
+import { userStore } from '@/store/userStore';
+import Slider from '@react-native-community/slider';
 
 function Perfil() {
   const [openPerfil, setOpenPerfil] = useState(false);
   const [openAddLinks, setOpenAddLinks] = useState(false);
   const [openEditLinks, setOpenEditLinks] = useState(false);
-  const [addLink, setAddLink] = useState<{ label: string, icon: React.JSX.Element, category: string }[] | undefined | null>(null);
-  const [editLink, setEditLink] = useState<{ label: string, icon: React.JSX.Element, category: string } | null>(null);
+  const { profile } = userStore();
+  const [addLink, setAddLink] = useState<{ label: string, link: string, category: string }[] | undefined | null>(undefined);
+  const [editLink, setEditLink] = useState<{ label: string, link: string, category: string } | null>(null);
   function handleCloseModalPerfil() {
     setOpenPerfil(false)
   }
@@ -34,7 +38,7 @@ function Perfil() {
     setOpenEditLinks(false)
   }
 
-  function hadleOpenModalEditLinks(link: { label: string, icon: React.JSX.Element, category: string } | null) {
+  function hadleOpenModalEditLinks(link: { label: string, link: string, category: string } | null) {
     setEditLink(link)
     setOpenEditLinks(true)
   }
@@ -43,6 +47,11 @@ function Perfil() {
     const itemRemove = addLink?.findIndex(item => item.label === link)
     addLink?.splice(itemRemove!, 1)
   }
+
+
+  useEffect(() => {
+    return setAddLink(profile?.links);
+  }, [])
 
   return (
     <View className='flex-1'>
@@ -55,9 +64,17 @@ function Perfil() {
             <>
               <Text className='font-roboto-700 text-xl mt-8'>Meu Perfil</Text>
 
-              <HeaderUser onOpen={handleOpenModalPerfil} />
+              <HeaderUser image={profile?.image} occupation={profile?.ocupacao} userName={profile?.nome} onOpen={handleOpenModalPerfil} />
 
-              <InputPerfil isEditable={false} multiline={true} label='Nome' placeholder='Escreva um texto de apresentação ...' onOpen={handleOpenModalPerfil} />
+              <InputPerfil
+                isEditable={false}
+                multiline={true}
+                label='Sobre você'
+                placeholder='Escreva um texto de apresentação ...'
+                onOpen={handleOpenModalPerfil}
+                value={profile?.descricao}
+
+              />
 
 
               <View className='w-full gap-5 mt-6'>

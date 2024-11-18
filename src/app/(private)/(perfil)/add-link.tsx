@@ -8,15 +8,15 @@ import CardMedia from '@/components/CardMedia';
 
 interface AddLinksProps {
   onClose: () => void;
-  selectingLinks: React.Dispatch<React.SetStateAction<{ label: string, icon: React.JSX.Element, category: string }[] | undefined | null>>;
-  selectedLinks: { label: string, icon: React.JSX.Element, category: string }[] | undefined | null
+  selectingLinks: React.Dispatch<React.SetStateAction<{ label: string, link: string, category: string }[] | undefined | null>>;
+  selectedLinks: { label: string, link: string, category: string }[] | undefined | null
 }
 
 export default function AddLink({ onClose, selectingLinks, selectedLinks }: AddLinksProps) {
 
   const [search, setSearch] = useState('');
 
-  const handleItemPress = (item: { label: string, icon: React.JSX.Element, category: string }) => {
+  const handleItemPress = (item: { label: string, link: string, category: string }) => {
 
     if (!selectedLinks?.find(link => link.label === item.label)) {
       selectingLinks((prevState) => {
