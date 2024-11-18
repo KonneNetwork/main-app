@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, useMemo } from 'react';
+import React, { useEffect, useState, useCallback, useMemo, useLayoutEffect } from 'react';
 import MapView, { Circle, Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { View, Text, ActivityIndicator, TouchableOpacity, StyleSheet, Image, Modal, TouchableWithoutFeedback, TextInput, FlatList } from 'react-native';
 import * as Location from 'expo-location';
@@ -9,6 +9,7 @@ import InputImage from '@/components/InputImage';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Icons } from '@/components/Icons';
 import { StatusBar } from 'expo-status-bar';
+import { router } from 'expo-router';
 
 interface LatLog {
   latitude: number;
@@ -109,14 +110,23 @@ function Buscar() {
     setOpenInvite(false); setOpenPerfil(true); setEnableLinks(false)
   }
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (userLocation) {
       setMarkers(usersData.map((user) => ({
         ...user,
         coordenadas: generateNearbyCoordinates(userLocation),
       })));
     }
-  }, [userLocation]);
+  }, [userLocation])
+
+  // useEffect(() => {
+  //   if (userLocation) {
+  //     setMarkers(usersData.map((user) => ({
+  //       ...user,
+  //       coordenadas: generateNearbyCoordinates(userLocation),
+  //     })));
+  //   }
+  // }, [userLocation]);
 
   if (errorMsg) {
     return (
@@ -138,7 +148,7 @@ function Buscar() {
     <View style={styles.container}>
       <StatusBar style='light' />
       <MapView
-        provider={PROVIDER_GOOGLE}
+        // provider={PROVIDER_GOOGLE}
         style={{ width: '100%', height: '100%' }}
         region={{
           latitude: userLocation.latitude,
@@ -159,7 +169,7 @@ function Buscar() {
           strokeColor="rgba(51, 88, 108, 0.4)"
           fillColor="rgba(51, 88, 108, 0.4)"
         />
-        <Marker coordinate={userLocation}>
+        <Marker coordinate={userLocation} onPress={() => router.navigate('/(perfil)/')}>
           <View className='rounded-full overflow-hidden border-[16px] border-[#33586C]'>
             <Image
               source={{ uri: profile?.image }}

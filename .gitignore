@@ -15,6 +15,7 @@ web-build/
 /app.json.old
 .env
 /app.json
+/app.config.ts.old
 
 # macOS
 .DS_Store
