@@ -9,7 +9,9 @@ import InputImage from '@/components/InputImage';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Icons } from '@/components/Icons';
 import { StatusBar } from 'expo-status-bar';
-import { router } from 'expo-router';
+import { router, useNavigation } from 'expo-router';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import { CommonActions, StackActions } from '@react-navigation/native';
 
 interface LatLog {
   latitude: number;
@@ -40,16 +42,16 @@ interface SocialMediaLink {
   link: string;
 }
 
-interface Coordenadas {
-  latitude: number;
-  longitude: number;
-}
+// interface Coordenadas {
+//   latitude: number;
+//   longitude: number;
+// }
 
-// Tipagem das props do MarkerComponent
-interface MarkerComponentProps {
-  item: User & { coordinates: ColorGamut };
-  onPress: (user: User) => void;
-}
+// // Tipagem das props do MarkerComponent
+// interface MarkerComponentProps {
+//   item: User & { coordinates: ColorGamut };
+//   onPress: (user: User) => void;
+// }
 
 function Buscar() {
   const [userLocation, setUserLocation] = useState<LatLog | null>(null);
@@ -63,6 +65,8 @@ function Buscar() {
   const { profile, addKonnexao } = userStore()
 
   const [markers, setMarkers] = useState(usersData);
+
+  const navigation = useNavigation();
 
   async function PermissionLocation() {
     const { status } = await Location.requestForegroundPermissionsAsync();
@@ -119,6 +123,19 @@ function Buscar() {
     }
   }, [userLocation])
 
+  const handleResetAction = () => {
+    navigation.dispatch(CommonActions.reset({
+      routes: [{ key: "(tabs)", name: "(tabs)" }]
+    }))
+  }
+
+  function goBack() {
+    const rota = navigation.canGoBack();
+    const saida = navigation.dispatch(StackActions.pop(1))
+    console.log("🚀 ~ goBack ~ saida:", saida)
+    console.log("🚀 ~ goBack ~ rota:", rota)
+  }
+
   // useEffect(() => {
   //   if (userLocation) {
   //     setMarkers(usersData.map((user) => ({
@@ -146,7 +163,14 @@ function Buscar() {
 
   return (
     <View style={styles.container}>
-      <StatusBar style='light' />
+      <StatusBar style='dark' />
+      <View className=' flex-row absolute items-center top-16 w-[90%] justify-between gap-5 bg-surface-primary z-10 self-center p-1 rounded-full'>
+        <Ionicons name="arrow-back-sharp" size={32} color="black" className='ml-3' onPress={() => router.navigate('/(private)/(index)/')} />
+        <TextInput className='flex-1 font-inter-700 text-base ' placeholder='Coloque o endereço' />
+        <TouchableOpacity className='bg-[#528A8C]/30 p-2 rounded-full'>
+          <Icons.filter width={32} height={32} />
+        </TouchableOpacity>
+      </View>
       <MapView
         // provider={PROVIDER_GOOGLE}
         style={{ width: '100%', height: '100%' }}
