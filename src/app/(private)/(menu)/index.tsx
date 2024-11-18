@@ -1,12 +1,11 @@
-import Button from '@/components/Button'
-import React from 'react'
-import { View, Text, Image, TouchableOpacity, TouchableWithoutFeedback, Platform, ScrollView, StyleSheet } from 'react-native'
+import Button from '@/components/Button';
+import React from 'react';
+import { View, Text, Image, TouchableOpacity, Platform, ScrollView } from 'react-native';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { Icons } from '@/components/Icons';
 import { router, useNavigation } from 'expo-router';
 import CardConfiguration from '@/components/CardConfiguration';
 import classNames from 'classnames';
-import { BlurView } from 'expo-blur';
 import { userStore } from '@/store/userStore';
 
 
@@ -24,11 +23,14 @@ function Menu() {
           <Text className='font-inter-700 text-[26px] '>Menu</Text>
 
 
-          <View className={classNames('w-full flex-row p-3 justify-between items-center bg-white rounded-xl', {
-            'shadow-lg shadow-black/70': Platform.OS === "android"
-          }, {
-            'shadow-sm shadow-black/70': Platform.OS === "ios"
-          })}>
+          <TouchableOpacity
+            className={classNames('w-full flex-row p-3 justify-between items-center bg-white rounded-xl', {
+              'shadow-lg shadow-black/70': Platform.OS === "android"
+            }, {
+              'shadow-sm shadow-black/70': Platform.OS === "ios"
+            })}
+            onPress={() => router.navigate('/(perfil)/')}
+          >
 
             <View className='flex-row justify-between items-center gap-4'>
               <View className='rounded-full overflow-hidden'>
@@ -43,7 +45,7 @@ function Menu() {
             <TouchableOpacity className='bg-[#F9F9F9] p-3 rounded-full'>
               <MaterialCommunityIcons name="bell-outline" size={25} color="#374151" />
             </TouchableOpacity>
-          </View>
+          </TouchableOpacity>
 
           <CardConfiguration bigContainer={true} title='Preferências' onPress={() => router.navigate('/(private)/(menu)/preference')}>
             <Icons.preference width={25} height={25} />
@@ -56,7 +58,7 @@ function Menu() {
             'shadow-sm shadow-black/70': Platform.OS === "ios"
           })}>
 
-            <CardConfiguration title='Linguagem'>
+            <CardConfiguration title='Idioma'>
               <Icons.translate width={25} height={25} />
             </CardConfiguration>
 

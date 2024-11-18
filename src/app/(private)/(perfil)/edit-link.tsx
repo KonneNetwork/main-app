@@ -1,16 +1,17 @@
 import Button from '@/components/Button'
 import { Icons } from '@/components/Icons';
 import InputPerfil from '@/components/InputPerfil'
-import React from 'react'
+import React, { useState } from 'react'
 import { View, Text, KeyboardAvoidingView, ScrollView, Platform } from 'react-native'
 
 interface EditLinkProps {
   onClosed: () => void;
-  linkEdit: { label: string, icon: React.JSX.Element, category: string } | null;
+  linkEdit: { label: string, link: string, category: string } | null;
   remove: (link: string) => void;
 }
 
 export default function EditLink({ onClosed, linkEdit, remove }: EditLinkProps) {
+  const [link, setLink] = useState(linkEdit?.link)
   const name = linkEdit?.label.toLowerCase().toString().replace(" ", '')
   const Icon = Icons[name as keyof typeof Icons];
   return (
@@ -28,6 +29,8 @@ export default function EditLink({ onClosed, linkEdit, remove }: EditLinkProps) 
             isEditable={true}
             label='Usuário'
             placeholder='link'
+            value={link}
+            onChangeText={setLink}
           />
 
 

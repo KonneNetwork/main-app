@@ -85,7 +85,10 @@ export default function EditPerfil({ onClosed }: EditPerfilProps) {
             />
           </View>
         </View>
-
+        <Modal visible={openImage} presentationStyle='fullScreen' animationType='fade' style={{ backgroundColor: '#000', flex: 1 }} >
+          <View className='flex-1 bg-black'>
+          </View>
+        </Modal>
       </ScrollView>
     </KeyboardAvoidingView>
   )

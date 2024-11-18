@@ -5,8 +5,9 @@ import { Ionicons } from '@expo/vector-icons'
 import classNames from 'classnames'
 import { router } from 'expo-router'
 import React, { useState } from 'react'
-import { View, Text, FlatList, TouchableOpacity, useWindowDimensions } from 'react-native'
+import { View, Text, FlatList, TouchableOpacity, useWindowDimensions, LayoutChangeEvent } from 'react-native'
 import Slider from '@react-native-community/slider';
+import { Picker } from '@react-native-picker/picker'
 
 const etapas = [
   {
@@ -80,7 +81,7 @@ export default function Preference() {
   const [statusBarProgress, setStatusBarProgress] = useState(statusBarInitialValue)
   const [selectedOptions, setSelectedOptions] = useState<{ [key: string]: string[] }>({})
   const [age, setAge] = useState<number>(18)
-  const { width, } = useWindowDimensions()
+  const { width, height } = useWindowDimensions()
   // console.log("🚀 ~ Preference ~ selectedOptions:", selectedOptions)
   const lastQuestion = etapas.length - 1;
 
@@ -183,20 +184,25 @@ export default function Preference() {
             <Text className=''>Ola</Text>
           </View> */}
           {stage === lastQuestion &&
+            <>
+              {/* <Picker >
+                <Picker.Item value={1} label='1' />
 
-            <View className='justify-center items-center mt-9 '>
-              <Text className='font-outfit-700 text-2xl'>{age}</Text>
-              <Slider
-                value={age}
-                onValueChange={(e) => { setAge(Math.trunc(Number(e))) }}
-                style={{ width: width * 0.9, height: 40 }}
-                className='w-full absolute'
-
-                minimumValue={0}
-                maximumValue={150}
-
-              />
-            </View>
+              </Picker>
+              <View className=' justify-center mt-9 gap-5'>
+                <Text className='font-outfit-700 text-2xl text-center'>{age}</Text>
+                <Slider
+                  value={age}
+                  onValueChange={(e) => { setAge(Math.trunc(Number(e))) }}
+                  style={{ transform: [{ rotate: '90deg' }], height: (height / 2.5) }}
+                  minimumValue={0}
+                  maximumValue={150}
+                  inverted
+                  vertical={true}
+                />
+              </View> */}
+              <AgeSelector />
+            </>
           }
         </>
       }

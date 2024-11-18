@@ -31,6 +31,7 @@ import Translate from '../../../assets/images/svgs/translate.svg';
 import Feedback from '../../../assets/images/svgs/feedback.svg';
 import Preference from '../../../assets/images/svgs/preference.svg';
 import Trash from '../../../assets/images/svgs/trash.svg';
+import Filter from '../../../assets/images/svgs/icon-filter.svg';
 
 
 
@@ -66,5 +67,6 @@ export const Icons = {
   translate: (props: SvgProps) => <Translate {...props} />,
   preference: (props: SvgProps) => <Preference {...props} />,
   feedback: (props: SvgProps) => <Feedback {...props} />,
+  filter: (props: SvgProps) => <Filter {...props} />,
 
 }
