@@ -33,11 +33,7 @@ export default function InputImage({ image, isEdit, onOpen, color = "#528A8C", .
         }
 
       </View>
-      {/*Icone de edição*/}
       {!isEdit &&
-        // <View className='absolute bottom-0 right-0 bg-[#222222]/30 p-2 rounded-full m-2'>
-        //   <Icons.pencil color={'#fff'} width={20} height={20} />
-        // </View>
         <IconEdit colorIcon='#fff' sizeIcon={20} className='absolute bottom-0 right-0 bg-[#222222]/30 p-2 rounded-full m-2' onPress={onOpen} />
       }
     </TouchableOpacity>

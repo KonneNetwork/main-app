@@ -127,10 +127,11 @@ export const usersData = [
     links: [
       {
         label: "Instagram",
+        category: "Redes Sociais",
         link: "https://instagram.com/fabrizzio.n",
       },
-      { label: "Email", link: "mailto:fabrizzio.n@ime.unicamp.br" },
-      { label: "WhatsApp", link: "https://wa.me/5583998010080" }
+      { label: "Email", category: 'Contatos', link: "mailto:fabrizzio.n@ime.unicamp.br" },
+      { label: "WhatsApp", category: 'Contatos', link: "https://wa.me/5583998010080" }
     ],
     konnectado: true,
     image: "https://media.istockphoto.com/id/1309328823/pt/foto/headshot-portrait-of-smiling-male-employee-in-office.webp?a=1&b=1&s=612x612&w=0&k=20&c=nxXP21qckuF3ICnpy9bUHTz8cVSL6oM5pG0BwgTkNLM=",
@@ -154,10 +155,11 @@ export const usersData = [
     links: [
       {
         label: "Instagram",
+        category: "Redes Sociais",
         link: "https://instagram.com/octavio.diniz"
       },
-      { label: "Email", link: "mailto:octavio.diniz@slb.com" },
-      { label: "WhatsApp", link: "https://wa.me/5523984372389" }
+      { label: "Email", category: 'Contatos', link: "mailto:octavio.diniz@slb.com" },
+      { label: "WhatsApp", category: 'Contatos', link: "https://wa.me/5523984372389" }
     ],
     konnectado: true,
     image: "https://media.istockphoto.com/id/1300512215/pt/foto/headshot-portrait-of-smiling-ethnic-businessman-in-office.webp?a=1&b=1&s=612x612&w=0&k=20&c=LO1SJFvQjYnARLcotd8GwLNXAaIpOCVr7peFvdBDOWM=",
@@ -181,10 +183,11 @@ export const usersData = [
     links: [
       {
         label: "Instagram",
+        category: "Redes Sociais",
         link: "https://instagram.com/cintia.neves",
       },
-      { label: "Email", link: "mailto:cintia.neves@bidoul.eng.br" },
-      { label: "WhatsApp", link: "https://wa.me/5579988513317" }
+      { label: "Email", category: 'Contatos', link: "mailto:cintia.neves@bidoul.eng.br" },
+      { label: "WhatsApp", category: 'Contatos', link: "https://wa.me/5579988513317" }
     ],
     konnectado: false,
     image: "https://media.istockphoto.com/id/1386479313/pt/foto/happy-millennial-afro-american-business-woman-posing-isolated-on-white.webp?a=1&b=1&s=612x612&w=0&k=20&c=8ZzZ3NOnlZSCm-Kgjyd234tTlFdUsBT0ETvix9Oqp6Q=",
@@ -208,10 +211,11 @@ export const usersData = [
     links: [
       {
         label: "Instagram",
+        category: "Redes Sociais",
         link: "https://instagram.com/renata.c"
       },
-      { label: "Email", link: "mailto:renata.c@mac.com" },
-      { label: "WhatsApp", link: "https://wa.me/5561998332901" }
+      { label: "Email", category: 'Contatos', link: "mailto:renata.c@mac.com" },
+      { label: "WhatsApp", category: 'Contatos', link: "https://wa.me/5561998332901" }
     ],
     konnectado: false,
     image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8aW1hZ2VucyUyMGRlJTIwcGVyZmlsfGVufDB8fDB8fHww",
@@ -235,10 +239,11 @@ export const usersData = [
     links: [
       {
         label: "Instagram",
+        category: "Redes Sociais",
         link: "https://instagram.com/gabriel.sergio"
       },
-      { label: "Email", link: "mailto:gabriel.sergio@ygui.com.br" },
-      { label: "WhatsApp", link: "https://wa.me/5595992992119" }
+      { label: "Email", category: 'Contatos', link: "mailto:gabriel.sergio@ygui.com.br" },
+      { label: "WhatsApp", category: 'Contatos', link: "https://wa.me/5595992992119" }
     ],
     konnectado: true,
     image: "https://media.istockphoto.com/id/1476170969/pt/foto/portrait-of-young-man-ready-for-job-business-concept.webp?a=1&b=1&s=612x612&w=0&k=20&c=Q6gx9eLSHirTMjJSVlzR6WhuzRoTzG13CCCImh1Bh_8=",
@@ -262,10 +267,11 @@ export const usersData = [
     links: [
       {
         label: "Instagram",
+        category: "Redes Sociais",
         link: "https://instagram.com/joana.hadassa"
       },
-      { label: "Email", link: "mailto:joana.hadassa@galpaoestofados.com.br" },
-      { label: "WhatsApp", link: "https://wa.me/5528981883886" }
+      { label: "Email", category: 'Contatos', link: "mailto:joana.hadassa@galpaoestofados.com.br" },
+      { label: "WhatsApp", category: 'Contatos', link: "https://wa.me/5528981883886" }
     ],
     konnectado: true,
 

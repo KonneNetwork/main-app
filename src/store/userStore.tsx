@@ -12,6 +12,7 @@ interface Coordenadas {
 
 interface MediaLinks {
   label: string,
+  category: string,
   link: string,
 }
 
