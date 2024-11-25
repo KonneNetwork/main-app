@@ -99,8 +99,7 @@ function Perfil() {
           }
           contentContainerStyle={{
             justifyContent: 'space-between',
-            paddingHorizontal: 30,
-
+            padding: 30,
           }}
           bounces={false}
           showsVerticalScrollIndicator={false}
