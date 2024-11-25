@@ -143,9 +143,11 @@ export default function Preference() {
 
   return (
     <FlatList
+      showsVerticalScrollIndicator={false}
+      bounces={false}
       className='bg-white'
       data={etapas[stage].options}
-      contentContainerStyle={{ padding: 30, flexGrow: 1, justifyContent: 'center', alignContent: 'center' }}
+      contentContainerStyle={{ paddingHorizontal: 30, paddingVertical: 64, flexGrow: 1, justifyContent: 'center', alignContent: 'center' }}
       renderItem={({ item }) => {
         const isSelected = currentStageOptions.includes(item.title)
         return (
