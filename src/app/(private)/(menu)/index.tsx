@@ -17,7 +17,7 @@ function Menu() {
 
   return (
     <ScrollView bounces={false} showsVerticalScrollIndicator={false} contentContainerStyle={{ flexGrow: 1 }}>
-      <View className='flex-1 bg-white p-8 justify-between'>
+      <View className='flex-1 bg-white pt-16 p-8 justify-between'>
 
         <View className='gap-10  items-center justify-between'>
           <Text className='font-inter-700 text-[26px] '>Menu</Text>

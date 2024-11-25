@@ -104,7 +104,8 @@ function Index() {
       }}
       contentContainerStyle={{
         flexGrow: 1,
-        padding: 30,
+        paddingHorizontal: 30,
+        paddingVertical: 64
       }}
       bounces={false}
       showsVerticalScrollIndicator={false}

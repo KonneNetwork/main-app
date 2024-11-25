@@ -30,6 +30,7 @@ export default function AddLink({ onClose, selectingLinks, selectedLinks }: AddL
   return (
     <View className='flex-1 bg-surface-primary'>
       <SectionList
+        contentContainerStyle={{ paddingVertical: 30 }}
         showsVerticalScrollIndicator={false}
         className='flex-1'
         ListHeaderComponent={
