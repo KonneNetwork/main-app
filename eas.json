@@ -1,6 +1,7 @@
 {
   "cli": {
-    "version": ">= 10.0.2"
+    "version": ">= 10.0.2",
+    "appVersionSource": "local"
   },
   "build": {
     "development": {
@@ -11,16 +12,19 @@
       "ios": {
         "simulator": true,
         "resourceClass": "m-medium"
-      }
+      },
+      "android": {}
     },
     "production": {
       "ios": {
         "resourceClass": "m-medium"
-      }
+      },
+      "android": {}
     }
   },
   "submit": {
     "production": {},
-    "preview": {}
+    "preview": {},
+    "development": {}
   }
 }

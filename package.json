@@ -10,8 +10,7 @@
     "ios": "expo run:ios",
     "web": "expo start --web",
     "test": "jest --watchAll",
-    "lint": "expo lint",
-    "svgr": "svgr --native --typescript --memo ./assets/images/svgs --out-dir ./src/components/Icons/svgs"
+    "lint": "expo lint"
   },
   "jest": {
     "preset": "jest-expo"
