@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 import React from 'react'
-import { TouchableOpacityProps, Text, TouchableOpacity } from 'react-native'
+import { TouchableOpacityProps, Text, TouchableOpacity, ActivityIndicator } from 'react-native'
 
 interface ButtonProps extends TouchableOpacityProps {
   title: string;
@@ -8,9 +8,10 @@ interface ButtonProps extends TouchableOpacityProps {
   variant: 'active' | 'inactive' | 'exit';
   smallButton?: boolean;
   mediumButton?: boolean;
+  loading?: boolean;
 }
 
-function Button({ title, onPress, variant, mediumButton = false, smallButton = false, ...rest }: ButtonProps) {
+function Button({ title, onPress, variant, mediumButton = false, smallButton = false, loading, ...rest }: ButtonProps) {
   return (
     <TouchableOpacity
       className={classNames('justify-center items-center', {
@@ -37,7 +38,8 @@ function Button({ title, onPress, variant, mediumButton = false, smallButton = f
           }
         )}
       >
-        {title}
+        {loading ? <ActivityIndicator color={'#fff'} size={24} /> : title}
+
       </Text>
     </TouchableOpacity >
   )

@@ -1,28 +1,50 @@
-import { Text, View, Image, TouchableOpacity, StyleSheet, ScrollView, KeyboardAvoidingView, Platform } from "react-native";
+import { Text, View, Image, StyleSheet, ScrollView, KeyboardAvoidingView, Platform } from "react-native";
 import logo from "../../../assets/images/logo.png";
 import Input from "@/components/Input";
 import Button from "@/components/Button";
-import Feather from '@expo/vector-icons/Feather';
 import Linkeding from '../../../assets/images/svgs/linkeding.svg';
 import { useState } from "react";
 import classNames from "classnames";
-import { useRouter } from "expo-router";
 import SignUp from "./sign-up";
 import { StatusBar } from "expo-status-bar";
 import { userStore } from "@/store/userStore";
+import { z } from "zod";
+import { useSignIn } from "@/queries/login/signIn";
+import { Controller, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+const schema = z.object({
+  email: z.string().email("email inválido!"),
+  passwd: z.string().min(6, "minimo 6 caracteres.")
+})
+
+type SignInSchema = z.infer<typeof schema>
+
+
 
 export default function SignIn() {
   const [signUp, setSignUp] = useState(false);
-  const router = useRouter();
-  const [email, setEmail] = useState<string>();
-  const [password, setPassword] = useState<string>();
-  const { login } = userStore()
+  const { login } = userStore();
+  const { mutate: signIn, isPending } = useSignIn();
+  const { control, handleSubmit, formState: { errors } } = useForm({
+    defaultValues: {
+      email: "",
+      passwd: "",
+    },
+    resolver: zodResolver(schema)
+  })
 
 
 
-  function handleLogin(email: string | undefined, password: string | undefined) {
-    login("fb@email.com", "123")
+  function handleLogin({ email, passwd }: SignInSchema) {
+
+    const resultado = signIn({ email, passwd })
+    console.log("🚀 ~ handleLogin ~ resultado:", resultado)
+
+    // login("fb@email.com", "123")
   }
+
+
 
   return (
     <View
@@ -59,19 +81,34 @@ export default function SignIn() {
               </Text>
 
               <View>
-                <Input
-                  label="E-mail"
-                  variant="white"
-                  value={email}
-                  onChangeText={(e) => setEmail(e)}
-                />
-                <Input
-                  label="Senha"
-                  password={true}
-                  variant="white"
-                  value={password}
-                  onChangeText={(e) => setPassword(e)}
-                />
+                <Controller
+                  name="email"
+                  control={control}
+                  render={({ field: { onBlur, onChange, value } }) => (
+                    <Input
+                      label="E-mail"
+                      variant="white"
+                      value={value}
+                      onChangeText={onChange}
+                      onBlur={onBlur}
+                      error={errors.email}
+                    />
+                  )} />
+
+                <Controller
+                  name="passwd"
+                  control={control}
+                  render={({ field: { onBlur, onChange, value } }) => (
+                    <Input
+                      label="Senha"
+                      password={true}
+                      variant="white"
+                      value={value}
+                      onChangeText={onChange}
+                      onBlur={onBlur}
+                      error={errors.passwd}
+                    />
+                  )} />
 
                 <Text
                   className="text-base color-white text-right underline"
@@ -81,9 +118,10 @@ export default function SignIn() {
               </View>
 
               <Button
+                loading={isPending}
                 variant='active'
                 title="Entrar"
-                onPress={() => handleLogin(email, password)}
+                onPress={handleSubmit(handleLogin)}
               />
               {/* 
               <View className="flex-row items-center self-center my-5 " style={{ gap: 20 }} >
@@ -127,6 +165,7 @@ export default function SignIn() {
 
 const styles = StyleSheet.create({
   container: {
+    marginTop: 15,
     flexDirection: 'row',
     alignItems: 'center',
   },

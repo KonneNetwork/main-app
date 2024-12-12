@@ -9,8 +9,11 @@ import { Image } from "react-native";
 import { Slot } from 'expo-router';
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { StatusBar } from 'expo-status-bar';
-import { SafeAreaView } from "react-native-safe-area-context";
 import { UserProvider } from '@/store/userStore';
+import { QueryClientProvider } from "@tanstack/react-query";
+import { queryClient } from '@/services/query';
+import Toast from 'react-native-toast-message';
+import { toastConfig } from '@/services/ToastConfig';
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
@@ -37,10 +40,13 @@ export default function RootLayout() {
   return (
     <>
       <GestureHandlerRootView className='flex-1'>
-        <UserProvider>
-          <StatusBar style="light" />
-          <Slot />
-        </UserProvider>
+        <QueryClientProvider client={queryClient} >
+          <UserProvider>
+            <StatusBar style="light" />
+            <Slot />
+            <Toast config={toastConfig} />
+          </UserProvider>
+        </QueryClientProvider>
       </GestureHandlerRootView>
     </>
   );
