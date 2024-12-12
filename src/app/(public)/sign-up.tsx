@@ -1,21 +1,21 @@
 import React, { useState } from 'react'
 import { View, Text, TouchableOpacity } from 'react-native'
-import Input from '@/components/Input'
 import classNames from 'classnames'
 import AntDesign from '@expo/vector-icons/AntDesign'
 import Feather from '@expo/vector-icons/Feather'
-import Button from '@/components/Button'
-import VerificationCodeInput from '@/components/InputVerification'
+import { InitialStage } from '@/components/StagesSignUp/initialStage'
+import { CodeStage } from '@/components/StagesSignUp/codeStage'
+import { FinalStage } from '@/components/StagesSignUp/finalStage'
 
 interface SignUpProps {
   signUp: boolean;
   setSignUp: (value: React.SetStateAction<boolean>) => void
 }
 
+
+
 function SignUp({ signUp, setSignUp }: SignUpProps) {
-  const [codCountry, setCodCountry] = useState<string | undefined>(undefined);
-  const [numberPhone, setNumberPhone] = useState<string | undefined>(undefined);
-  const [codeVerification, setCode] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState<string | undefined>(undefined);
   const [stage, setStage] = useState<'phone' | 'cod' | 'sign-up'>("phone")
 
   const Titulos = [{
@@ -28,25 +28,13 @@ function SignUp({ signUp, setSignUp }: SignUpProps) {
   function handleContainerSignUp() {
     setSignUp(!signUp)
     setStage('phone')
-    setCodCountry(undefined)
-    setNumberPhone(undefined)
   }
 
-  function handleSubmitPhoneNumber() {
-    if (codCountry != undefined && codCountry !== '' && numberPhone != undefined && numberPhone !== '') {
-      setStage('cod')
-    }
-  }
-
-  function handleSubmitCod() {
-    if (codeVerification.length === 6) {
-      setStage('sign-up')
-    }
-  }
-
-  function handleSubmitAccount() {
+  function handleOnClose() {
     setSignUp(false)
   }
+
+
 
   return (
     <View className={classNames("bg-white  rounded-t-[30px] py-10 px-8 ",
@@ -80,88 +68,12 @@ function SignUp({ signUp, setSignUp }: SignUpProps) {
         </TouchableOpacity>
       </View >
 
-      {(signUp && stage == 'phone') && <View className='flex-1 justify-between'>
-        <View>
-          <View className="flex-row gap-3 mt-6 ">
-            <Input
-              value={codCountry}
-              onChangeText={setCodCountry}
-              label='País'
-              styleContainer={{ width: '25%' }} styleInput={{ textAlign: 'center' }}
-              keyboardType='phone-pad'
-            />
-            <Input
-              value={numberPhone}
-              onChangeText={setNumberPhone}
-              label='DDD + telefone'
-              styleContainer={{ width: '72%' }}
-              keyboardType='phone-pad'
-            />
+      {(signUp && stage == 'phone') && <InitialStage setStage={setStage} setPhoneNumber={setPhoneNumber} onClose={handleOnClose} />}
 
 
+      {(signUp && stage == 'cod') && <CodeStage phoneNumber={phoneNumber} setStage={setStage} />}
 
-          </View>
-          <Text className='w-full font-inter-400 text-base color-[#506773]'>Você vai receber um código via SMS para confirmar seu número</Text>
-          <Button variant='active' title="Enviar" onPress={handleSubmitPhoneNumber} />
-        </View>
-
-        <View className='self-center flex-row gap-2'>
-          <Text className='color-[#506773]'>
-            Já tem uma conta?
-          </Text>
-          <TouchableOpacity onPress={handleContainerSignUp}>
-            <Text>Entrar.</Text>
-          </TouchableOpacity>
-
-        </View>
-
-
-      </View>}
-
-
-      {(signUp && stage == 'cod') && <>
-        <View className=" mt-9 ">
-          <VerificationCodeInput setCodeNumber={setCode} />
-        </View>
-        <View className='flex-row mt-1'>
-          <Text className=' font-inter-400 text-base color-[#506773]' >Enviamos um código para </Text>
-          <Text className=' font-inter-400 text-base'>{codCountry} {numberPhone}</Text>
-        </View>
-
-
-        <Button variant='active' title="Enviar" onPress={handleSubmitCod} />
-
-      </>}
-
-      {(signUp && stage == "sign-up") && <View className='flex-1 justify-between'>
-
-        <View className=" mt-9 ">
-          <Input label='Nome Completo' />
-          <Input label='E-mail' />
-          <Input label='CPF' keyboardType='number-pad' />
-          <Input label='Defina uma senha' />
-          <Button variant='active' title="Concluir Cadastro" onPress={handleSubmitAccount} />
-        </View>
-
-
-
-        <View className='self-center  mt-9 items-center'>
-          <Text className='color-[#506773]'>
-            Ao continuar você concorda com os
-          </Text>
-          <View className='self-center flex-row items-center'>
-            <TouchableOpacity onPress={handleContainerSignUp}>
-              <Text>Termos de Uso </Text>
-            </TouchableOpacity>
-            <Text className='color-[#506773]'>e</Text>
-            <TouchableOpacity onPress={handleContainerSignUp}>
-              <Text> Políticas de Privacidade.</Text>
-            </TouchableOpacity>
-          </View>
-
-        </View>
-
-      </View>}
+      {(signUp && stage == 'sign-up') && <FinalStage onClose={handleOnClose} />}
 
     </View >
   )
