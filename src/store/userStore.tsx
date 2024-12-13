@@ -18,38 +18,42 @@ interface MediaLinks {
   link: string,
 }
 
-interface UserInfo {
-
-  id: number | string,
-  nome: string,
-  idade: number,
-  cpf: string,
-  rg: string,
-  email: string,
-  senha: string,
-  celular: string,
-  ocupacao: string,
-  distancia: number,
-  descricao: string,
-  links: MediaLinks[],
-  konnectado: boolean,
-  image: string,
-  colorTheme: string,
-  coordenadas: Coordenadas,
-  konnexoes: any[]
-  pendKonnection: boolean,
+export interface User {
+  bairro?: string | null;
+  cdUsuario: string;
+  cep?: string | null;
+  complemento?: string | null;
+  dataAtualizacao?: string | null;
+  dataCriacao?: string;
+  dataExclusao?: string | null;
+  documento: string;
+  email: string;
+  estado?: string | null;
+  fotoUsuario?: string | null;
+  idioma?: string | null;
+  integracao?: string | null;
+  ipAddress?: string | null;
+  latitude?: number | null;
+  longitude?: number | null;
+  nome: string;
+  numeroEndereco?: string | null;
+  online: boolean;
+  rua?: string | null;
+  uuid?: string | null;
 }
 
+
 interface State {
-  profile: UserInfo | null;
+  userInfo: User | null;
   token: string | null;
 }
 
 interface Actions {
-  login: (email: string, password: string) => void;
+  // login: (email: string, password: string) => void;
   setToken(token: string): void;
+  setUserInfo: (userData: User) => void;
   logout: () => void;
-  addKonnexao: (id: string | number) => void;
+  // addKonnexao: (id: string | number) => void;
   // addKonnexaoPending: (id: string | number) => void
 }
 
@@ -60,26 +64,29 @@ export const userStore = create<State & Actions>(
   (
     {
       token: null,
-      profile: null,
-      login: (email, password) => {
-        const user = usersData.find(user => {
-          return user.email === email && user.senha === password
-        })
-        if (user) {
-          set({
-            profile: user
-          })
-        }
+      userInfo: null,
+      // login: (email, password) => {
+      //   const user = usersData.find(user => {
+      //     return user.email === email && user.senha === password
+      //   })
+      //   if (user) {
+      //     set({
+      //       profile: user
+      //     })
+      //   }
 
-      },
+      // },
       setToken: (token: string) => {
         set({ token });
       },
       logout: () => {
         set({
-          profile: null
+          token:null
         })
       },
+      setUserInfo:(userInfo:User)=>{
+        set({userInfo})
+    },
 
       // addKonnexaoPending: (id) => set((state) => {
       //   if (state.profile) {
@@ -97,22 +104,22 @@ export const userStore = create<State & Actions>(
       //   return {};
       // }),
 
-      addKonnexao: (id) => set((state) => {
-        if (state.profile) {
-          const updatedFriends = state.profile.konnexoes.includes(id)
-            ? state.profile.konnexoes
-            : [...state.profile.konnexoes, id];
+      // addKonnexao: (id) => set((state) => {
+      //   if (state.profile) {
+      //     const updatedFriends = state.profile.konnexoes.includes(id)
+      //       ? state.profile.konnexoes
+      //       : [...state.profile.konnexoes, id];
 
-          return {
-            profile: {
-              ...state.profile,
-              konnexoes: updatedFriends,
-            },
-          };
-        }
-        return {};
-      }
-      ),
+      //     return {
+      //       profile: {
+      //         ...state.profile,
+      //         konnexoes: updatedFriends,
+      //       },
+      //     };
+      //   }
+      //   return {};
+      // }
+      // ),
     }
   )
 );
@@ -123,23 +130,23 @@ export function UserProvider({ children }: { children: ReactNode }) {
   const segments = useSegments();
 
   const router = useRouter();
-  const profile = userStore((state) => state.profile);
+  const token = userStore((state) => state.token);
 
   const rootNavigationState = useRootNavigationState();
 
 
 
   useEffect(() => {
-    // api.defaults.headers.common.Authorization = `Bearer ${token}`
+    api.defaults.headers.common.Authorization = `Bearer ${token}`
 
     if (!rootNavigationState?.key) return;
     const inPublicGroup = segments[0] === '(public)';
-    if (!profile && !inPublicGroup) {
+    if (!token && !inPublicGroup) {
       router.replace('/(public)');
-    } else if (profile && inPublicGroup) {
+    } else if (token && inPublicGroup) {
       router.replace('/(private)/')
     }
-  }, [profile, router, rootNavigationState?.key]);
+  }, [token, router, rootNavigationState?.key]);
 
   return children;
 }

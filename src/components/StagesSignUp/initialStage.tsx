@@ -36,7 +36,7 @@ export function InitialStage({ setStage, setPhoneNumber, onClose }: PropsPhone) 
   }
 
   const onSubmit = (data: PhoneSchema) => {
-    console.log("Passou aqui")
+    console.log("Passou aqui", data)
     sendMessage(data)
   }
 
