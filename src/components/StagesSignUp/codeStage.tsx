@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { api } from "@/services/api";
 import { useConfirmeMessageToken } from "@/queries/signUp/getConfirmMessageToken";
 import Toast from "react-native-toast-message";
+import React from "react";
 
 
 interface CodeStageProps {

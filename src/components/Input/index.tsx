@@ -13,13 +13,14 @@ interface InputProps extends TextInputProps {
   variant?: 'default' | 'white';
   styleContainer?: StyleProp<ViewStyle>;
   styleInput?: StyleProp<TextInputProps>;
-  error?: FieldError | undefined;
+  errorShowInSide?: FieldError | undefined;
+  errorShowOutSide?: FieldError | undefined;
   onFocus?: () => void;
   onBlur?: () => void;
   onChangeText?: (text: string) => void;
 }
 
-function Input({ label, password = false, variant = 'default', styleContainer, styleInput, value, error, ...rest }: InputProps) {
+function Input({ label, password = false, variant = 'default', styleContainer, styleInput, value, errorShowInSide,errorShowOutSide, ...rest }: InputProps) {
   const [visiblePassword, setVisiblePassword] = useState(true)
   const inputRef = useRef<TextInput | null>(null);
   const [isFocused, setIsFocused] = useState(false);
@@ -89,7 +90,7 @@ function Input({ label, password = false, variant = 'default', styleContainer, s
     <>
       <View
         className={classNames(' mt-5 mb-2 border-2 rounded-xl bg-white/30 min-w-max -z-10', {
-          'border-red-600': error,
+          'border-red-600': errorShowInSide || errorShowOutSide,
           'border-white/30': !isFocused && variant === 'white',    // Aplica cor branca quando não focado e variante é branca
           'border-[#506773]/30': !isFocused && variant === 'default', // Aplica cor padrão quando não focado
           'border-[#528A8C]': isFocused, // Aplica a cor de foco somente quando o input está focado
@@ -158,7 +159,7 @@ function Input({ label, password = false, variant = 'default', styleContainer, s
           }
         </View>
       </View>
-      {error && <Text className="color-red-700 text-right">{error.message}</Text>}
+      {errorShowInSide && <Text className="color-red-700 text-right">{errorShowInSide.message}</Text>}
     </>
 
   );

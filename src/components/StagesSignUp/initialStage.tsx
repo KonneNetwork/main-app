@@ -52,7 +52,7 @@ export function InitialStage({ setStage, setPhoneNumber, onClose }: PropsPhone) 
               label='País'
               styleContainer={{ width: '25%' }} styleInput={{ textAlign: 'center' }}
               keyboardType='phone-pad'
-              error={errors.codCountry}
+              errorShowOutSide={errors.codCountry}
             />
           )} />
 
@@ -65,7 +65,7 @@ export function InitialStage({ setStage, setPhoneNumber, onClose }: PropsPhone) 
               label='DDD + telefone'
               styleContainer={{ width: '72%' }}
               keyboardType='phone-pad'
-              error={errors.phoneNumber}
+              errorShowOutSide={errors.phoneNumber}
             />
           )} />
 

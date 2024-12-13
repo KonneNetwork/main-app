@@ -31,7 +31,8 @@ export function useSignIn() {
     mutationKey: ['signIn'],
     mutationFn: (data: SingInRequest) => signIn(data),
     onSuccess: (data) => {
-      const {nome, online,documento, email, cd_usuario} = data
+      console.log(data)
+      const {nome, online,documento, email, cd_usuario} = data.userInfo
       const formatUserInfo = {
         nome,
         online,
@@ -39,6 +40,7 @@ export function useSignIn() {
         email,
         cdUsuario:cd_usuario
       }
+      console.log(formatUserInfo)
       setToken(data.token); 
       setUserInfo(formatUserInfo)
 

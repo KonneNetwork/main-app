@@ -15,7 +15,7 @@ function Perfil() {
   const [openPerfil, setOpenPerfil] = useState(false);
   const [openAddLinks, setOpenAddLinks] = useState(false);
   const [openEditLinks, setOpenEditLinks] = useState(false);
-  const { profile } = userStore();
+  const { userInfo } = userStore();
   const [addLink, setAddLink] = useState<{ label: string, link: string, category: string }[] | undefined | null>(undefined);
   const [editLink, setEditLink] = useState<{ label: string, link: string, category: string } | null>(null);
   function handleCloseModalPerfil() {
@@ -50,7 +50,10 @@ function Perfil() {
 
 
   useEffect(() => {
-    return setAddLink(profile?.links);
+    console.log(userInfo)
+
+    return setAddLink(userInfo?.links);
+
   }, [])
 
   return (
@@ -64,7 +67,7 @@ function Perfil() {
             <>
               <Text className='font-roboto-700 text-xl mt-8'>Meu Perfil</Text>
 
-              <HeaderUser image={profile?.image} occupation={profile?.ocupacao} userName={profile?.nome} onOpen={handleOpenModalPerfil} />
+              <HeaderUser image={userInfo?.image} occupation={userInfo?.ocupacao} userName={userInfo?.nome} onOpen={handleOpenModalPerfil} />
 
               <InputPerfil
                 isEditable={false}
@@ -72,7 +75,7 @@ function Perfil() {
                 label='Sobre você'
                 placeholder='Escreva um texto de apresentação ...'
                 onOpen={handleOpenModalPerfil}
-                value={profile?.descricao}
+                value={userInfo?.descricao}
 
               />
 

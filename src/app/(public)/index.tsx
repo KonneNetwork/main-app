@@ -1,4 +1,4 @@
-import { Text, View, Image, StyleSheet, ScrollView, KeyboardAvoidingView, Platform } from "react-native";
+import { Text, View, Image, StyleSheet, ScrollView, KeyboardAvoidingView, Platform, TouchableOpacity } from "react-native";
 import logo from "../../../assets/images/logo.png";
 import Input from "@/components/Input";
 import Button from "@/components/Button";
@@ -13,6 +13,7 @@ import { useSignIn } from "@/queries/login/signIn";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
+import ForgotPassword from "@/components/ForgotPassword";
 
 const schema = z.object({
   email: z.string().email("email inválido!"),
@@ -23,6 +24,7 @@ type SignInSchema = z.infer<typeof schema>
 
 export default function SignIn() {
   const [signUp, setSignUp] = useState(false);
+  const [forgotPasswd, setForgotPasswd] = useState(false)
   const { mutate: signIn, isPending } = useSignIn();
   const { control, handleSubmit, formState: { errors } } = useForm({
     defaultValues: {
@@ -54,7 +56,7 @@ export default function SignIn() {
                   name="email"
                   control={control}
                   render={({ field: { onBlur, onChange, value } }) => (
-                    <Input label="E-mail" variant="white" value={value} onChangeText={onChange} onBlur={onBlur} error={errors.email} />
+                    <Input label="E-mail" variant="white" value={value} onChangeText={onChange} onBlur={onBlur} errorShowInSide={errors.email} />
                   )}
                 />
 
@@ -62,11 +64,12 @@ export default function SignIn() {
                   name="passwd"
                   control={control}
                   render={({ field: { onBlur, onChange, value } }) => (
-                    <Input label="Senha" password={true} variant="white" value={value} onChangeText={onChange} onBlur={onBlur} error={errors.passwd} />
+                    <Input label="Senha" password={true} variant="white" value={value} onChangeText={onChange} onBlur={onBlur} errorShowInSide={errors.passwd} />
                   )}
                 />
-
+                <TouchableOpacity>
                 <Text className="text-base color-white text-right underline">Esqueci minha senha</Text>
+                </TouchableOpacity>
               </View>
 
               <Button loading={isPending} variant="active" title="Entrar" onPress={handleSubmit(handleLogin)} />
@@ -82,6 +85,7 @@ export default function SignIn() {
             </>}
           </View>
           <SignUp signUp={signUp} setSignUp={setSignUp} />
+          <ForgotPassword forgotPasswd={forgotPasswd} setForgotPasswd={setForgotPasswd} />
         </ScrollView>
       </KeyboardAvoidingView>
     </View>

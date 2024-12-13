@@ -50,7 +50,7 @@ export function FinalStage({ onClose }: FinalStageProps) {
               onBlur={onBlur}
               value={value}
               onChangeText={onChange}
-              error={errors.name}
+              errorShowInSide={errors.name}
               autoCapitalize='words'
             />
 
@@ -63,7 +63,7 @@ export function FinalStage({ onClose }: FinalStageProps) {
               onBlur={onBlur}
               value={value}
               onChangeText={onChange}
-              error={errors.email}
+              errorShowInSide={errors.email}
             />
 
           )} />
@@ -76,7 +76,7 @@ export function FinalStage({ onClose }: FinalStageProps) {
               onBlur={onBlur}
               value={value}
               onChangeText={onChange}
-              error={errors.cpf}
+              errorShowInSide={errors.cpf}
             />
           )} />
         <Controller
@@ -87,7 +87,7 @@ export function FinalStage({ onClose }: FinalStageProps) {
               onBlur={onBlur}
               value={value}
               onChangeText={onChange}
-              error={errors.passwd}
+              errorShowInSide={errors.passwd}
             />
 
           )} />

@@ -8,13 +8,13 @@ import { CodeStage } from '@/components/StagesSignUp/codeStage'
 import { FinalStage } from '@/components/StagesSignUp/finalStage'
 
 interface SignUpProps {
-  signUp: boolean;
-  setSignUp: (value: React.SetStateAction<boolean>) => void
+  forgotPasswd: boolean;
+  setForgotPasswd: (value: React.SetStateAction<boolean>) => void
 }
 
 
 
-function SignUp({ signUp, setSignUp }: SignUpProps) {
+function ForgotPassword({ forgotPasswd, setForgotPasswd }: SignUpProps) {
   const [phoneNumber, setPhoneNumber] = useState<string | undefined>(undefined);
   const [stage, setStage] = useState<'phone' | 'cod' | 'sign-up'>("phone")
 
@@ -25,13 +25,13 @@ function SignUp({ signUp, setSignUp }: SignUpProps) {
   }]
 
 
-  function handleContainerSignUp() {
-    setSignUp(!signUp)
+  function handleContainerForgotPasswd() {
+    setForgotPasswd(!forgotPasswd)
     setStage('phone')
   }
 
   function handleOnClose() {
-    setSignUp(false)
+    setForgotPasswd(false)
   }
 
 
@@ -39,7 +39,7 @@ function SignUp({ signUp, setSignUp }: SignUpProps) {
   return (
     <View className={classNames("bg-white  rounded-t-[30px] py-10 px-8 ",
       {
-        'flex-grow': signUp
+        'flex-grow': forgotPasswd
       }
     )}>
       <View className="flex-row items-center justify-between">
@@ -54,9 +54,9 @@ function SignUp({ signUp, setSignUp }: SignUpProps) {
         </View >
         <TouchableOpacity
           className="bg-[#506773]/10 rounded-3xl items-center p-5 w-20 self-center border-2 border-white"
-          onPress={handleContainerSignUp}
+          onPress={handleContainerForgotPasswd}
         >
-          {signUp ? <AntDesign
+          {forgotPasswd ? <AntDesign
             name="close"
             size={32}
             color="#528A8C" />
@@ -68,15 +68,15 @@ function SignUp({ signUp, setSignUp }: SignUpProps) {
         </TouchableOpacity>
       </View >
 
-      {(signUp && stage == 'phone') && <InitialStage setStage={setStage} setPhoneNumber={setPhoneNumber} onClose={handleOnClose} />}
+      {(forgotPasswd && stage == 'phone') && <InitialStage setStage={setStage} setPhoneNumber={setPhoneNumber} onClose={handleOnClose} />}
 
 
-      {(signUp && stage == 'cod') && <CodeStage phoneNumber={phoneNumber!} setStage={setStage} />}
+      {(forgotPasswd && stage == 'cod') && <CodeStage phoneNumber={phoneNumber!} setStage={setStage} />}
 
-      {(signUp && stage == 'sign-up') && <FinalStage onClose={handleOnClose} />}
+      {(forgotPasswd && stage == 'sign-up') && <FinalStage onClose={handleOnClose} />}
 
     </View >
   )
 }
 
-export default SignUp
+export default ForgotPassword
