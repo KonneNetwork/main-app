@@ -1,4 +1,4 @@
-import { Text, View, Image, StyleSheet, ScrollView, KeyboardAvoidingView, Platform, TouchableOpacity } from "react-native";
+import { Text, View, Image, StyleSheet, ScrollView, KeyboardAvoidingView, Platform, TouchableOpacity, Modal } from "react-native";
 import logo from "../../../assets/images/logo.png";
 import Input from "@/components/Input";
 import Button from "@/components/Button";
@@ -67,8 +67,8 @@ export default function SignIn() {
                     <Input label="Senha" password={true} variant="white" value={value} onChangeText={onChange} onBlur={onBlur} errorShowInSide={errors.passwd} />
                   )}
                 />
-                <TouchableOpacity>
-                <Text className="text-base color-white text-right underline">Esqueci minha senha</Text>
+                <TouchableOpacity onPress={() => { setForgotPasswd(true) }}>
+                  <Text className="text-base color-white text-right underline">Esqueci minha senha</Text>
                 </TouchableOpacity>
               </View>
 
@@ -85,7 +85,12 @@ export default function SignIn() {
             </>}
           </View>
           <SignUp signUp={signUp} setSignUp={setSignUp} />
-          <ForgotPassword forgotPasswd={forgotPasswd} setForgotPasswd={setForgotPasswd} />
+          <Modal visible={forgotPasswd} transparent={true} presentationStyle='overFullScreen' animationType='fade' style={{ backgroundColor: '#000', flex: 1 }} >
+            <View style={{ flex: 1, backgroundColor: "#0000002f" }}>
+              <ForgotPassword forgotPasswd={forgotPasswd} setForgotPasswd={setForgotPasswd} />
+            </View>
+          </Modal>
+
         </ScrollView>
       </KeyboardAvoidingView>
     </View>

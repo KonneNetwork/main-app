@@ -67,7 +67,7 @@ function Perfil() {
             <>
               <Text className='font-roboto-700 text-xl mt-8'>Meu Perfil</Text>
 
-              <HeaderUser image={userInfo?.image} occupation={userInfo?.ocupacao} userName={userInfo?.nome} onOpen={handleOpenModalPerfil} />
+              <HeaderUser image={userInfo?.fotoUsuario ?? ''} occupation={userInfo?.ocupacao} userName={userInfo?.nome} onOpen={handleOpenModalPerfil} />
 
               <InputPerfil
                 isEditable={false}
@@ -123,7 +123,7 @@ function Perfil() {
           </View>
         </Modal>
         <Modal visible={openEditLinks} transparent={true} presentationStyle='overFullScreen' animationType='fade' style={{ backgroundColor: '#000', flex: 1 }} >
-          <View className=''
+          <View
             style={{ flex: 1, backgroundColor: "#0000002f" }}
           >
             <EditLink onClosed={handleCloseModalEditLinks} linkEdit={editLink} remove={removeLink} />

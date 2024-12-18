@@ -1,10 +1,9 @@
 import { create } from "zustand";
-import { usersData } from "@/mock/userData";
 import { useRootNavigationState, useRouter, useSegments } from "expo-router";
 import { ReactNode, useEffect } from "react";
-import { View } from "react-native";
-import { persist } from "zustand/middleware"
+import { createJSONStorage, persist } from "zustand/middleware"
 import { api } from "@/services/api";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
 interface Coordenadas {
@@ -46,6 +45,7 @@ export interface User {
 interface State {
   userInfo: User | null;
   token: string | null;
+  shouldPersist: boolean;
 }
 
 interface Actions {
@@ -53,75 +53,86 @@ interface Actions {
   setToken(token: string): void;
   setUserInfo: (userData: User) => void;
   logout: () => void;
+  setShouldPersist: (shouldPersist: boolean) => void;
   // addKonnexao: (id: string | number) => void;
   // addKonnexaoPending: (id: string | number) => void
 }
 
 
 
-export const userStore = create<State & Actions>(
-  (set, get) =>
-  (
-    {
-      token: null,
-      userInfo: null,
-      // login: (email, password) => {
-      //   const user = usersData.find(user => {
-      //     return user.email === email && user.senha === password
-      //   })
-      //   if (user) {
-      //     set({
-      //       profile: user
-      //     })
-      //   }
+export const userStore = create<State & Actions>()(
+  persist((set, get) => ({
+    shouldPersist: true,
+    token: null,
+    userInfo: null,
+    // login: (email, password) => {
+    //   const user = usersData.find(user => {
+    //     return user.email === email && user.senha === password
+    //   })
+    //   if (user) {
+    //     set({
+    //       profile: user
+    //     })
+    //   }
 
-      // },
-      setToken: (token: string) => {
-        set({ token });
-      },
-      logout: () => {
-        set({
-          token:null
-        })
-      },
-      setUserInfo:(userInfo:User)=>{
-        set({userInfo})
+    // },
+    setToken: (token: string) => {
+      set({ token });
+    },
+    logout: () => {
+      set({
+        token: null
+      })
+    },
+    setUserInfo: (userInfo: User) => {
+      set({ userInfo })
+    },
+    setShouldPersist: (shouldPersist: boolean) => {
+      set({ shouldPersist });
     },
 
-      // addKonnexaoPending: (id) => set((state) => {
-      //   if (state.profile) {
-      //     const updatedFriends = state.profile.konnexoes.includes(id)
-      //       ? state.profile.konnexoes
-      //       : [...state.profile.konnexoes, id];
+    // addKonnexaoPending: (id) => set((state) => {
+    //   if (state.profile) {
+    //     const updatedFriends = state.profile.konnexoes.includes(id)
+    //       ? state.profile.konnexoes
+    //       : [...state.profile.konnexoes, id];
 
-      //     return {
-      //       profile: {
-      //         ...state.profile,
-      //         konnexoes: updatedFriends,
-      //       },
-      //     };
-      //   }
-      //   return {};
-      // }),
+    //     return {
+    //       profile: {
+    //         ...state.profile,
+    //         konnexoes: updatedFriends,
+    //       },
+    //     };
+    //   }
+    //   return {};
+    // }),
 
-      // addKonnexao: (id) => set((state) => {
-      //   if (state.profile) {
-      //     const updatedFriends = state.profile.konnexoes.includes(id)
-      //       ? state.profile.konnexoes
-      //       : [...state.profile.konnexoes, id];
+    // addKonnexao: (id) => set((state) => {
+    //   if (state.profile) {
+    //     const updatedFriends = state.profile.konnexoes.includes(id)
+    //       ? state.profile.konnexoes
+    //       : [...state.profile.konnexoes, id];
 
-      //     return {
-      //       profile: {
-      //         ...state.profile,
-      //         konnexoes: updatedFriends,
-      //       },
-      //     };
-      //   }
-      //   return {};
-      // }
-      // ),
-    }
-  )
+    //     return {
+    //       profile: {
+    //         ...state.profile,
+    //         konnexoes: updatedFriends,
+    //       },
+    //     };
+    //   }
+    //   return {};
+    // }
+    // ),
+  }), {
+    name: 'userStore',
+    storage: createJSONStorage(() => AsyncStorage),
+    partialize: (state) => ({
+      ...state,
+      token: state.shouldPersist ? state.token : null,
+      userInfo: null,
+      shouldPersist: true,
+    })
+  }),
 );
 
 

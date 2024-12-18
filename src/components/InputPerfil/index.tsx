@@ -27,7 +27,16 @@ function InputPerfil({ multiline = false, isEditable = true, label, showEditIcon
 
       </View>
       <View className={classNames({ 'flex-1 flex-row gap-3  items-center': !multiline })}>
-        <TextInput returnKeyType='next' placeholder={label} placeholderTextColor={'#000'} className={classNames('text-base font-roboto-500 ', { 'flex-1 text-right': !multiline })} editable={isEditable} multiline={multiline} value={value} onChangeText={(e) => setValue(e)} {...rest} />
+        <TextInput
+          returnKeyType='next'
+          placeholder={label}
+          placeholderTextColor={'#000'}
+          className={classNames('text-base font-roboto-500 ', { 'flex-1 text-right': !multiline })}
+          editable={isEditable && value.length <= 164}
+          multiline={multiline}
+          value={value}
+          onChangeText={(e) => setValue(e)} {...rest}
+        />
 
         {(!isEditable || (multiline && value.length <= 0 && showEditIcon)) &&
           <IconEdit sizeIcon={20} colorIcon='#000' onPress={onOpen} className={classNames(' bg-[#F4F4F4]  rounded-md', {

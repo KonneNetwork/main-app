@@ -1,10 +1,11 @@
 import React from 'react'
-import { TouchableOpacity, View, Image, TouchableOpacityProps } from 'react-native'
+import { TouchableOpacity, View, Image, TouchableOpacityProps, ImageProps } from 'react-native'
 import { Icons } from '../Icons'
 import IconEdit from '../IconEdit'
+import { CameraView } from 'expo-camera'
 
 
-interface InputImageProps extends TouchableOpacityProps {
+interface InputImageProps extends ImageProps {
   image?: string,
   isEdit?: boolean,
   onOpen?: () => void,
@@ -12,10 +13,8 @@ interface InputImageProps extends TouchableOpacityProps {
 }
 export default function InputImage({ image, isEdit, onOpen, color = "#528A8C", ...rest }: InputImageProps) {
 
-  const disabledTouch = image ? true : false
-
   return (
-    <TouchableOpacity {...rest} onPress={onOpen} disabled={disabledTouch}>
+    <TouchableOpacity {...rest} onPress={onOpen}>
 
       <View className='border-8 h-44 w-44 rounded-full items-center overflow-hidden' style={{ borderColor: color }}>
         {image ?
