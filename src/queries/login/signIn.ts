@@ -24,25 +24,35 @@ async function signIn(data: SingInRequest) {
 }
 
 export function useSignIn() {
-  const {setUserInfo, setToken } = userStore(); 
-  const router = useRouter(); 
+  const { setUserInfo, setToken, setProfile } = userStore();
+  const router = useRouter();
 
   return useMutation({
     mutationKey: ['signIn'],
     mutationFn: (data: SingInRequest) => signIn(data),
     onSuccess: (data) => {
-      console.log(data)
-      const {nome, online,documento, email, cd_usuario} = data.userInfo
+      const { cd_perfil, foto_perfil, descricao, ocupacao, tema_perfil } = data.profileInfo
+      const { nome, online, documento, email, cd_usuario } = data.userInfo
       const formatUserInfo = {
         nome,
         online,
         documento,
         email,
-        cdUsuario:cd_usuario
+        cdUsuario: cd_usuario
+      }
+
+      const formatProfileInfo = {
+        nome,
+        descricao,
+        ocupacao,
+        temaPerfil: tema_perfil,
+        cdPerfil: cd_perfil,
+        fotoPerfil: foto_perfil,
       }
       console.log(formatUserInfo)
-      setToken(data.token); 
+      setToken(data.token);
       setUserInfo(formatUserInfo)
+      setProfile(formatProfileInfo)
 
       Toast.show({
         type: 'success',

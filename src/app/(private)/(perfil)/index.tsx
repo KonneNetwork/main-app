@@ -7,15 +7,13 @@ import EditPerfil from './edit-perfil';
 import AddLink from './add-link';
 import CardMedia from '@/components/CardMedia';
 import EditLink from './edit-link';
-import { useStore } from 'zustand';
 import { userStore } from '@/store/userStore';
-import Slider from '@react-native-community/slider';
 
 function Perfil() {
   const [openPerfil, setOpenPerfil] = useState(false);
   const [openAddLinks, setOpenAddLinks] = useState(false);
   const [openEditLinks, setOpenEditLinks] = useState(false);
-  const { userInfo } = userStore();
+  const { userInfo, profile } = userStore();
   const [addLink, setAddLink] = useState<{ label: string, link: string, category: string }[] | undefined | null>(undefined);
   const [editLink, setEditLink] = useState<{ label: string, link: string, category: string } | null>(null);
   function handleCloseModalPerfil() {
@@ -49,12 +47,12 @@ function Perfil() {
   }
 
 
-  useEffect(() => {
-    console.log(userInfo)
+  // useEffect(() => {
+  //   console.log(userInfo)
 
-    return setAddLink(userInfo?.links);
+  //   return setAddLink(userInfo?.links);
 
-  }, [])
+  // }, [])
 
   return (
     <View className='flex-1'>
@@ -67,7 +65,7 @@ function Perfil() {
             <>
               <Text className='font-roboto-700 text-xl mt-8'>Meu Perfil</Text>
 
-              <HeaderUser image={userInfo?.fotoUsuario ?? ''} occupation={userInfo?.ocupacao} userName={userInfo?.nome} onOpen={handleOpenModalPerfil} />
+              <HeaderUser image={profile?.fotoPerfil ?? userInfo?.fotoUsuario ?? ''} occupation={profile?.ocupacao} userName={profile?.nome ?? userInfo?.nome} onOpen={handleOpenModalPerfil} />
 
               <InputPerfil
                 isEditable={false}
@@ -75,7 +73,7 @@ function Perfil() {
                 label='Sobre você'
                 placeholder='Escreva um texto de apresentação ...'
                 onOpen={handleOpenModalPerfil}
-                value={userInfo?.descricao}
+                value={profile?.descricao}
 
               />
 

@@ -62,7 +62,7 @@ function Buscar() {
   const [openPerfil, setOpenPerfil] = useState(false)
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [enableLinks, setEnableLinks] = useState(false)
-  const { profile, addKonnexao } = userStore()
+  const { profile } = userStore()
 
   const [markers, setMarkers] = useState(usersData);
 
@@ -103,12 +103,12 @@ function Buscar() {
     </Marker>
   )), [handleMarkerPress]);
 
-  function handleAddKonnection(id: number | undefined) {
-    if (id) {
-      addKonnexao(id);
-    }
-    setEnableLinks(true);
-  }
+  // function handleAddKonnection(id: number | undefined) {
+  //   if (id) {
+  //     addKonnexao(id);
+  //   }
+  //   setEnableLinks(true);
+  // }
 
   function handleAddKonnectionPending() {
     setOpenInvite(false); setOpenPerfil(true); setEnableLinks(false)
@@ -196,7 +196,7 @@ function Buscar() {
         <Marker coordinate={userLocation} onPress={() => router.navigate('/(perfil)/')}>
           <View className='rounded-full overflow-hidden border-[16px] border-[#33586C]'>
             <Image
-              source={{ uri: profile?.image }}
+              source={{ uri: profile?.fotoPerfil }}
               className='w-28 h-28'
             />
           </View>
@@ -296,7 +296,7 @@ function Buscar() {
                 </Text>
 
                 <TouchableOpacity className='flex-row  items-center gap-3 bg-surface-brand-main-default p-5  justify-center w-full rounded-md '
-                  onPress={() => handleAddKonnection(selectedUser?.id)}
+                // onPress={() => handleAddKonnection(selectedUser?.id)}
                 >
                   <Icons.heart color={"#fcf9f967"} />
                   <View className='flex-row gap-2'>

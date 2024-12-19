@@ -41,11 +41,21 @@ export interface User {
   uuid?: string | null;
 }
 
+export interface Profile {
+  cdPerfil: string;
+  fotoPerfil?: string;
+  idade?: string;
+  descricao?: string;
+  ocupacao?: string;
+  nome?: string;
+  temaPerfil?: string;
+}
 
 interface State {
   userInfo: User | null;
   token: string | null;
   shouldPersist: boolean;
+  profile: Profile | null;
 }
 
 interface Actions {
@@ -54,6 +64,7 @@ interface Actions {
   setUserInfo: (userData: User) => void;
   logout: () => void;
   setShouldPersist: (shouldPersist: boolean) => void;
+  setProfile: (profile: Profile) => void
   // addKonnexao: (id: string | number) => void;
   // addKonnexaoPending: (id: string | number) => void
 }
@@ -65,6 +76,7 @@ export const userStore = create<State & Actions>()(
     shouldPersist: true,
     token: null,
     userInfo: null,
+    profile: null,
     // login: (email, password) => {
     //   const user = usersData.find(user => {
     //     return user.email === email && user.senha === password
@@ -90,6 +102,9 @@ export const userStore = create<State & Actions>()(
     setShouldPersist: (shouldPersist: boolean) => {
       set({ shouldPersist });
     },
+    setProfile: (profile: Profile) => {
+      set({ profile })
+    }
 
     // addKonnexaoPending: (id) => set((state) => {
     //   if (state.profile) {

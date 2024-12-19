@@ -13,7 +13,7 @@ import { userStore } from '@/store/userStore';
 function Menu() {
 
   const navigation = useNavigation();
-  const { userInfo, logout } = userStore()
+  const { userInfo, profile, logout } = userStore()
 
   return (
     <ScrollView bounces={false} showsVerticalScrollIndicator={false} contentContainerStyle={{ flexGrow: 1 }}>
@@ -33,18 +33,19 @@ function Menu() {
           >
 
             <View className='flex-row justify-between items-center gap-4'>
-              <View className='rounded-full overflow-hidden border-1 border-x-cyan-700'>
-                {/* <Image source={{ uri: "https://media.istockphoto.com/id/1309328823/pt/foto/headshot-portrait-of-smiling-male-employee-in-office.webp?a=1&b=1&s=612x612&w=0&k=20&c=nxXP21qckuF3ICnpy9bUHTz8cVSL6oM5pG0BwgTkNLM=" }} className=' w-16 h-16 ' /> */}
-                <Icons.user
-                  width={35}
-                  height={35}
-                  color={'#528A8C'}
-                />
+              <View className='rounded-full overflow-hidden' style={{ borderColor: profile?.temaPerfil, borderWidth: 1 }}>
+                {profile?.fotoPerfil ? <Image source={{ uri: profile.fotoPerfil }} className=' w-16 h-16 ' /> :
+                  <Icons.user
+                    width={35}
+                    height={35}
+                    color={'#528A8C'}
+                  />}
+
               </View>
               <View className='bg-black'></View>
               <View>
                 {userInfo?.nome && <Text className='color-[#374151] font-inter-600'>{userInfo?.nome}</Text>}
-                {userInfo?.ocupacao && <Text className='color-[#6B7280] font-inter-500'>{userInfo?.ocupacao}</Text>}
+                {profile?.ocupacao && <Text className='color-[#6B7280] font-inter-500'>{profile?.ocupacao}</Text>}
 
               </View>
             </View>
