@@ -31,10 +31,10 @@ export function useSignIn() {
     mutationKey: ['signIn'],
     mutationFn: (data: SingInRequest) => signIn(data),
     onSuccess: (data) => {
-      const { cd_perfil, foto_perfil, descricao, ocupacao, tema_perfil } = data.profileInfo
-      const { nome, online, documento, email, cd_usuario } = data.userInfo
+      const {nome_perfil, cd_perfil, foto_perfil, descricao, ocupacao, tema_perfil } = data.profileInfo
+      const { nome_usuario, online, documento, email, cd_usuario } = data.userInfo
       const formatUserInfo = {
-        nome,
+        nomeUsuario:nome_usuario,
         online,
         documento,
         email,
@@ -42,14 +42,14 @@ export function useSignIn() {
       }
 
       const formatProfileInfo = {
-        nome,
+        nomePerfil:nome_perfil,
         descricao,
         ocupacao,
         temaPerfil: tema_perfil,
         cdPerfil: cd_perfil,
         fotoPerfil: foto_perfil,
       }
-      console.log(formatUserInfo)
+      console.log("🚀 ~ useSignIn ~ formatProfileInfo:", formatProfileInfo)
       setToken(data.token);
       setUserInfo(formatUserInfo)
       setProfile(formatProfileInfo)
@@ -60,12 +60,12 @@ export function useSignIn() {
       });
     },
     onError: (err) => {
-      console.log(err)
+     
       if (err instanceof AxiosError) {
         Toast.show({
           type: 'error',
           text1: 'Mensagem de erro',
-          text2: err.response?.data.message || 'Houve um erro tente novamente'
+          text2:  err.response?.data.error || 'Houve um erro tente novamente'
         })
       }
     }

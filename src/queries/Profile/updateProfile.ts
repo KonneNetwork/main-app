@@ -25,7 +25,7 @@ async function updateProfile({ data, id }: UpdateProfileProps) {
   try {
     const resultado = await api.put(`perfil/${id}`, {
       foto_perfil: data.image,
-      nome: data.name,
+      nome_perfil: data.name,
       descricao: data.description,
       ocupacao: data.occupation,
       tema_perfil: data.themeColor
@@ -42,7 +42,8 @@ export function useUpdateProfile(id: string, onClose: () => void) {
     mutationKey: ['createProfile'],
     mutationFn: (data: UpdateProfileRequest) => updateProfile({ data, id }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['getProfile', { id }] })
+      queryClient.invalidateQueries({ queryKey: ['getProfile', { id }] });
+      queryClient.refetchQueries({ queryKey: ['getProfile', { id }] });
       console.log("🚀 ~ useUpdateProfile ~ id:", id)
       Toast.show({
         type: 'success',

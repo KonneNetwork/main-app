@@ -36,13 +36,14 @@ export function useSendMessage({ onChange }: SendMessageProps) {
       })
       onChange();
     },
-    onError: (err) => {
+    onError: async(err) => {
       console.log(err)
       if (err instanceof AxiosError) {
+        console.log("🚀 ~ onError:async ~ err:", err.response?.data)
         Toast.show({
           type: 'error',
           text1: 'Mensagem de erro',
-          text2: err.response?.data.message || 'Houve um erro tente novamente'
+          text2: await err.response?.data || 'Houve um erro tente novamente'
         })
       }
     }

@@ -18,7 +18,7 @@ async function createUser(data: CreateUserRequest) {
 
   try {
     const resultado = await api.post('/sign-up', {
-      nome: data.name,
+      nome_usuario: data.name,
       email: data.email,
       documento: data.cpf,
       senha: data.passwd,
@@ -43,12 +43,12 @@ export function useCreateUser({ onClose }: CreateUserProps) {
       onClose();
     },
     onError: (err) => {
-      console.log(err)
       if (err instanceof AxiosError) {
+        console.log("🚀 ~ useCreateUser ~ err:", err.response?.data)
         Toast.show({
           type: 'error',
           text1: 'Mensagem de erro',
-          text2: err.response?.data.message || 'Houve um erro tente novamente'
+          text2: err.response?.data.error || 'Houve um erro tente novamente'
         })
       }
     }

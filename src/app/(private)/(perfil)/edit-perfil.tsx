@@ -41,7 +41,7 @@ export default function EditPerfil({ onClosed }: EditPerfilProps) {
   const { control, handleSubmit, formState: { errors }, setValue } = useForm({
     defaultValues: {
       image: profile?.fotoPerfil || "",
-      name: profile?.nome || '',
+      name: profile?.nomePerfil || "",
       occupation: profile?.ocupacao || "",
       description: profile?.descricao || "",
       themeColor: profile?.temaPerfil || "",
@@ -100,7 +100,7 @@ export default function EditPerfil({ onClosed }: EditPerfilProps) {
 
 
   useEffect(() => {
-    setValue('image', image ?? '')
+    setValue('image', image ? image : profile?.fotoPerfil ?? '')
     setValue('themeColor', selectedId?.color ?? '')
   }, [selectedId, image])
 
@@ -116,7 +116,7 @@ export default function EditPerfil({ onClosed }: EditPerfilProps) {
             name='image'
             control={control}
             render={({ field }) => (
-              <InputImage image={field.value} onOpen={openOptionsImage} isEdit={true} {...field} />
+              <InputImage image={field.value ?? profile?.fotoPerfil} onOpen={openOptionsImage} isEdit={true} {...field} />
             )} />
 
           <Controller name='name'

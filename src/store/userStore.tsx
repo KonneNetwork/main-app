@@ -34,7 +34,7 @@ export interface User {
   ipAddress?: string | null;
   latitude?: number | null;
   longitude?: number | null;
-  nome: string;
+  nomeUsuario: string;
   numeroEndereco?: string | null;
   online: boolean;
   rua?: string | null;
@@ -42,12 +42,13 @@ export interface User {
 }
 
 export interface Profile {
+  setProfile?: any;
   cdPerfil: string;
   fotoPerfil?: string;
   idade?: string;
   descricao?: string;
   ocupacao?: string;
-  nome?: string;
+  nomePerfil?: string;
   temaPerfil?: string;
 }
 

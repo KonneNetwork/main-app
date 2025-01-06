@@ -8,12 +8,17 @@ import AddLink from './add-link';
 import CardMedia from '@/components/CardMedia';
 import EditLink from './edit-link';
 import { userStore } from '@/store/userStore';
+import useGetProfile from '@/queries/Profile/getProfile';
+import { useFocusEffect } from 'expo-router';
+import getMidias from '@/queries/Profile/getMidias';
 
 function Perfil() {
   const [openPerfil, setOpenPerfil] = useState(false);
   const [openAddLinks, setOpenAddLinks] = useState(false);
   const [openEditLinks, setOpenEditLinks] = useState(false);
-  const { userInfo, profile } = userStore();
+  const { userInfo, profile, setProfile } = userStore();
+  const { data, refetch } = useGetProfile(userInfo?.cdUsuario ?? '');
+ 
   const [addLink, setAddLink] = useState<{ label: string, link: string, category: string }[] | undefined | null>(undefined);
   const [editLink, setEditLink] = useState<{ label: string, link: string, category: string } | null>(null);
   function handleCloseModalPerfil() {
@@ -46,6 +51,28 @@ function Perfil() {
     addLink?.splice(itemRemove!, 1)
   }
 
+  async function midiasInfo(){
+    console.log("como resovler isso", await data)
+  }
+
+  useEffect(()=>{
+    midiasInfo();
+  },[])
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     if (data) {
+  //       await refetch(); // Força o refetch após o dado ser alterado
+  //     }
+  //   };
+  //   fetchData();
+  // }, [data, refetch]);
+
+  // useFocusEffect(
+  //   React.useCallback(() => {
+  //     refetch(); // Força o refetch dos dados sempre que a tela for focada
+  //   }, [refetch]) // O refetch será executado toda vez que a tela ganhar o foco
+  // );
 
   // useEffect(() => {
   //   console.log(userInfo)
@@ -53,6 +80,8 @@ function Perfil() {
   //   return setAddLink(userInfo?.links);
 
   // }, [])
+
+  
 
   return (
     <View className='flex-1'>
@@ -65,7 +94,7 @@ function Perfil() {
             <>
               <Text className='font-roboto-700 text-xl mt-8'>Meu Perfil</Text>
 
-              <HeaderUser image={profile?.fotoPerfil ?? userInfo?.fotoUsuario ?? ''} occupation={profile?.ocupacao} userName={profile?.nome ?? userInfo?.nome} onOpen={handleOpenModalPerfil} />
+              <HeaderUser image={profile?.fotoPerfil ?? userInfo?.fotoUsuario ?? ''} occupation={profile?.ocupacao} userName={profile?.nomePerfil ?? userInfo?.nomeUsuario} onOpen={handleOpenModalPerfil} />
 
               <InputPerfil
                 isEditable={false}

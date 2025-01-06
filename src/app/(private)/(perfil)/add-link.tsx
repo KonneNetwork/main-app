@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, SectionList } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { FlatList } from 'react-native-gesture-handler';
 import InputSearch from '@/components/InputSearch';
 import { Categorias, dataLinks } from '@/constants/mediasLink';
 import CardMedia from '@/components/CardMedia';
+import getMidias from '@/queries/Profile/getMidias';
 
 interface AddLinksProps {
   onClose: () => void;
@@ -13,8 +14,10 @@ interface AddLinksProps {
 }
 
 export default function AddLink({ onClose, selectingLinks, selectedLinks }: AddLinksProps) {
-
+  const {data} = getMidias();
   const [search, setSearch] = useState('');
+
+  useEffect(()=>{console.log("Links", data)},[])
 
   const handleItemPress = (item: { label: string, link: string, category: string }) => {
 
