@@ -6,6 +6,7 @@ import { api } from "@/services/api";
 import { useConfirmeMessageToken } from "@/queries/signUp/getConfirmMessageToken";
 import Toast from "react-native-toast-message";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 
 interface CodeStageProps {
@@ -14,6 +15,7 @@ interface CodeStageProps {
 }
 
 export function CodeStage({ phoneNumber, setStage }: CodeStageProps) {
+  const { t } = useTranslation("translation", { keyPrefix: 'SignUp' })
   const [token, setToken] = useState('')
   const [code, setCode] = useState('')
   const { data } = useConfirmeMessageToken({ phoneNumber })
@@ -62,12 +64,12 @@ export function CodeStage({ phoneNumber, setStage }: CodeStageProps) {
         <VerificationCodeInput setCodeNumber={setCode} />
       </View>
       <View className='flex-row mt-1'>
-        <Text className=' font-inter-400 text-base color-[#506773]' >Enviamos um código para {phoneNumber} </Text>
+        <Text className=' font-inter-400 text-base color-[#506773]' >{t('warning message valid')} {phoneNumber} </Text>
         <Text className=' font-inter-400 text-base'></Text>
       </View>
 
 
-      <Button variant='active' title="Enviar" onPress={onSubmit} />
+      <Button variant='active' title={t('send')} onPress={onSubmit} />
 
     </>)
 }

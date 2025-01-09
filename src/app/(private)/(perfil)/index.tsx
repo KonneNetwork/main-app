@@ -18,7 +18,7 @@ function Perfil() {
   const [openEditLinks, setOpenEditLinks] = useState(false);
   const { userInfo, profile, setProfile } = userStore();
   const { data, refetch } = useGetProfile(userInfo?.cdUsuario ?? '');
- 
+
   const [addLink, setAddLink] = useState<{ label: string, link: string, category: string }[] | undefined | null>(undefined);
   const [editLink, setEditLink] = useState<{ label: string, link: string, category: string } | null>(null);
   function handleCloseModalPerfil() {
@@ -51,13 +51,13 @@ function Perfil() {
     addLink?.splice(itemRemove!, 1)
   }
 
-  async function midiasInfo(){
+  async function midiasInfo() {
     console.log("como resovler isso", await data)
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     midiasInfo();
-  },[])
+  }, [])
 
   // useEffect(() => {
   //   const fetchData = async () => {
@@ -81,7 +81,7 @@ function Perfil() {
 
   // }, [])
 
-  
+
 
   return (
     <View className='flex-1'>
@@ -94,7 +94,7 @@ function Perfil() {
             <>
               <Text className='font-roboto-700 text-xl mt-8'>Meu Perfil</Text>
 
-              <HeaderUser image={profile?.fotoPerfil ?? userInfo?.fotoUsuario ?? ''} occupation={profile?.ocupacao} userName={profile?.nomePerfil ?? userInfo?.nomeUsuario} onOpen={handleOpenModalPerfil} />
+              <HeaderUser image={profile?.fotoPerfil ?? userInfo?.fotoUsuario ?? ''} occupation={profile?.ocupacao} userName={profile?.nomePerfil ? profile?.nomePerfil : userInfo?.nomeUsuario} onOpen={handleOpenModalPerfil} />
 
               <InputPerfil
                 isEditable={false}

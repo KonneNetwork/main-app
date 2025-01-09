@@ -3,17 +3,19 @@ import logo from "../../../assets/images/logo.png";
 import Input from "@/components/Input";
 import Button from "@/components/Button";
 import Linkeding from '../../../assets/images/svgs/linkeding.svg';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import classNames from "classnames";
 import SignUp from "./sign-up";
 import { StatusBar } from "expo-status-bar";
-import { userStore } from "@/store/userStore";
 import { z } from "zod";
 import { useSignIn } from "@/queries/login/signIn";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
 import ForgotPassword from "@/components/ForgotPassword";
+import { useTranslation } from "react-i18next";
+import "@/services/i18n";
+import * as Localization from "expo-localization";
 
 const schema = z.object({
   email: z.string().email("email inválido!"),
@@ -23,9 +25,13 @@ const schema = z.object({
 type SignInSchema = z.infer<typeof schema>
 
 export default function SignIn() {
+  const { t, i18n } = useTranslation('translation', { keyPrefix: 'SignIn' })
   const [signUp, setSignUp] = useState(false);
   const [forgotPasswd, setForgotPasswd] = useState(false)
   const { mutate: signIn, isPending } = useSignIn();
+  const changeLanguage = (value: string) => {
+    i18n.changeLanguage(value).then(() => console.log("linguagem Alterada")).catch((err) => console.log(err))
+  }
   const { control, handleSubmit, formState: { errors } } = useForm({
     defaultValues: {
       email: "",
@@ -38,6 +44,12 @@ export default function SignIn() {
     signIn({ email, passwd });
   }
 
+  useEffect(() => {
+    Localization
+    // changeLanguage(String(Localization.getLocales().map(item => item.languageTag)))
+    changeLanguage('en')
+  }, [])
+
   return (
     <View className="flex-1">
       <KeyboardAvoidingView className="flex-1" behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
@@ -45,10 +57,12 @@ export default function SignIn() {
           <StatusBar style="light" translucent />
           <View className={classNames("p-5 justify-between", { 'flex-1': !signUp })}>
             <Image source={logo} className="mt-8" />
+            {/* <Button title="Inglês" variant="active" onPress={() => changeLanguage('en')} ></Button>
+            <Button title="Português" variant="active" onPress={() => changeLanguage('pt')} ></Button> */}
             {!signUp && <>
-              <Text className="font-inter-700 text-3xl leading-9 color-white my-5">Boas Vindas</Text>
+              <Text className="font-inter-700 text-3xl leading-9 color-white my-5">{t('greeting')}</Text>
               <Text className="text-lg font-inter-400 leading-5 mb-8 color-white">
-                Faça login e comece a se conectar com pessoas próximas a você.
+                {t('message login')}
               </Text>
 
               <View>
@@ -64,18 +78,18 @@ export default function SignIn() {
                   name="passwd"
                   control={control}
                   render={({ field: { onBlur, onChange, value } }) => (
-                    <Input label="Senha" password={true} variant="white" value={value} onChangeText={onChange} onBlur={onBlur} errorShowInSide={errors.passwd} />
+                    <Input label={t('passwd')} password={true} variant="white" value={value} onChangeText={onChange} onBlur={onBlur} errorShowInSide={errors.passwd} />
                   )}
                 />
                 <TouchableOpacity onPress={() => { setForgotPasswd(true) }}>
-                  <Text className="text-base color-white text-right underline">Esqueci minha senha</Text>
+                  <Text className="text-base color-white text-right underline">{t('forget passwd')}</Text>
                 </TouchableOpacity>
               </View>
 
-              <Button loading={isPending} variant="active" title="Entrar" onPress={handleSubmit(handleLogin)} />
+              <Button loading={isPending} variant="active" title={t('sign in')} onPress={handleSubmit(handleLogin)} />
               <View style={styles.container}>
                 <View style={styles.line} />
-                <Text style={styles.text}>Ou entre com</Text>
+                <Text style={styles.text}>{t('or midias')}</Text>
                 <View style={styles.line} />
               </View>
 
@@ -86,7 +100,7 @@ export default function SignIn() {
           </View>
           <SignUp signUp={signUp} setSignUp={setSignUp} />
           <Modal visible={forgotPasswd} transparent={true} presentationStyle='overFullScreen' animationType='fade' style={{ backgroundColor: '#000', flex: 1 }} >
-            <View style={{ flex: 1, backgroundColor: "#0000002f" }}>
+            <View style={{ flex: 1, backgroundColor: "#0000008f" }}>
               <ForgotPassword forgotPasswd={forgotPasswd} setForgotPasswd={setForgotPasswd} />
             </View>
           </Modal>

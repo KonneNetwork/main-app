@@ -14,7 +14,7 @@ const schema = z.object({
 type PhoneSchema = z.infer<typeof schema>
 
 interface PropsPhone {
-  setStage: React.Dispatch<React.SetStateAction<"phone" | "cod" | "sign-up">>
+  setStage: React.Dispatch<React.SetStateAction<"phone" | "cod" | "forgot-passwd">>
   setPhoneNumber: React.Dispatch<React.SetStateAction<string | undefined>>
   onClose: () => void
 }

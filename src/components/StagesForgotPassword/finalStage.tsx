@@ -40,7 +40,7 @@ export function FinalStage({ onClose }: FinalStageProps) {
           name="passwd"
           control={control}
           render={({ field: { value, onChange, onBlur } }) => (
-            <Input label='Defina uma senha'
+            <Input label='Redefina uma senha'
               onBlur={onBlur}
               value={value}
               onChangeText={onChange}
@@ -49,24 +49,6 @@ export function FinalStage({ onClose }: FinalStageProps) {
 
           )} />
         <Button loading={isPending} variant='active' title="Concluir Cadastro" onPress={handleSubmit(onSubmit)} />
-      </View>
-
-
-
-      <View className='self-center  mt-9 items-center'>
-        <Text className='color-[#506773]'>
-          Ao continuar você concorda com os
-        </Text>
-        <View className='self-center flex-row items-center'>
-          <TouchableOpacity onPress={() => { }}>
-            <Text>Termos de Uso </Text>
-          </TouchableOpacity>
-          <Text className='color-[#506773]'>e</Text>
-          <TouchableOpacity onPress={() => { }}>
-            <Text> Políticas de Privacidade.</Text>
-          </TouchableOpacity>
-        </View>
-
       </View>
 
     </View>

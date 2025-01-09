@@ -55,7 +55,6 @@ interface SocialMediaLink {
 
 function Buscar() {
   const [userLocation, setUserLocation] = useState<LatLog | null>(null);
-  console.log("🚀 ~ Buscar ~ userLocation:", userLocation)
   const [errorMsg, setErrorMsg] = useState('');
   const [openModal, setOpenModal] = useState(false)
   const [openInvite, setOpenInvite] = useState(false)
@@ -90,18 +89,18 @@ function Buscar() {
     setOpenInvite(true);
   }, []);
 
-  const MarkerComponent = useMemo(() => React.memo(({ item, onPress }: { item: User; onPress: () => void }) => (
-    <Marker
-      coordinate={item.coordenadas}
-      onPress={() => handleMarkerPress(item)}
-    >
-      <TouchableOpacity>
-        <View style={styles.marker}>
-          <Image style={styles.image} source={{ uri: item.image }} />
-        </View>
-      </TouchableOpacity>
-    </Marker>
-  )), [handleMarkerPress]);
+  // const MarkerComponent = useMemo(() => React.memo(({ item, onPress }: { item: User; onPress: () => void }) => (
+  //   <Marker
+  //     coordinate={item.coordenadas}
+  //     onPress={() => handleMarkerPress(item)}
+  //   >
+  //     <TouchableOpacity>
+  //       <View style={styles.marker}>
+  //         <Image style={styles.image} source={{ uri: item.image }} />
+  //       </View>
+  //     </TouchableOpacity>
+  //   </Marker>
+  // )), [handleMarkerPress]);
 
   // function handleAddKonnection(id: number | undefined) {
   //   if (id) {
@@ -132,8 +131,6 @@ function Buscar() {
   function goBack() {
     const rota = navigation.canGoBack();
     const saida = navigation.dispatch(StackActions.pop(1))
-    console.log("🚀 ~ goBack ~ saida:", saida)
-    console.log("🚀 ~ goBack ~ rota:", rota)
   }
 
   // useEffect(() => {
@@ -183,9 +180,9 @@ function Buscar() {
         zoomEnabled
 
       >
-        {markers.map((item, index) => (
+        {/* {markers.map((item, index) => (
           <MarkerComponent key={index} item={item} onPress={() => handleMarkerPress} />
-        ))}
+        ))} */}
 
         <Circle
           center={userLocation}

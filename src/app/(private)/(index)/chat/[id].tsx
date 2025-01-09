@@ -15,7 +15,6 @@ export default function Chat() {
   const friendId = usersData[usersData.findIndex(item => item.id === Number(id))]
 
   const screenHeight = Dimensions.get('screen').height;
-  console.log("🚀 ~ Chat ~ screenHeight:", screenHeight)
   const insets = useSafeAreaInsets();
   function sendMessage() {
     if (message) {

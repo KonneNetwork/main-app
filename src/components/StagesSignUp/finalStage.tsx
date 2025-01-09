@@ -5,6 +5,7 @@ import { z } from "zod"
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useCreateUser } from "@/queries/signUp/createUser";
+import { useTranslation } from "react-i18next";
 
 const schema = z.object({
   name: z.string(),
@@ -20,6 +21,7 @@ interface FinalStageProps {
 }
 
 export function FinalStage({ onClose }: FinalStageProps) {
+  const { t } = useTranslation("translation", { keyPrefix: "SignUp" })
   const { control, handleSubmit, formState: { errors } } = useForm({
     defaultValues: {
       name: "",
@@ -46,7 +48,7 @@ export function FinalStage({ onClose }: FinalStageProps) {
           control={control}
           render={({ field: { value, onChange, onBlur } }) => (
             <Input
-              label='Nome Completo'
+              label={t('full name')}
               onBlur={onBlur}
               value={value}
               onChangeText={onChange}
@@ -83,7 +85,7 @@ export function FinalStage({ onClose }: FinalStageProps) {
           name="passwd"
           control={control}
           render={({ field: { value, onChange, onBlur } }) => (
-            <Input label='Defina uma senha'
+            <Input label={t('set passwd')}
               onBlur={onBlur}
               value={value}
               onChangeText={onChange}
@@ -91,22 +93,22 @@ export function FinalStage({ onClose }: FinalStageProps) {
             />
 
           )} />
-        <Button loading={isPending} variant='active' title="Concluir Cadastro" onPress={handleSubmit(onSubmit)} />
+        <Button loading={isPending} variant='active' title={t('end sign up')} onPress={handleSubmit(onSubmit)} />
       </View>
 
 
 
       <View className='self-center  mt-9 items-center'>
         <Text className='color-[#506773]'>
-          Ao continuar você concorda com os
+          {t('agreement message')}
         </Text>
         <View className='self-center flex-row items-center'>
           <TouchableOpacity onPress={() => { }}>
-            <Text>Termos de Uso </Text>
+            <Text>{t('terms uses')}</Text>
           </TouchableOpacity>
-          <Text className='color-[#506773]'>e</Text>
+          <Text className='color-[#506773]'> {t('and')} </Text>
           <TouchableOpacity onPress={() => { }}>
-            <Text> Políticas de Privacidade.</Text>
+            <Text>{t('privacy policies')}</Text>
           </TouchableOpacity>
         </View>
 
