@@ -6,7 +6,7 @@ import { AxiosError } from "axios";
 import Toast from "react-native-toast-message";
 
 interface UpdateProfileRequest {
-  image: string;
+  image: string | undefined;
   name: string;
   themeColor: string;
   occupation: string;
@@ -24,7 +24,7 @@ async function updateProfile({ data, id }: UpdateProfileProps) {
   console.log("🚀 ~ createProfile ~ data:", data)
   try {
     const resultado = await api.put(`perfil/${id}`, {
-      foto_perfil: data.image,
+      foto_perfil: data.image ? data.image : null,
       nome_perfil: data.name,
       descricao: data.description,
       ocupacao: data.occupation,
@@ -47,7 +47,7 @@ export function useUpdateProfile(id: string, onClose: () => void) {
       console.log("🚀 ~ useUpdateProfile ~ id:", id)
       Toast.show({
         type: 'success',
-        text1: 'Perfil criado com sucesso!'
+        text1: 'Perfil atualizado com sucesso!'
       });
       onClose();
 

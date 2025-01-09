@@ -16,7 +16,7 @@ import useGetProfile from '@/queries/Profile/getProfile'
 
 
 const schema = z.object({
-  image: z.string(),
+  image: z.string().optional(),
   name: z.string(),
   occupation: z.string(),
   description: z.string(),
@@ -83,13 +83,15 @@ export default function EditPerfil({ onClosed }: EditPerfilProps) {
 
   async function onSubmit(data: UpdateProfileSchema) {
     console.log("🚀 ~ onSubmit ~ data:", data)
-
-
-    const imageCompress = await CompressImage(data.image)
-    console.log("🚀 ~ onSubmit ~ imageCompress:", imageCompress)
+    let imageCompress;
+    if(data?.image){
+       imageCompress = await CompressImage(data?.image)
+      console.log("🚀 ~ onSubmit ~ imageCompress:", imageCompress)
+    }
+    
 
     updateProfile({
-      image: data.image !== "" ? imageCompress.uri : "",
+      image: data.image ? imageCompress?.uri : undefined,
       description: data.description,
       name: data.name,
       occupation: data.occupation,
@@ -100,7 +102,7 @@ export default function EditPerfil({ onClosed }: EditPerfilProps) {
 
 
   useEffect(() => {
-    setValue('image', image ? image : profile?.fotoPerfil ?? '')
+    setValue('image', image ? image : profile?.fotoPerfil ?? "")
     setValue('themeColor', selectedId?.color ?? '')
   }, [selectedId, image])
 
