@@ -44,7 +44,7 @@ function Menu() {
               </View>
               <View className='bg-black'></View>
               <View>
-                {userInfo?.nome && <Text className='color-[#374151] font-inter-600'>{userInfo?.nome}</Text>}
+                {(userInfo?.nomeUsuario || profile?.nomePerfil) && <Text className='color-[#374151] font-inter-600'>{profile?.nomePerfil ? profile.nomePerfil : userInfo?.nomeUsuario}</Text>}
                 {profile?.ocupacao && <Text className='color-[#6B7280] font-inter-500'>{profile?.ocupacao}</Text>}
 
               </View>
@@ -65,7 +65,7 @@ function Menu() {
             'shadow-sm shadow-black/70': Platform.OS === "ios"
           })}>
 
-            <CardConfiguration title='Idioma'>
+            <CardConfiguration title='Idioma' onPress={() => router.navigate('/(menu)/languanges')}>
               <Icons.translate width={25} height={25} />
             </CardConfiguration>
 

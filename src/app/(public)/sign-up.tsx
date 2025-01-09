@@ -6,6 +6,7 @@ import Feather from '@expo/vector-icons/Feather'
 import { InitialStage } from '@/components/StagesSignUp/initialStage'
 import { CodeStage } from '@/components/StagesSignUp/codeStage'
 import { FinalStage } from '@/components/StagesSignUp/finalStage'
+import { useTranslation } from 'react-i18next'
 
 interface SignUpProps {
   signUp: boolean;
@@ -15,13 +16,14 @@ interface SignUpProps {
 
 
 function SignUp({ signUp, setSignUp }: SignUpProps) {
+  const { t } = useTranslation('translation', { keyPrefix: "SignUp" })
   const [phoneNumber, setPhoneNumber] = useState<string | undefined>(undefined);
   const [stage, setStage] = useState<'phone' | 'cod' | 'sign-up'>("phone")
 
   const Titulos = [{
-    phone: "Criar Conta",
-    cod: 'Validação',
-    "sign-up": "Concluir Cadastro",
+    phone: t('create account'),
+    cod: t('cod valid'),
+    "sign-up": t('end registragion'),
   }]
 
 
@@ -46,7 +48,7 @@ function SignUp({ signUp, setSignUp }: SignUpProps) {
         <View>
           <Text
             className="text-base font-inter-500 color-surface-brand-default">
-            Novo por aqui?
+            {t('question new-user')}
           </Text>
           <Text className='text-3xl font-inter-700'>
             {Titulos[0][stage]}

@@ -82,7 +82,6 @@ export default function Preference() {
   const [selectedOptions, setSelectedOptions] = useState<{ [key: string]: string[] }>({})
   const [age, setAge] = useState<number>(18)
   const { width, height } = useWindowDimensions()
-  // console.log("🚀 ~ Preference ~ selectedOptions:", selectedOptions)
   const lastQuestion = etapas.length - 1;
 
   const handleSelectOption = (stageId: string, optionId: string) => {

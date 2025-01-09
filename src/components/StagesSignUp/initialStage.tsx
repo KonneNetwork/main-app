@@ -5,6 +5,7 @@ import { z } from "zod"
 import { useForm, Controller } from "react-hook-form";
 import { useSendMessage } from "@/queries/signUp/sendMessageCod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useTranslation } from "react-i18next";
 
 const schema = z.object({
   codCountry: z.string().max(4, { message: "código do pais está incorreto" }),
@@ -20,6 +21,7 @@ interface PropsPhone {
 }
 
 export function InitialStage({ setStage, setPhoneNumber, onClose }: PropsPhone) {
+  const { t } = useTranslation("translation", { keyPrefix: "SignUp" })
   const { mutate: sendMessage, isPending } = useSendMessage({ onChange });
   const { control, handleSubmit, formState: { errors }, getValues, } = useForm({
     defaultValues: {
@@ -49,7 +51,7 @@ export function InitialStage({ setStage, setPhoneNumber, onClose }: PropsPhone) 
               value={value}
               onChangeText={onChange}
               onBlur={onBlur}
-              label='País'
+              label={t('country cod')}
               styleContainer={{ width: '25%' }} styleInput={{ textAlign: 'center' }}
               keyboardType='phone-pad'
               errorShowOutSide={errors.codCountry}
@@ -62,7 +64,7 @@ export function InitialStage({ setStage, setPhoneNumber, onClose }: PropsPhone) 
               value={value}
               onChangeText={onChange}
               onBlur={onBlur}
-              label='DDD + telefone'
+              label={t('phone')}
               styleContainer={{ width: '72%' }}
               keyboardType='phone-pad'
               errorShowOutSide={errors.phoneNumber}
@@ -72,16 +74,16 @@ export function InitialStage({ setStage, setPhoneNumber, onClose }: PropsPhone) 
         </View>
         {errors.codCountry && <Text className="color-red-700 text-right">{errors.codCountry?.message}</Text> ||
           errors.phoneNumber && <Text className="color-red-700 text-right">{errors.phoneNumber?.message}</Text>}
-        <Text className='w-full font-inter-400 text-base color-[#506773]'>Você vai receber um código via SMS para confirmar seu número</Text>
-        <Button loading={isPending} variant='active' title="Enviar" onPress={handleSubmit(onSubmit)} />
+        <Text className='w-full font-inter-400 text-base color-[#506773]'>{t('warning message cod')}</Text>
+        <Button loading={isPending} variant='active' title={t('send')} onPress={handleSubmit(onSubmit)} />
       </View>
 
       <View className='self-center flex-row gap-2'>
         <Text className='color-[#506773]'>
-          Já tem uma conta?
+          {t('have account')}
         </Text>
         <TouchableOpacity onPress={onClose}>
-          <Text>Entrar.</Text>
+          <Text>{t('sign in')}</Text>
         </TouchableOpacity>
 
       </View>

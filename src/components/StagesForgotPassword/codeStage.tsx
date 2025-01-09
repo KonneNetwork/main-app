@@ -10,7 +10,7 @@ import React from "react";
 
 interface CodeStageProps {
   phoneNumber: string;
-  setStage: React.Dispatch<React.SetStateAction<"phone" | "cod" | "sign-up">>
+  setStage: React.Dispatch<React.SetStateAction<"phone" | "cod" | "forgot-passwd">>
 }
 
 export function CodeStage({ phoneNumber, setStage }: CodeStageProps) {
@@ -42,7 +42,7 @@ export function CodeStage({ phoneNumber, setStage }: CodeStageProps) {
 
     const resultado = data === code;
     if (resultado) {
-      setStage('sign-up')
+      setStage('forgot-passwd')
     } else {
       Toast.show({
         type: 'error',

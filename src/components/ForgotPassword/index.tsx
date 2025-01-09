@@ -16,12 +16,12 @@ interface SignUpProps {
 
 function ForgotPassword({ forgotPasswd, setForgotPasswd }: SignUpProps) {
   const [phoneNumber, setPhoneNumber] = useState<string | undefined>(undefined);
-  const [stage, setStage] = useState<'phone' | 'cod' | 'sign-up'>("phone")
+  const [stage, setStage] = useState<'phone' | 'cod' | 'forgot-passwd'>("phone")
 
   const Titulos = [{
-    phone: "Esqueceu sua senha",
+    phone: "Esqueceu sua senha?",
     cod: 'Validação',
-    "sign-up": "Concluir Cadastro",
+    "forgot-passwd": "Redefinir senha",
   }]
 
 
@@ -45,8 +45,8 @@ function ForgotPassword({ forgotPasswd, setForgotPasswd }: SignUpProps) {
         <View className={classNames("bg-white  rounded-t-[30px] py-10 px-8 "
         )}>
           <View className="flex-row items-center justify-between">
-            <View>
-              <Text className='text-3xl font-inter-700'>
+            <View className='w-[60%]'>
+              <Text className='text-3xl font-inter-700 flex-wrap'>
                 {Titulos[0][stage]}
               </Text>
             </View >
@@ -54,15 +54,11 @@ function ForgotPassword({ forgotPasswd, setForgotPasswd }: SignUpProps) {
               className="bg-[#506773]/10 rounded-3xl items-center p-5 w-20 self-center border-2 border-white"
               onPress={handleContainerForgotPasswd}
             >
-              {forgotPasswd ? <AntDesign
+              {forgotPasswd && <AntDesign
                 name="close"
                 size={32}
                 color="#528A8C" />
-                :
-                <Feather
-                  name="arrow-up-right"
-                  size={32}
-                  color="#528A8C" />}
+              }
             </TouchableOpacity>
           </View >
 
@@ -71,7 +67,7 @@ function ForgotPassword({ forgotPasswd, setForgotPasswd }: SignUpProps) {
 
           {stage == 'cod' && <CodeStage phoneNumber={phoneNumber!} setStage={setStage} />}
 
-          {stage == 'sign-up' && <FinalStage onClose={handleOnClose} />}
+          {stage == 'forgot-passwd' && <FinalStage onClose={handleOnClose} />}
 
         </View >
       </ScrollView>

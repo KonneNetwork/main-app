@@ -82,11 +82,9 @@ export default function EditPerfil({ onClosed }: EditPerfilProps) {
   }
 
   async function onSubmit(data: UpdateProfileSchema) {
-    console.log("🚀 ~ onSubmit ~ data:", data)
 
 
     const imageCompress = await CompressImage(data.image)
-    console.log("🚀 ~ onSubmit ~ imageCompress:", imageCompress)
 
     updateProfile({
       image: data.image !== "" ? imageCompress.uri : "",

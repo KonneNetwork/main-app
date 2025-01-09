@@ -4,12 +4,12 @@ import { useQuery } from "@tanstack/react-query";
 import Toast from "react-native-toast-message";
 import { useStore } from "zustand";
 
-async function getProfile(id: string, setProfile:(profile: Profile) => void) {
+async function getProfile(id: string, setProfile: (profile: Profile) => void) {
 
   const { data } = await api.get(`/perfil/${id}`)
-  const { cd_perfil, foto_perfil, nome, descricao, ocupacao, tema_perfil } = data
+  const { cd_perfil, foto_perfil, nome_perfil, descricao, ocupacao, tema_perfil } = data
   const formatProfileInfo = {
-    nome,
+    nomePerfil: nome_perfil,
     descricao,
     ocupacao,
     temaPerfil: tema_perfil,
@@ -17,7 +17,7 @@ async function getProfile(id: string, setProfile:(profile: Profile) => void) {
     fotoPerfil: foto_perfil,
   }
 
-   setProfile(formatProfileInfo)
+  setProfile(formatProfileInfo)
   return formatProfileInfo
 
 }
