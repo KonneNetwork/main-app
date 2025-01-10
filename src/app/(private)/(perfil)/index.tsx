@@ -94,7 +94,7 @@ function Perfil() {
             <>
               <Text className='font-roboto-700 text-xl mt-8'>Meu Perfil</Text>
 
-              <HeaderUser image={profile?.fotoPerfil ?? userInfo?.fotoUsuario ?? ''} occupation={profile?.ocupacao} userName={profile?.nomePerfil ? profile?.nomePerfil : userInfo?.nomeUsuario} onOpen={handleOpenModalPerfil} />
+              <HeaderUser color={profile?.temaPerfil} image={profile?.fotoPerfil ?? userInfo?.fotoUsuario ?? ''} occupation={profile?.ocupacao} userName={profile?.nomePerfil ? profile?.nomePerfil : userInfo?.nomeUsuario} onOpen={handleOpenModalPerfil} />
 
               <InputPerfil
                 isEditable={false}

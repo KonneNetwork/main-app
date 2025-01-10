@@ -30,10 +30,11 @@ interface EditPerfilProps {
 }
 
 export default function EditPerfil({ onClosed }: EditPerfilProps) {
+  const { userInfo, profile } = userStore()
   const [selectedId, setSelectedId] = useState<{ id: number, color: string } | null>(null);
   const [optionsImage, setOptionsImage] = useState(false);
   const [camera, setCamera] = useState(false)
-  const { userInfo, profile } = userStore()
+
   const [galeria, setGaleria] = useState(false)
   const { data } = useGetProfile(profile?.cdPerfil ?? "")
   const { mutate: updateProfile } = useUpdateProfile(profile?.cdPerfil ?? "", onClosed);
@@ -84,11 +85,11 @@ export default function EditPerfil({ onClosed }: EditPerfilProps) {
   async function onSubmit(data: UpdateProfileSchema) {
     console.log("🚀 ~ onSubmit ~ data:", data)
     let imageCompress;
-    if(data?.image){
-       imageCompress = await CompressImage(data?.image)
+    if (data?.image) {
+      imageCompress = await CompressImage(data?.image)
       console.log("🚀 ~ onSubmit ~ imageCompress:", imageCompress)
     }
-    
+
 
     updateProfile({
       image: data.image ? imageCompress?.uri : undefined,
@@ -100,11 +101,16 @@ export default function EditPerfil({ onClosed }: EditPerfilProps) {
 
   }
 
-
   useEffect(() => {
     setValue('image', image ? image : profile?.fotoPerfil ?? "")
     setValue('themeColor', selectedId?.color ?? '')
   }, [selectedId, image])
+
+  useEffect(() => {
+    const color = palleteColors.find((item) => { if (item.color === profile?.temaPerfil) { return item.id, item.color } })
+    console.log("🚀 ~ useEffect ~ color:", color)
+    setSelectedId({ id: Number(color?.id), color: String(color?.color) })
+  }, [])
 
   return (
     <KeyboardAvoidingView
@@ -118,7 +124,7 @@ export default function EditPerfil({ onClosed }: EditPerfilProps) {
             name='image'
             control={control}
             render={({ field }) => (
-              <InputImage image={field.value ?? profile?.fotoPerfil} onOpen={openOptionsImage} isEdit={true} {...field} />
+              <InputImage color={profile?.temaPerfil} image={field.value ?? profile?.fotoPerfil} onOpen={openOptionsImage} isEdit={true} {...field} />
             )} />
 
           <Controller name='name'
