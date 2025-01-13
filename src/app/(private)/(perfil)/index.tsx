@@ -11,16 +11,18 @@ import { userStore } from '@/store/userStore';
 import useGetProfile from '@/queries/Profile/getProfile';
 import { useFocusEffect } from 'expo-router';
 import getMidias from '@/queries/Profile/getMidias';
+import { useGetMidiaLinks } from '@/queries/Profile/getMidiaLinks';
 
 function Perfil() {
   const [openPerfil, setOpenPerfil] = useState(false);
   const [openAddLinks, setOpenAddLinks] = useState(false);
   const [openEditLinks, setOpenEditLinks] = useState(false);
-  const { userInfo, profile, setProfile } = userStore();
-  const { data, refetch } = useGetProfile(userInfo?.cdUsuario ?? '');
+  const { userInfo, profile, setMidiaLinks, midiaLinks } = userStore();
+  const { data: midia } = useGetMidiaLinks(profile?.cdPerfil ?? '')
+  const { data: userProfile } = useGetProfile(userInfo?.cdUsuario ?? '');
 
-  const [addLink, setAddLink] = useState<{ label: string, link: string, category: string }[] | undefined | null>(undefined);
-  const [editLink, setEditLink] = useState<{ label: string, link: string, category: string } | null>(null);
+  const [addLink, setAddLink] = useState<any | { label: string, link: string, category: string }[] | undefined | null>(midiaLinks);
+  const [editLink, setEditLink] = useState<any | { label: string, link: string, category: string } | null>(midiaLinks);
   function handleCloseModalPerfil() {
     setOpenPerfil(false)
   }
@@ -47,17 +49,23 @@ function Perfil() {
   }
 
   function removeLink(link: string | undefined) {
-    const itemRemove = addLink?.findIndex(item => item.label === link)
+    const itemRemove = addLink?.findIndex((item: { midia: string | undefined; }) => item.midia === link)
     addLink?.splice(itemRemove!, 1)
   }
 
   async function midiasInfo() {
-    console.log("como resovler isso", await data)
+    userProfile;
+    await midiaLinks;
+    setMidiaLinks(midia)
+
+    console.log("🚀 ~ midiasInfo ~ midiaLinks:", midiaLinks)
+    console.log("🚀 ~ midiasInfo ~ userProfile:", userProfile)
   }
+
 
   useEffect(() => {
     midiasInfo();
-  }, [])
+  }, [midia])
 
   // useEffect(() => {
   //   const fetchData = async () => {
@@ -133,9 +141,9 @@ function Perfil() {
           }}
           bounces={false}
           showsVerticalScrollIndicator={false}
-          keyExtractor={(item) => item.label}
+          keyExtractor={(item) => item.cd_social_midia_link}
           renderItem={({ item }) => (
-            <CardMedia infoCard={item} isEditabled={false} openModal={hadleOpenModalEditLinks} />
+            <CardMedia infoCard={item.cd_social_midia_fk} infoMidiaLink={item} isEditabled={false} openModal={hadleOpenModalEditLinks} />
           )}
           numColumns={3}
         />

@@ -30,8 +30,7 @@ async function updateProfile({ data, id }: UpdateProfileProps) {
       ocupacao: data.occupation,
       tema_perfil: data.themeColor
     })
-    console.log("🚀 ~ createProfile ~ resultado:", resultado.data)
-
+    return resultado.data;
   } catch (error) {
     throw error
   }

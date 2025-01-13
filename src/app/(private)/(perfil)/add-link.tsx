@@ -6,29 +6,43 @@ import InputSearch from '@/components/InputSearch';
 import { Categorias, dataLinks } from '@/constants/mediasLink';
 import CardMedia from '@/components/CardMedia';
 import getMidias from '@/queries/Profile/getMidias';
+import { useCreateSocialMidiaLink } from '@/queries/Profile/createMidiaLinks';
+import { userStore } from '@/store/userStore';
 
 interface AddLinksProps {
   onClose: () => void;
-  selectingLinks: React.Dispatch<React.SetStateAction<{ label: string, link: string, category: string }[] | undefined | null>>;
-  selectedLinks: { label: string, link: string, category: string }[] | undefined | null
+  selectingLinks: React.Dispatch<React.SetStateAction<any | { label: string, link: string, category: string }[] | undefined | null>>;
+  selectedLinks: {
+    midia: any; label: string, link: string, category: string
+  }[] | undefined | null
 }
 
 export default function AddLink({ onClose, selectingLinks, selectedLinks }: AddLinksProps) {
-  const {data} = getMidias();
+  const { data } = getMidias();
+  const { profile, userInfo } = userStore()
+  const [midias, setMidias] = useState<any[] | undefined>([])
   const [search, setSearch] = useState('');
+  const { mutate: createMidiaSocialLink } = useCreateSocialMidiaLink(userInfo?.cdUsuario ?? '')
 
-  useEffect(()=>{console.log("Links", data)},[])
 
-  const handleItemPress = (item: { label: string, link: string, category: string }) => {
+  const handleItemPress = (item: any | { label: string, link: string, category: string }) => {
 
-    if (!selectedLinks?.find(link => link.label === item.label)) {
-      selectingLinks((prevState) => {
-        const updatedLinks = prevState ? [...prevState, item] : [item];
-        return updatedLinks;
-      });
+    if (!selectedLinks?.find(link => link?.midia === item.midia)) {
+      createMidiaSocialLink({
+        cdPerfil: profile?.cdPerfil || '',
+        cdSocialMidia: item?.cd_social_midia || '',
+      })
+      // selectingLinks((prevState: any) => {
+      //   const updatedLinks = prevState ? [...prevState, item] : [item];
+      //   return updatedLinks;
+      // });
     }
     onClose();
   };
+
+  useEffect(() => {
+    setMidias(data)
+  }, [data])
 
   return (
     <View className='flex-1 bg-surface-primary'>
@@ -47,9 +61,9 @@ export default function AddLink({ onClose, selectingLinks, selectedLinks }: AddL
         }
         sections={Categorias.map(item => ({
           title: item,
-          data: Object.values(dataLinks).filter(link => link?.category === item)
+          data: Object.values(midias ?? '').filter(link => link?.tipo_midia === item)
         }))}
-        keyExtractor={(item, index) => item.label + index}
+        keyExtractor={(item, index) => item?.midia + index}
         renderItem={() => null}
 
         renderSectionHeader={({ section }) => {
@@ -57,14 +71,14 @@ export default function AddLink({ onClose, selectingLinks, selectedLinks }: AddL
             <View className=' my-6 mx-8'>
               <Text className='font-roboto-400 text-xl'>{section.title}</Text>
               <FlatList
-                data={section.data.filter(data => { return data.label.includes(search) })}
+                data={section.data.filter(data => { return data.midia.includes(search) })}
                 contentContainerStyle={{
                   flex: 1,
                   justifyContent: 'space-between',
                 }}
                 bounces={false}
                 showsVerticalScrollIndicator={false}
-                keyExtractor={(item) => item.label}
+                keyExtractor={(item) => item?.midia}
                 renderItem={({ item }) => (
 
                   <CardMedia infoCard={item} onPress={() => handleItemPress(item)} />
