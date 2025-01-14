@@ -33,7 +33,7 @@ function Menu() {
           >
 
             <View className='flex-row justify-between items-center gap-4'>
-              <View className='rounded-full overflow-hidden' style={{ borderColor: profile?.temaPerfil, borderWidth: 1 }}>
+              <View className='rounded-full  overflow-hidden' style={{ borderColor: profile?.temaPerfil, borderWidth: 3 }}>
                 {profile?.fotoPerfil ? <Image source={{ uri: profile.fotoPerfil }} className=' w-16 h-16 ' /> :
                   <Icons.user
                     width={35}

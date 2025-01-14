@@ -2,25 +2,47 @@ import Button from '@/components/Button'
 import { Icons } from '@/components/Icons';
 import InputPerfil from '@/components/InputPerfil'
 import { useDeleteMidiaLinks } from '@/queries/Profile/deleteMidiaLinks';
+import { useUpdateMidiaLinks } from '@/queries/Profile/updataMidiaLinks';
+import { userStore } from '@/store/userStore';
+import { zodResolver } from '@hookform/resolvers/zod';
 import React, { useEffect, useState } from 'react'
+import { Controller, useForm } from 'react-hook-form';
 import { View, Text, KeyboardAvoidingView, ScrollView, Platform } from 'react-native'
+import { z } from 'zod';
 
 interface EditLinkProps {
   onClosed: () => void;
   linkEdit: any | { label: string, link: string, category: string } | null;
-  remove: (link: string) => void;
 }
 
-export default function EditLink({ onClosed, linkEdit, remove }: EditLinkProps) {
-  console.info("🚀 ~ EditLink ~ linkEdit:", linkEdit)
+const schema = z.object({
+  url: z.string(),
+})
+
+export default function EditLink({ onClosed, linkEdit }: EditLinkProps) {
+  const { profile } = userStore()
   const { midia } = linkEdit.cd_social_midia_fk
-  const [link, setLink] = useState(linkEdit?.link)
-  const { mutate: deleteMidiaLinks } = useDeleteMidiaLinks()
+  const { mutate: updateMidiaLinks } = useUpdateMidiaLinks(linkEdit?.cd_social_midia_link || "")
+  const { mutate: deleteMidiaLinks } = useDeleteMidiaLinks(profile?.cdPerfil || '')
   const name = midia.toLowerCase().toString().replace(" ", '')
   const Icon = Icons[name as keyof typeof Icons];
+  // const [link, setLink] = useState(linkEdit?.url)
+  const { control, handleSubmit, formState: { errors } } = useForm({
+    defaultValues: {
+      url: linkEdit?.url || ""
+    },
+    resolver: zodResolver(schema)
+  })
 
   function deleteMidiaLink() {
     deleteMidiaLinks(linkEdit.cd_social_midia_link)
+  }
+
+
+  function onSubmit(data: { url: string }) {
+    console.log("🚀 ~ onSubmit ~ data:", data)
+
+    updateMidiaLinks(data)
   }
 
   return (
@@ -34,13 +56,20 @@ export default function EditLink({ onClosed, linkEdit, remove }: EditLinkProps) 
           <Icons.trash width={23} height={23} style={{ position: 'absolute', right: 30, top: 30 }} onPress={deleteMidiaLink} />
           <Icon width={150} height={150} />
           <Text className='font-roboto-700 text-xl mb-3'>{midia}</Text>
-          <InputPerfil
-            isEditable={true}
-            label='Usuário'
-            placeholder='link'
-            value={link}
-            onChangeText={setLink}
-          />
+          <Controller
+            name='url'
+            control={control}
+            render={({ field: { value, onChange, onBlur } }) => (
+              <InputPerfil
+                isEditable={true}
+                label='Usuário'
+                placeholder='link'
+                value={value}
+                onBlur={onBlur}
+                onChangeText={onChange}
+              />
+            )} />
+
 
 
           <View className='flex-row gap-3 w-full'>
@@ -54,7 +83,7 @@ export default function EditLink({ onClosed, linkEdit, remove }: EditLinkProps) 
               variant='active'
               title=' Salvar'
               mediumButton={true}
-              onPress={onClosed}
+              onPress={handleSubmit(onSubmit)}
             />
           </View>
         </View>

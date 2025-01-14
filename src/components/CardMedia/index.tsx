@@ -5,7 +5,7 @@ import { Icons } from '../Icons';
 
 interface CardMedia extends TouchableOpacityProps {
   infoCard: any | { label: string, link: string, category: string };
-  infoMidiaLink: any
+  infoMidiaLink?: any
   isEditabled?: boolean;
   openModal?: (link: { label: string, link: string, category: string } | null) => void
 }

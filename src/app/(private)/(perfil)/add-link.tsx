@@ -17,12 +17,12 @@ interface AddLinksProps {
   }[] | undefined | null
 }
 
-export default function AddLink({ onClose, selectingLinks, selectedLinks }: AddLinksProps) {
+export default function AddLink({ onClose, selectedLinks }: AddLinksProps) {
   const { data } = getMidias();
-  const { profile, userInfo } = userStore()
+  const { profile } = userStore()
   const [midias, setMidias] = useState<any[] | undefined>([])
   const [search, setSearch] = useState('');
-  const { mutate: createMidiaSocialLink } = useCreateSocialMidiaLink(userInfo?.cdUsuario ?? '')
+  const { mutate: createMidiaSocialLink } = useCreateSocialMidiaLink(profile?.cdPerfil ?? '')
 
 
   const handleItemPress = (item: any | { label: string, link: string, category: string }) => {

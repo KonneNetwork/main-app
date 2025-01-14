@@ -1,6 +1,5 @@
 import { api } from "@/services/api";
 import { queryClient } from "@/services/query";
-import { User } from "@/store/userStore";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import Toast from "react-native-toast-message";
@@ -20,8 +19,8 @@ interface UpdateProfileProps {
 
 
 async function updateProfile({ data, id }: UpdateProfileProps) {
-  console.log("🚀 ~ createProfile ~ id:", id)
-  console.log("🚀 ~ createProfile ~ data:", data)
+  console.table("🚀 ~ createProfile ~ id:", id)
+  console.table("🚀 ~ createProfile ~ data:", data)
   try {
     const resultado = await api.put(`perfil/${id}`, {
       foto_perfil: data.image ? data.image : null,
@@ -43,7 +42,6 @@ export function useUpdateProfile(id: string, onClose: () => void) {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['getProfile', { id }] });
       queryClient.refetchQueries({ queryKey: ['getProfile', { id }] });
-      console.log("🚀 ~ useUpdateProfile ~ id:", id)
       Toast.show({
         type: 'success',
         text1: 'Perfil atualizado com sucesso!'

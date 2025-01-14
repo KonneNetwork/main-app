@@ -17,8 +17,8 @@ function Perfil() {
   const [openPerfil, setOpenPerfil] = useState(false);
   const [openAddLinks, setOpenAddLinks] = useState(false);
   const [openEditLinks, setOpenEditLinks] = useState(false);
-  const { userInfo, profile, setMidiaLinks, midiaLinks } = userStore();
-  const { data: midia } = useGetMidiaLinks(profile?.cdPerfil ?? '')
+  const { userInfo, profile } = userStore();
+  const { data: midiaLinks } = useGetMidiaLinks(profile?.cdPerfil ?? '')
   const { data: userProfile } = useGetProfile(userInfo?.cdUsuario ?? '');
 
   const [addLink, setAddLink] = useState<any | { label: string, link: string, category: string }[] | undefined | null>(midiaLinks);
@@ -48,16 +48,9 @@ function Perfil() {
     setOpenEditLinks(true)
   }
 
-  function removeLink(link: string | undefined) {
-    const itemRemove = addLink?.findIndex((item: { midia: string | undefined; }) => item.midia === link)
-    addLink?.splice(itemRemove!, 1)
-  }
-
   async function midiasInfo() {
     userProfile;
     await midiaLinks;
-    setMidiaLinks(midia)
-
     console.log("🚀 ~ midiasInfo ~ midiaLinks:", midiaLinks)
     console.log("🚀 ~ midiasInfo ~ userProfile:", userProfile)
   }
@@ -65,7 +58,7 @@ function Perfil() {
 
   useEffect(() => {
     midiasInfo();
-  }, [midia])
+  }, [midiaLinks])
 
   // useEffect(() => {
   //   const fetchData = async () => {
@@ -161,7 +154,7 @@ function Perfil() {
           <View
             style={{ flex: 1, backgroundColor: "#0000002f" }}
           >
-            <EditLink onClosed={handleCloseModalEditLinks} linkEdit={editLink} remove={removeLink} />
+            <EditLink onClosed={handleCloseModalEditLinks} linkEdit={editLink} />
           </View>
         </Modal>
       </KeyboardAvoidingView>

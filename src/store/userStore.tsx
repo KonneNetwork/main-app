@@ -17,13 +17,13 @@ interface Midia {
   categoria: string,
 }
 
-export interface MidiaLinks {
-  cdPerfil: string,
-  cdSocialMidia?: string,
-  midia: Midia,
-  cdSocialMidiaLink: string,
-  url?: string
-}
+// export interface MidiaLinks {
+//   cdPerfil: string,
+//   cdSocialMidia?: string,
+//   midia: Midia,
+//   cdSocialMidiaLink: string,
+//   url?: string
+// }
 
 export interface User {
   bairro?: string | null;
@@ -58,7 +58,6 @@ export interface Profile {
   ocupacao?: string;
   nomePerfil?: string;
   temaPerfil?: string;
-  midiaLinks?: MidiaLinks[] | null;
 }
 
 interface State {
@@ -66,7 +65,6 @@ interface State {
   token: string | null;
   shouldPersist: boolean;
   profile: Profile | null;
-  midiaLinks: MidiaLinks[] | null;
 }
 
 interface Actions {
@@ -76,7 +74,7 @@ interface Actions {
   logout: () => void;
   setShouldPersist: (shouldPersist: boolean) => void;
   setProfile: (profile: Profile) => void
-  setMidiaLinks: (midiaSocialLinks: MidiaLinks[]) => void;
+
   // addKonnexao: (id: string | number) => void;
   // addKonnexaoPending: (id: string | number) => void
 }
@@ -89,7 +87,7 @@ export const userStore = create<State & Actions>()(
     token: null,
     userInfo: null,
     profile: null,
-    midiaLinks: [],
+
     // login: (email, password) => {
     //   const user = usersData.find(user => {
     //     return user.email === email && user.senha === password
@@ -118,10 +116,6 @@ export const userStore = create<State & Actions>()(
     setProfile: (profile: Profile) => {
       set({ profile })
     },
-    setMidiaLinks: (midiaLinks: MidiaLinks[]) => {
-      set({ midiaLinks })
-    }
-
     // addKonnexaoPending: (id) => set((state) => {
     //   if (state.profile) {
     //     const updatedFriends = state.profile.konnexoes.includes(id)
