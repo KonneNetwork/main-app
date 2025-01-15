@@ -15,9 +15,10 @@ async function createMidiaSocialLink({ cdPerfil, cdSocialMidia }: CreateSocialMi
     const resultado = await api.post('midia-links', {
       cd_perfil: cdPerfil,
       cd_social_midia: cdSocialMidia,
-
     })
+
     return resultado.data
+
   } catch (error) {
     throw error
   }

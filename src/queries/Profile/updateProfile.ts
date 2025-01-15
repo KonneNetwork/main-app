@@ -19,8 +19,6 @@ interface UpdateProfileProps {
 
 
 async function updateProfile({ data, id }: UpdateProfileProps) {
-  console.table("🚀 ~ createProfile ~ id:", id)
-  console.table("🚀 ~ createProfile ~ data:", data)
   try {
     const resultado = await api.put(`perfil/${id}`, {
       foto_perfil: data.image ? data.image : null,

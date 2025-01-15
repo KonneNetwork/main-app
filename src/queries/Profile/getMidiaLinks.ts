@@ -10,7 +10,6 @@ async function getMidiasLinks(id: string, setSocialMidiaLinks: (item: any[]) => 
   const { data } = await api.get(`midia-perfil/${id}`)
   const dataMidiasLinks = data
   setSocialMidiaLinks(data)
-  console.log("🚀 ~ getMidiasLinks ~ socialMidiaLinks:", socialMidiaLinks)
   return dataMidiasLinks;
 }
 

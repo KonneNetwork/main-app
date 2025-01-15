@@ -9,8 +9,6 @@ import CardMedia from '@/components/CardMedia';
 import EditLink from './edit-link';
 import { userStore } from '@/store/userStore';
 import useGetProfile from '@/queries/Profile/getProfile';
-import { useFocusEffect } from 'expo-router';
-import getMidias from '@/queries/Profile/getMidias';
 import { useGetMidiaLinks } from '@/queries/Profile/getMidiaLinks';
 
 function Perfil() {

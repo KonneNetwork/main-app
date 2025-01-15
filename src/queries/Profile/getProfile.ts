@@ -1,8 +1,6 @@
 import { api } from "@/services/api";
 import { Profile, userStore } from "@/store/userStore";
 import { useQuery } from "@tanstack/react-query";
-import Toast from "react-native-toast-message";
-import { useStore } from "zustand";
 
 async function getProfile(id: string, setProfile: (profile: Profile) => void) {
 
@@ -22,18 +20,9 @@ async function getProfile(id: string, setProfile: (profile: Profile) => void) {
 
 }
 
-// export default function useGetProfile(id: string) {
-//   return useQuery({
-//     queryKey: ['getProfile', { id }],
-//     queryFn: () => getProfile(id),
-//   })
-// }
-
 export default function useGetProfile(id: string) {
-  // Obtém a função setProfile do Zustand
   const { setProfile } = userStore();
 
-  // UseQuery para buscar o perfil
   const { data, error, isLoading, refetch } = useQuery({
     queryKey: ['getProfile', { id }],
     queryFn: () => getProfile(id, setProfile),

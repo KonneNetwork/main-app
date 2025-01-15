@@ -1,5 +1,6 @@
 import { ProgressBar } from '@/components/ProgressBar'
 import AgeSelector from '@/components/Seletor'
+import useGetTags from '@/queries/tags/getTags'
 import { Ionicons } from '@expo/vector-icons'
 import classNames from 'classnames'
 import { router } from 'expo-router'
@@ -11,19 +12,9 @@ const etapas = [
     id: "1",
     title: "Qual seu assunto preferido?",
     subtitle: "Escolha até 5 assuntos:",
+    tema: "Subjects",
     maxSelections: 5,
-    options: [
-      { id: 1, title: 'Networking' },
-      { id: 2, title: 'Marketing' },
-      { id: 3, title: 'TI' },
-      { id: 4, title: 'Publicidade' },
-      { id: 5, title: 'Cibersegurança' },
-      { id: 6, title: 'Dança' },
-      { id: 7, title: 'Musica' },
-      { id: 8, title: 'Escrita' },
-      { id: 9, title: 'Esporte' },
-      { id: 10, title: 'Design' }
-    ]
+    options: []
   },
   {
     id: "2",
@@ -71,13 +62,15 @@ const etapas = [
   }
 ]
 
-
 export default function Preference() {
   const statusBarInitialValue = 100 / etapas.length
   const [stage, setStage] = useState(0)
   const [statusBarProgress, setStatusBarProgress] = useState(statusBarInitialValue)
   const [selectedOptions, setSelectedOptions] = useState<{ [key: string]: string[] }>({})
   const lastQuestion = etapas.length - 1;
+
+  const { data } = useGetTags()
+  console.log("🚀 ~ Preference ~ data:", data)
 
   const handleSelectOption = (stageId: string, optionId: string) => {
     setSelectedOptions((prev) => {
@@ -126,10 +119,10 @@ export default function Preference() {
       showsVerticalScrollIndicator={false}
       bounces={false}
       className='bg-white'
-      data={etapas[stage].options}
+      data={data}
       contentContainerStyle={{ paddingHorizontal: 30, paddingVertical: 64, flexGrow: 1, justifyContent: 'center', alignContent: 'center' }}
       renderItem={({ item }) => {
-        const isSelected = currentStageOptions.includes(item.title)
+        const isSelected = currentStageOptions.includes(item?.tag)
         return (
           <TouchableOpacity
             className={
@@ -147,7 +140,7 @@ export default function Preference() {
             }, {
               'color-[#528A8C]': !isSelected
             })}
-            >{item.title}</Text>
+            >{item.tag}</Text>
           </TouchableOpacity>
         )
       }}

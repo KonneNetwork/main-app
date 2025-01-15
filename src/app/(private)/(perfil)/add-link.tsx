@@ -5,9 +5,9 @@ import { FlatList } from 'react-native-gesture-handler';
 import InputSearch from '@/components/InputSearch';
 import { Categorias, dataLinks } from '@/constants/mediasLink';
 import CardMedia from '@/components/CardMedia';
-import getMidias from '@/queries/Profile/getMidias';
 import { useCreateSocialMidiaLink } from '@/queries/Profile/createMidiaLinks';
 import { userStore } from '@/store/userStore';
+import getMidias from '@/queries/socialMidia/getMidias';
 
 interface AddLinksProps {
   onClose: () => void;

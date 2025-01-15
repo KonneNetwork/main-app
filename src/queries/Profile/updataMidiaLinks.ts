@@ -5,7 +5,6 @@ import { AxiosError } from "axios";
 import Toast from "react-native-toast-message";
 
 async function updateMidiaLinks(id: string, data: { url: string }) {
-  console.log("🚀 ~ updateMidiaLinks ~ data:", data)
   try {
     const resultado = await api.put(`midia-links/${id}`, {
       url: data.url
