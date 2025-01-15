@@ -16,7 +16,7 @@ async function updateMidiaLinks(id: string, data: { url: string }) {
   }
 }
 
-export function useUpdateMidiaLinks(idSocialMidia: string, id: string) {
+export function useUpdateMidiaLinks(idSocialMidia: string, id: string, onClosed: () => void) {
   return useMutation({
     mutationKey: ['updateMidiaLinks'],
     mutationFn: (data: { url: string }) => updateMidiaLinks(idSocialMidia, data),
@@ -27,7 +27,7 @@ export function useUpdateMidiaLinks(idSocialMidia: string, id: string) {
         type: 'success',
         text1: 'link adicionado com sucesso!'
       });
-
+      onClosed();
     },
     onError: (err) => {
       console.log(err)

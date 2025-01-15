@@ -22,7 +22,7 @@ export default function AddLink({ onClose, selectedLinks }: AddLinksProps) {
   const { profile } = userStore()
   const [midias, setMidias] = useState<any[] | undefined>([])
   const [search, setSearch] = useState('');
-  const { mutate: createMidiaSocialLink } = useCreateSocialMidiaLink(profile?.cdPerfil ?? '')
+  const { mutate: createMidiaSocialLink } = useCreateSocialMidiaLink(profile?.cdPerfil ?? '', onClose)
 
 
   const handleItemPress = (item: any | { label: string, link: string, category: string }) => {

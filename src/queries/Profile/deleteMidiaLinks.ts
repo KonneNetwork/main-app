@@ -13,7 +13,7 @@ async function deleteMidiaLinks(id: string) {
   }
 }
 
-export function useDeleteMidiaLinks(id: string) {
+export function useDeleteMidiaLinks(id: string, onClosed: () => void) {
   return useMutation({
     mutationKey: ['deleteMidialinks'],
     mutationFn: (id: string) => deleteMidiaLinks(id),
@@ -24,7 +24,7 @@ export function useDeleteMidiaLinks(id: string) {
         type: 'success',
         text1: 'link apagado com sucesso!'
       });
-
+      onClosed();
     },
     onError: (err) => {
       console.log(err)

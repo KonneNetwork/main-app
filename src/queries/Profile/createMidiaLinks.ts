@@ -24,7 +24,7 @@ async function createMidiaSocialLink({ cdPerfil, cdSocialMidia }: CreateSocialMi
 
 }
 
-export function useCreateSocialMidiaLink(id: string) {
+export function useCreateSocialMidiaLink(id: string, onClosed: () => void) {
   return useMutation({
     mutationKey: ["createMidiaSocialLink"],
     mutationFn: (data: CreateSocialMidiaLink) => createMidiaSocialLink(data),
@@ -35,15 +35,11 @@ export function useCreateSocialMidiaLink(id: string) {
         type: 'success',
         text1: 'midia adicionada com sucesso!'
       });
-
+      onClosed();
     },
     onError: (err) => {
       if (err instanceof AxiosError) {
-        Toast.show({
-          type: 'error',
-          text1: 'Mensagem de erro',
-          text2: err.response?.data.error || 'Houve um erro tente novamente'
-        })
+        console.log(err.response?.data.error)
       }
     }
 
