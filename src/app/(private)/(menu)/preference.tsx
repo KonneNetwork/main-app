@@ -1,13 +1,10 @@
-import Button from '@/components/Button'
 import { ProgressBar } from '@/components/ProgressBar'
 import AgeSelector from '@/components/Seletor'
 import { Ionicons } from '@expo/vector-icons'
 import classNames from 'classnames'
 import { router } from 'expo-router'
 import React, { useState } from 'react'
-import { View, Text, FlatList, TouchableOpacity, useWindowDimensions, LayoutChangeEvent } from 'react-native'
-import Slider from '@react-native-community/slider';
-import { Picker } from '@react-native-picker/picker'
+import { View, Text, FlatList, TouchableOpacity } from 'react-native'
 
 const etapas = [
   {
@@ -80,8 +77,6 @@ export default function Preference() {
   const [stage, setStage] = useState(0)
   const [statusBarProgress, setStatusBarProgress] = useState(statusBarInitialValue)
   const [selectedOptions, setSelectedOptions] = useState<{ [key: string]: string[] }>({})
-  const [age, setAge] = useState<number>(18)
-  const { width, height } = useWindowDimensions()
   const lastQuestion = etapas.length - 1;
 
   const handleSelectOption = (stageId: string, optionId: string) => {
@@ -106,20 +101,6 @@ export default function Preference() {
     })
   }
 
-
-
-  // const handleSelectOption = (stageId: string, optionId: string) => {
-  //   setSelectedOptions(prev => {
-  //     const selectedStageOptions = prev[stageId] || []
-  //     const isSelected = selectedStageOptions.includes(optionId)
-
-  //     const updatedStageOptions = isSelected
-  //       ? selectedStageOptions.filter(id => id !== optionId)
-  //       : [...selectedStageOptions, optionId]
-
-  //     return { ...prev, [stageId]: updatedStageOptions.slice(0, 5) }
-  //   })
-  // }
 
   function nextProgress() {
     if (stage === (lastQuestion)) {
@@ -152,7 +133,7 @@ export default function Preference() {
         return (
           <TouchableOpacity
             className={
-              classNames(' my-2 justify-center items-center p-6 rounded-xl ',
+              classNames(' my-2 justify-center items-center p-6 rounded-xl',
                 {
                   "bg-surface-brand-main-selected border-2 border-surface-brand-main-selected": isSelected
                 }, {
@@ -180,28 +161,9 @@ export default function Preference() {
           <ProgressBar progress={statusBarProgress} />
           <Text className='text-4xl font-inter-500 color-[#528A8C]'>{etapas[stage].title}</Text>
           {etapas[stage]?.subtitle && <Text>{etapas[stage].subtitle}</Text>}
-          {/* <AgeSelector /> */}
-          {/* <View className='w-full bg-surface-brand-main-default h-12'>
-            <Text className=''>Ola</Text>
-          </View> */}
+
           {stage === lastQuestion &&
             <>
-              {/* <Picker >
-                <Picker.Item value={1} label='1' />
-
-              </Picker>
-              <View className=' justify-center mt-9 gap-5'>
-                <Text className='font-outfit-700 text-2xl text-center'>{age}</Text>
-                <Slider
-                  value={age}
-                  onValueChange={(e) => { setAge(Math.trunc(Number(e))) }}
-                  style={{ transform: [{ rotate: '90deg' }], height: (height / 2.5) }}
-                  minimumValue={0}
-                  maximumValue={150}
-                  inverted
-                  vertical={true}
-                />
-              </View> */}
               <AgeSelector />
             </>
           }

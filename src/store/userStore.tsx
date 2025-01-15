@@ -65,6 +65,7 @@ interface State {
   token: string | null;
   shouldPersist: boolean;
   profile: Profile | null;
+  socialMidiaLinks: any[] | null;
 }
 
 interface Actions {
@@ -74,6 +75,7 @@ interface Actions {
   logout: () => void;
   setShouldPersist: (shouldPersist: boolean) => void;
   setProfile: (profile: Profile) => void
+  setSocialMidiaLinks: (item: any[]) => void
 
   // addKonnexao: (id: string | number) => void;
   // addKonnexaoPending: (id: string | number) => void
@@ -87,6 +89,8 @@ export const userStore = create<State & Actions>()(
     token: null,
     userInfo: null,
     profile: null,
+    socialMidiaLinks: [],
+
 
     // login: (email, password) => {
     //   const user = usersData.find(user => {
@@ -115,6 +119,9 @@ export const userStore = create<State & Actions>()(
     },
     setProfile: (profile: Profile) => {
       set({ profile })
+    },
+    setSocialMidiaLinks(items) {
+      set(() => ({ socialMidiaLinks: [...items] }))
     },
     // addKonnexaoPending: (id) => set((state) => {
     //   if (state.profile) {

@@ -16,10 +16,10 @@ async function updateMidiaLinks(id: string, data: { url: string }) {
   }
 }
 
-export function useUpdateMidiaLinks(id: string) {
+export function useUpdateMidiaLinks(idSocialMidia: string, id: string) {
   return useMutation({
     mutationKey: ['updateMidiaLinks'],
-    mutationFn: (data: { url: string }) => updateMidiaLinks(id, data),
+    mutationFn: (data: { url: string }) => updateMidiaLinks(idSocialMidia, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['getMidiaLinks', { id }] });
       queryClient.refetchQueries({ queryKey: ['getMidiaLinks', { id }] });

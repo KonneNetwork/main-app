@@ -17,12 +17,12 @@ function Perfil() {
   const [openPerfil, setOpenPerfil] = useState(false);
   const [openAddLinks, setOpenAddLinks] = useState(false);
   const [openEditLinks, setOpenEditLinks] = useState(false);
-  const { userInfo, profile } = userStore();
+  const { userInfo, profile, socialMidiaLinks } = userStore();
   const { data: midiaLinks } = useGetMidiaLinks(profile?.cdPerfil ?? '')
   const { data: userProfile } = useGetProfile(userInfo?.cdUsuario ?? '');
 
-  const [addLink, setAddLink] = useState<any | { label: string, link: string, category: string }[] | undefined | null>(midiaLinks);
-  const [editLink, setEditLink] = useState<any | { label: string, link: string, category: string } | null>(midiaLinks);
+  const [addLink, setAddLink] = useState<any | { label: string, link: string, category: string }[] | undefined | null>(socialMidiaLinks);
+  const [editLink, setEditLink] = useState<any | { label: string, link: string, category: string } | null>(socialMidiaLinks);
   function handleCloseModalPerfil() {
     setOpenPerfil(false)
   }
@@ -48,17 +48,18 @@ function Perfil() {
     setOpenEditLinks(true)
   }
 
-  async function midiasInfo() {
+  function midiasInfo() {
     userProfile;
-    await midiaLinks;
-    console.log("🚀 ~ midiasInfo ~ midiaLinks:", midiaLinks)
-    console.log("🚀 ~ midiasInfo ~ userProfile:", userProfile)
+    midiaLinks;
   }
+
+
+  useEffect(() => { setAddLink(socialMidiaLinks) }, [editLink, socialMidiaLinks])
 
 
   useEffect(() => {
     midiasInfo();
-  }, [midiaLinks])
+  }, [])
 
   // useEffect(() => {
   //   const fetchData = async () => {
@@ -89,7 +90,7 @@ function Perfil() {
       <KeyboardAvoidingView className="flex-1" behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
         <FlatList
           className='bg-surface-primary flex-1'
-          data={addLink}
+          data={midiaLinks}
           ListHeaderComponentStyle={{ alignItems: 'center' }}
           ListHeaderComponent={
             <>

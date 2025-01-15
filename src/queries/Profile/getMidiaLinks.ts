@@ -1,25 +1,26 @@
 import { api } from "@/services/api";
+import { userStore } from "@/store/userStore";
 import { useQuery } from "@tanstack/react-query"
 
 interface getMidiaLinksProps {
   id: string
 }
 
-async function getMidiasLinks(id: string) {
+async function getMidiasLinks(id: string, setSocialMidiaLinks: (item: any[]) => void, socialMidiaLinks: any[] | null) {
   const { data } = await api.get(`midia-perfil/${id}`)
-
   const dataMidiasLinks = data
-  console.log("🚀 ~ getMidiasLinks ~ data:", data)
-
+  setSocialMidiaLinks(data)
+  console.log("🚀 ~ getMidiasLinks ~ socialMidiaLinks:", socialMidiaLinks)
   return dataMidiasLinks;
 }
 
 
 
 export function useGetMidiaLinks(id: string) {
+  const { setSocialMidiaLinks, socialMidiaLinks } = userStore()
   const { data, error, isLoading, refetch } = useQuery({
-    queryKey: ['getMidiaLinks'],
-    queryFn: () => getMidiasLinks(id)
+    queryKey: ['getMidiaLinks', { id }],
+    queryFn: () => getMidiasLinks(id, setSocialMidiaLinks, socialMidiaLinks)
 
   })
 

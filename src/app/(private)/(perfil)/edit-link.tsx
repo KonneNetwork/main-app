@@ -22,7 +22,7 @@ const schema = z.object({
 export default function EditLink({ onClosed, linkEdit }: EditLinkProps) {
   const { profile } = userStore()
   const { midia } = linkEdit.cd_social_midia_fk
-  const { mutate: updateMidiaLinks } = useUpdateMidiaLinks(linkEdit?.cd_social_midia_link || "")
+  const { mutate: updateMidiaLinks } = useUpdateMidiaLinks(linkEdit?.cd_social_midia_link || "", profile?.cdPerfil || "")
   const { mutate: deleteMidiaLinks } = useDeleteMidiaLinks(profile?.cdPerfil || '')
   const name = midia.toLowerCase().toString().replace(" ", '')
   const Icon = Icons[name as keyof typeof Icons];
