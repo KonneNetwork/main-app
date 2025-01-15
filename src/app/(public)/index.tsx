@@ -47,7 +47,6 @@ export default function SignIn() {
   useEffect(() => {
     Localization
     // changeLanguage(String(Localization.getLocales().map(item => item.languageTag)))
-    changeLanguage('en')
   }, [])
 
   return (

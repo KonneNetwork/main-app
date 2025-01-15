@@ -21,7 +21,7 @@ const initI18n = async () => {
 
 i18n.use(initReactI18next).init({
   compatibilityJSON: "v4",
-  lng: 'en',
+  lng: 'pt',
   resources: languageResources,
   fallbackLng: ['pt-BR', 'en-US'],
   interpolation: {
