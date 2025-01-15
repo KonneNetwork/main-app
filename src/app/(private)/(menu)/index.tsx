@@ -32,7 +32,7 @@ function Menu() {
             onPress={() => router.navigate('/(perfil)/')}
           >
 
-            <View className='flex-row justify-between items-center gap-4'>
+            <View className='flex-row justify-between items-center gap-2'>
               <View className='rounded-full  overflow-hidden' style={{ borderColor: profile?.temaPerfil, borderWidth: 3 }}>
                 {profile?.fotoPerfil ? <Image source={{ uri: profile.fotoPerfil }} className=' w-16 h-16 ' /> :
                   <Icons.user
@@ -43,15 +43,15 @@ function Menu() {
 
               </View>
               <View className='bg-black'></View>
-              <View>
-                {(userInfo?.nomeUsuario || profile?.nomePerfil) && <Text className='color-[#374151] font-inter-600'>{profile?.nomePerfil ? profile.nomePerfil : userInfo?.nomeUsuario}</Text>}
-                {profile?.ocupacao && <Text className='color-[#6B7280] font-inter-500'>{profile?.ocupacao}</Text>}
-
+              <View className='flex-1'>
+                {(userInfo?.nomeUsuario || profile?.nomePerfil) && <Text className='color-[#374151] font-inter-600 flex-wrap'>{profile?.nomePerfil ? profile.nomePerfil : userInfo?.nomeUsuario}</Text>}
+                {profile?.ocupacao && <Text className='color-[#6B7280] font-inter-500 flex-wrap'>{profile?.ocupacao}</Text>}
               </View>
+              <TouchableOpacity className='bg-[#F9F9F9] p-3 rounded-full'>
+                <MaterialCommunityIcons name="bell-outline" size={25} color="#374151" />
+              </TouchableOpacity>
             </View>
-            <TouchableOpacity className='bg-[#F9F9F9] p-3 rounded-full'>
-              <MaterialCommunityIcons name="bell-outline" size={25} color="#374151" />
-            </TouchableOpacity>
+
           </TouchableOpacity>
 
           <CardConfiguration bigContainer={true} title='Preferências' onPress={() => router.navigate('/(private)/(menu)/preference')}>
