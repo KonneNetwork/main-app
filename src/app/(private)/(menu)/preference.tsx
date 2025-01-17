@@ -1,75 +1,58 @@
+import Button from '@/components/Button'
 import { ProgressBar } from '@/components/ProgressBar'
 import AgeSelector from '@/components/Seletor'
-import useGetTags from '@/queries/tags/getTags'
 import { Ionicons } from '@expo/vector-icons'
 import classNames from 'classnames'
 import { router } from 'expo-router'
-import React, { useState } from 'react'
-import { View, Text, FlatList, TouchableOpacity } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { View, Text, FlatList, TouchableOpacity, useWindowDimensions } from 'react-native'
+import Slider from '@react-native-community/slider';
+import useGetTags from '@/queries/tags/getTags'
 
 const etapas = [
   {
     id: "1",
     title: "Qual seu assunto preferido?",
     subtitle: "Escolha até 5 assuntos:",
-    tema: "Subjects",
     maxSelections: 5,
-    options: []
+    tipo_tag: "Interesses",
   },
   {
     id: "2",
     title: "Quais são seus objetivos?",
     subtitle: "Selecione até 2:",
     maxSelections: 2,
-    options: [
-      { id: 1, title: "Networking" },
-      { id: 2, title: "Contratar" },
-      { id: 3, title: "Social" },
-      { id: 4, title: "Educação" }
-    ]
+    tipo_tag: "Objetivos",
   },
   {
     id: "3",
     title: "Quero me Konnectar com pessoas das seguintes áreas:",
     subtitle: "Escolha até 5:",
     maxSelections: 5,
-    options: [
-      { id: 1, title: 'Design' },
-      { id: 2, title: 'Arquitertura' },
-      { id: 3, title: 'Negócios' },
-      { id: 4, title: 'Devs' },
-      { id: 5, title: 'Cibersegurança' },
-      { id: 6, title: 'Dança' },
-      { id: 7, title: 'Musica' },
-      { id: 8, title: 'Escrita' },
-      { id: 9, title: 'Esporte' },
-    ]
+    tipo_tag: "Interesses",
   },
   {
     id: "4",
     title: "Como você se identifica?",
     maxSelections: 1,
-    options: [
-      { id: 1, title: 'Homem' },
-      { id: 2, title: 'Mulher' },
-      { id: 4, title: 'Prefiro não informar' },
-    ]
+    tipo_tag: "Genero",
   },
   {
     id: "5",
     title: "Qual a sua idade?",
-    slider: [18, 101]
-  }
-]
+    slider: [18, 101],
+  },
+];
+
 
 export default function Preference() {
   const statusBarInitialValue = 100 / etapas.length
   const [stage, setStage] = useState(0)
   const [statusBarProgress, setStatusBarProgress] = useState(statusBarInitialValue)
   const [selectedOptions, setSelectedOptions] = useState<{ [key: string]: string[] }>({})
+  const [age, setAge] = useState<number>(18)
   const lastQuestion = etapas.length - 1;
-
-  const { data } = useGetTags()
+  const {data} = useGetTags()
   console.log("🚀 ~ Preference ~ data:", data)
 
   const handleSelectOption = (stageId: string, optionId: string) => {
@@ -94,6 +77,25 @@ export default function Preference() {
     })
   }
 
+  const optionsByStage = etapas.map(etapa => {
+    const options = data
+      ?.filter((tag: { tipo_tag: string | undefined }) => tag.tipo_tag === etapa.tipo_tag)
+      .map((tag: { cd_tag: any; tag: any }) => ({ id: tag.cd_tag, title: tag.tag })) || [];
+    return { ...etapa, options };
+  });
+
+  // const handleSelectOption = (stageId: string, optionId: string) => {
+  //   setSelectedOptions(prev => {
+  //     const selectedStageOptions = prev[stageId] || []
+  //     const isSelected = selectedStageOptions.includes(optionId)
+
+  //     const updatedStageOptions = isSelected
+  //       ? selectedStageOptions.filter(id => id !== optionId)
+  //       : [...selectedStageOptions, optionId]
+
+  //     return { ...prev, [stageId]: updatedStageOptions.slice(0, 5) }
+  //   })
+  // }
 
   function nextProgress() {
     if (stage === (lastQuestion)) {
@@ -112,37 +114,39 @@ export default function Preference() {
     }
   }
 
-  const currentStageOptions = selectedOptions[etapas[stage].id] || []
+  const currentStage = optionsByStage[stage];
+  const currentStageOptions = selectedOptions[currentStage.id] || [];
+
+
+  useEffect(()=>{  console.log("🚀 ~ Preference ~ selectedOptions:", selectedOptions, age)},[selectedOptions, age])
 
   return (
     <FlatList
-      showsVerticalScrollIndicator={false}
-      bounces={false}
       className='bg-white'
-      data={data}
-      contentContainerStyle={{ paddingHorizontal: 30, paddingVertical: 64, flexGrow: 1, justifyContent: 'center', alignContent: 'center' }}
+      data={currentStage.options}
+      contentContainerStyle={{ padding: 30, flexGrow: 1, justifyContent: 'center', alignContent: 'center' }}
       renderItem={({ item }) => {
-        const isSelected = currentStageOptions.includes(item?.tag)
+        const isSelected = currentStageOptions.includes(item.id);
         return (
           <TouchableOpacity
-            className={
-              classNames(' my-2 justify-center items-center p-6 rounded-xl',
-                {
-                  "bg-surface-brand-main-selected border-2 border-surface-brand-main-selected": isSelected
-                }, {
-                'border-2 border-[#528A8C] bg-[#EEEEEE]': !isSelected
-              })
-            }
-            onPress={() => handleSelectOption(etapas[stage].id, item.title)}
+            className={classNames(
+              'my-2 justify-center items-center p-6 rounded-xl',
+              { 'bg-surface-brand-main-selected border-2 border-surface-brand-main-selected': isSelected },
+              { 'border-2 border-[#528A8C] bg-[#EEEEEE]': !isSelected }
+            )}
+            onPress={() => handleSelectOption(currentStage.id, item.id)}
           >
-            <Text className={classNames('color-[#528A8C] font-outfit-600 text-lg', {
-              'color-white': isSelected
-            }, {
-              'color-[#528A8C]': !isSelected
-            })}
-            >{item.tag}</Text>
+            <Text
+              className={classNames(
+                'color-[#528A8C] font-outfit-600 text-lg',
+                { 'color-white': isSelected },
+                { 'color-[#528A8C]': !isSelected }
+              )}
+            >
+              {item.title}
+            </Text>
           </TouchableOpacity>
-        )
+        );
       }}
       ListHeaderComponentStyle={{ marginBottom: 30 }}
       ListHeaderComponent={
@@ -154,11 +158,15 @@ export default function Preference() {
           <ProgressBar progress={statusBarProgress} />
           <Text className='text-4xl font-inter-500 color-[#528A8C]'>{etapas[stage].title}</Text>
           {etapas[stage]?.subtitle && <Text>{etapas[stage].subtitle}</Text>}
-
+          {/* <AgeSelector /> */}
+          {/* <View className='w-full bg-surface-brand-main-default h-12'>
+            <Text className=''>Ola</Text>
+          </View> */}
           {stage === lastQuestion &&
-            <>
-              <AgeSelector />
-            </>
+
+          <>
+            <AgeSelector setAge={setAge} />
+          </>
           }
         </>
       }
