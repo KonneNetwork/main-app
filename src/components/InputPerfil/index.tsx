@@ -13,11 +13,9 @@ interface InputPerfilProps extends TextInputProps {
 
 function InputPerfil({ value, multiline = false, isEditable = true, label, showEditIcon = true, onOpen, ...rest }: InputPerfilProps) {
 
-  function setValue(e: string): void {
+  function setValue(e: any): void {
     throw new Error('Function not implemented.');
   }
-
-
 
   return (
 
@@ -42,7 +40,8 @@ function InputPerfil({ value, multiline = false, isEditable = true, label, showE
           maxLength={164}
           multiline={multiline}
           value={value}
-          onChangeText={(e) => setValue(e)} {...rest}
+          onChangeText={(e) => setValue(e)}
+          {...rest}
         />
 
         {(!isEditable || (multiline && ((value?.length) || 0) <= 0 && showEditIcon)) &&

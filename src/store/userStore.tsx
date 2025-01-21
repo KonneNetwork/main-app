@@ -25,6 +25,11 @@ interface Midia {
 //   url?: string
 // }
 
+interface LatLog {
+  latitude: number;
+  longitude: number;
+}
+
 export interface User {
   bairro?: string | null;
   cdUsuario: string;
@@ -47,6 +52,7 @@ export interface User {
   online: boolean;
   rua?: string | null;
   uuid?: string | null;
+  coordenadas: LatLog
 }
 
 export interface Profile {

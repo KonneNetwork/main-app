@@ -12,14 +12,14 @@ import useGetTags from '@/queries/tags/getTags'
 const etapas = [
   {
     id: "1",
-    title: "Qual seu assunto preferido?",
+    title: "Qual a sua área de atuação?",
     subtitle: "Escolha até 5 assuntos:",
     maxSelections: 5,
     tipo_tag: "Interesses",
   },
   {
     id: "2",
-    title: "Quais são seus objetivos?",
+    title: "Quais são seus objetivos na Konne?",
     subtitle: "Selecione até 2:",
     maxSelections: 2,
     tipo_tag: "Objetivos",
@@ -52,7 +52,7 @@ export default function Preference() {
   const [selectedOptions, setSelectedOptions] = useState<{ [key: string]: string[] }>({})
   const [age, setAge] = useState<number>(18)
   const lastQuestion = etapas.length - 1;
-  const {data} = useGetTags()
+  const { data } = useGetTags()
   console.log("🚀 ~ Preference ~ data:", data)
 
   const handleSelectOption = (stageId: string, optionId: string) => {
@@ -118,7 +118,7 @@ export default function Preference() {
   const currentStageOptions = selectedOptions[currentStage.id] || [];
 
 
-  useEffect(()=>{  console.log("🚀 ~ Preference ~ selectedOptions:", selectedOptions, age)},[selectedOptions, age])
+  useEffect(() => { console.log("🚀 ~ Preference ~ selectedOptions:", selectedOptions, age) }, [selectedOptions, age])
 
   return (
     <FlatList
@@ -164,9 +164,9 @@ export default function Preference() {
           </View> */}
           {stage === lastQuestion &&
 
-          <>
-            <AgeSelector setAge={setAge} />
-          </>
+            <>
+              <AgeSelector setAge={setAge} />
+            </>
           }
         </>
       }

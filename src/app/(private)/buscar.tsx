@@ -12,6 +12,7 @@ import { StatusBar } from 'expo-status-bar';
 import { router, useNavigation } from 'expo-router';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { CommonActions, StackActions } from '@react-navigation/native';
+import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete"
 
 interface LatLog {
   latitude: number;
@@ -42,19 +43,23 @@ interface SocialMediaLink {
   link: string;
 }
 
-// interface Coordenadas {
-//   latitude: number;
-//   longitude: number;
-// }
+interface Coordenadas {
+  latitude: number;
+  longitude: number;
+}
 
-// // Tipagem das props do MarkerComponent
-// interface MarkerComponentProps {
-//   item: User & { coordinates: ColorGamut };
-//   onPress: (user: User) => void;
-// }
+// Tipagem das props do MarkerComponent
+interface MarkerComponentProps {
+  item: User & { coordinates: ColorGamut };
+  onPress: (user: User) => void;
+}
 
 function Buscar() {
-  const [userLocation, setUserLocation] = useState<LatLog | null>(null);
+  const [userLocation, setUserLocation] = useState<LatLog
+  >({
+    latitude: -23.53474453844267,
+    longitude: -46.73403872474612
+  });
   const [errorMsg, setErrorMsg] = useState('');
   const [openModal, setOpenModal] = useState(false)
   const [openInvite, setOpenInvite] = useState(false)
@@ -66,6 +71,7 @@ function Buscar() {
   const [markers, setMarkers] = useState(usersData);
 
   const navigation = useNavigation();
+
 
   async function PermissionLocation() {
     const { status } = await Location.requestForegroundPermissionsAsync();
@@ -89,25 +95,25 @@ function Buscar() {
     setOpenInvite(true);
   }, []);
 
-  // const MarkerComponent = useMemo(() => React.memo(({ item, onPress }: { item: User; onPress: () => void }) => (
-  //   <Marker
-  //     coordinate={item.coordenadas}
-  //     onPress={() => handleMarkerPress(item)}
-  //   >
-  //     <TouchableOpacity>
-  //       <View style={styles.marker}>
-  //         <Image style={styles.image} source={{ uri: item.image }} />
-  //       </View>
-  //     </TouchableOpacity>
-  //   </Marker>
-  // )), [handleMarkerPress]);
+  const MarkerComponent = useMemo(() => React.memo(({ item, onPress }: { item: User; onPress: () => void }) => (
+    <Marker
+      coordinate={item.coordenadas}
+      onPress={() => handleMarkerPress(item)}
+    >
+      <TouchableOpacity>
+        <View style={styles.marker}>
+          <Image style={styles.image} source={{ uri: item.image }} />
+        </View>
+      </TouchableOpacity>
+    </Marker>
+  )), [handleMarkerPress]);
 
-  // function handleAddKonnection(id: number | undefined) {
-  //   if (id) {
-  //     addKonnexao(id);
-  //   }
-  //   setEnableLinks(true);
-  // }
+  function handleAddKonnection(id: number | undefined) {
+    if (id) {
+      addKonnexao(id);
+    }
+    setEnableLinks(true);
+  }
 
   function handleAddKonnectionPending() {
     setOpenInvite(false); setOpenPerfil(true); setEnableLinks(false)
@@ -133,14 +139,14 @@ function Buscar() {
     const saida = navigation.dispatch(StackActions.pop(1))
   }
 
-  // useEffect(() => {
-  //   if (userLocation) {
-  //     setMarkers(usersData.map((user) => ({
-  //       ...user,
-  //       coordenadas: generateNearbyCoordinates(userLocation),
-  //     })));
-  //   }
-  // }, [userLocation]);
+  useEffect(() => {
+    if (userLocation) {
+      setMarkers(usersData.map((user) => ({
+        ...user,
+        coordenadas: generateNearbyCoordinates(userLocation),
+      })));
+    }
+  }, [userLocation]);
 
   if (errorMsg) {
     return (
@@ -164,6 +170,17 @@ function Buscar() {
       <View className=' flex-row absolute items-center top-16 w-[90%] justify-between gap-5 bg-surface-primary z-10 self-center p-1 rounded-full'>
         <Ionicons name="arrow-back-sharp" size={32} color="black" className='ml-3' onPress={() => router.navigate('/(private)/(index)/')} />
         <TextInput className='flex-1 font-inter-700 text-base ' placeholder='Coloque o endereço' />
+        {/* <GooglePlacesAutocomplete
+          placeholder='Search'
+          onPress={(data: any, details = null) => {
+            // 'details' is provided when fetchDetails = true
+            console.log(data, details);
+          }}
+          query={{
+            key: process.env.GOOGLE_API_KEY,
+            language: 'pt-br',
+          }}
+        /> */}
         <TouchableOpacity className='bg-[#528A8C]/30 p-2 rounded-full'>
           <Icons.filter width={32} height={32} />
         </TouchableOpacity>
@@ -172,17 +189,18 @@ function Buscar() {
         provider={PROVIDER_GOOGLE}
         style={{ width: '100%', height: '100%' }}
         region={{
-          latitude: userLocation.latitude,
-          longitude: userLocation.longitude,
+          //-23.53474453844267, -46.73403872474612
+          latitude: userLocation?.latitude ? userLocation.latitude : -23.53474453844267,
+          longitude: userLocation?.longitude ? userLocation?.longitude : -46.73403872474612,
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
         }}
         zoomEnabled
 
       >
-        {/* {markers.map((item, index) => (
+        {markers.map((item, index) => (
           <MarkerComponent key={index} item={item} onPress={() => handleMarkerPress} />
-        ))} */}
+        ))}
 
         <Circle
           center={userLocation}
@@ -190,13 +208,14 @@ function Buscar() {
           strokeColor="rgba(51, 88, 108, 0.4)"
           fillColor="rgba(51, 88, 108, 0.4)"
         />
+
         <Marker coordinate={userLocation} onPress={() => router.navigate('/(perfil)/')}>
-          <View className='rounded-full overflow-hidden border-[16px] border-[#33586C]'>
+          {profile?.fotoPerfil && <View className='rounded-full overflow-hidden border-[16px] border-[#33586C]'>
             <Image
               source={{ uri: profile?.fotoPerfil }}
               className='w-28 h-28'
             />
-          </View>
+          </View>}
         </Marker>
       </MapView>
       <Modal
@@ -275,7 +294,7 @@ function Buscar() {
                 </View>
               </View>
 
-              <View className='bg-black/20 p-5 rounded-3xl mt-16'>
+              {/* <View className='bg-black/20 p-5 rounded-3xl mt-16'>
                 <Text className='color-[#FFFFFF] font-inter-500'>Sobre {selectedUser?.nome.split(" ").slice(0, 1).join("")}</Text>
                 <TextInput
                   editable={false}
@@ -286,13 +305,13 @@ function Buscar() {
                   className="color-[#FFFFFFAD] font-inter-400"
                 />
 
-              </View>
-              {!enableLinks ? <View className='items-center gap-2'>
-                <Text className='font-inter-500 text-base color-white'>
+              </View> */}
+              {!enableLinks ? <View className='items-center gap-4'>
+                {/* <Text className='font-inter-500 text-base color-white'>
                   {selectedUser?.nome.split(" ").slice(0, 1).join("")} fez um pedido de Konnexão
-                </Text>
+                </Text> */}
 
-                <TouchableOpacity className='flex-row  items-center gap-3 bg-surface-brand-main-default p-5  justify-center w-full rounded-md '
+                {/* <TouchableOpacity className='flex-row  items-center gap-3 bg-surface-brand-main-default p-5  justify-center w-full rounded-md '
                 // onPress={() => handleAddKonnection(selectedUser?.id)}
                 >
                   <Icons.heart color={"#fcf9f967"} />
@@ -307,34 +326,45 @@ function Buscar() {
                 >
                   <Text className='font-inter-500 text-xl color-white'>Recusar Pedido</Text>
 
+                </TouchableOpacity> */}
+                <Text className='font-inter-500 text-2xl color-white text-center'>Aguardando {selectedUser?.nome} aceitar sua solicitação</Text>
+
+                <TouchableOpacity className='flex-row  items-center gap-3 border-2 border-[#528A8C] p-5  justify-center w-full rounded-md '
+                  onPress={() => setOpenPerfil(false)}
+                >
+                  <Text className='font-inter-500 text-xl color-white mt-2'>Voltar</Text>
+
                 </TouchableOpacity>
-              </View> : <View className='gap-2'>
-                <Text className='font-inter-500 text-base color-white'>
-                  Links {selectedUser?.nome.split(" ").slice(0, 1).join("")}
-                </Text>
-
-                <FlatList
-                  className='w-full'
-                  horizontal
-                  contentContainerStyle={{
-                    gap: 30,
-                    justifyContent: 'space-between',
-
-
-                  }}
-                  data={selectedUser?.links} renderItem={({ item }) => {
-                    return (<TouchableOpacity style={{ backgroundColor: '#ffffff3f' }} className='rounded-lg p-3 justify-center items-center'>
-                      {item.label === "Instagram" && <Icons.instagram />}
-                      {item.label === "Email" && <Icons.email />}
-                      {item.label === "WhatsApp" && <Icons.whatsapp />}
-
-
-                      <Text className='font-inter-500'>{item.label}</Text>
-                    </TouchableOpacity>)
-                  }
-                  } />
 
               </View>
+                :
+                <View className='gap-2'>
+                  <Text className='font-inter-500 text-base color-white'>
+                    Links {selectedUser?.nome.split(" ").slice(0, 1).join("")}
+                  </Text>
+
+                  <FlatList
+                    className='w-full'
+                    horizontal
+                    contentContainerStyle={{
+                      gap: 30,
+                      justifyContent: 'space-between',
+
+
+                    }}
+                    data={selectedUser?.links} renderItem={({ item }) => {
+                      return (<TouchableOpacity style={{ backgroundColor: '#ffffff3f' }} className='rounded-lg p-3 justify-center items-center'>
+                        {item.label === "Instagram" && <Icons.instagram />}
+                        {item.label === "Email" && <Icons.email />}
+                        {item.label === "WhatsApp" && <Icons.whatsapp />}
+
+
+                        <Text className='font-inter-500'>{item.label}</Text>
+                      </TouchableOpacity>)
+                    }
+                    } />
+
+                </View>
               }
 
 

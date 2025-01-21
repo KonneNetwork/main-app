@@ -74,7 +74,7 @@ function Index() {
             <Text className='font-inter-700 text-xl text-center'>{konnectionAba ? "Você ainda não possui konnexões" : "Aceite ou rejeite pedidos de konnexões"}</Text>
             <View className=' flex-row flex-wrap'>
               <Text className='font-inter-400 text-lg color-[#506773] text-center align-middle justify-center items-center'>
-                Para enviar um pedido de konnexão basta selecionar o ícone {<Ionicons name='heart' size={24} color={'#528A8C'} className='absolute mb-[-14px]' />} no perfil dos usuários que desejar se konnectar.
+                Para enviar um pedido de konnexão basta selecionar o ícone {<Ionicons name='heart' size={24} color={'#528A8C'} className='absolute mb-[-14px]' />} com quem deseja se conectar.
               </Text>
             </View>
           </View>

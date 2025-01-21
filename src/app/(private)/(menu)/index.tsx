@@ -1,19 +1,22 @@
 import Button from '@/components/Button';
 import React from 'react';
-import { View, Text, Image, TouchableOpacity, Platform, ScrollView } from 'react-native';
+import { View, Text, Image, TouchableOpacity, Platform, ScrollView, Linking } from 'react-native';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { Icons } from '@/components/Icons';
 import { router, useNavigation } from 'expo-router';
 import CardConfiguration from '@/components/CardConfiguration';
 import classNames from 'classnames';
 import { userStore } from '@/store/userStore';
+import Entypo from '@expo/vector-icons/Entypo';
 
 
 
 function Menu() {
 
-  const navigation = useNavigation();
   const { userInfo, profile, logout } = userStore()
+  function Faq() {
+    Linking.openURL(`http://api.whatsapp.com/send?phone=${+5511997881651}`)
+  }
 
   return (
     <ScrollView bounces={false} showsVerticalScrollIndicator={false} contentContainerStyle={{ flexGrow: 1 }}>
@@ -73,12 +76,16 @@ function Menu() {
               <Icons.feedback width={25} height={25} />
             </CardConfiguration>
 
-            <CardConfiguration title='Avalie a Konne na loja'>
+            <CardConfiguration title='Avalie a Konne'>
               <Icons.rate width={25} height={25} />
             </CardConfiguration>
 
             <CardConfiguration title='Atualizações'>
               <Icons.update width={25} height={25} />
+            </CardConfiguration>
+
+            <CardConfiguration title='Fale Conosco' onPress={Faq}>
+              <Entypo name="megaphone" size={24} color="black" />
             </CardConfiguration>
 
           </View>
