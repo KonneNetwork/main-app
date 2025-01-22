@@ -35,7 +35,7 @@ const etapas = [
     id: "4",
     title: "Como você se identifica?",
     maxSelections: 1,
-    tipo_tag: "Genero",
+    tipo_tag: "Gênero",
   },
   {
     id: "5",
