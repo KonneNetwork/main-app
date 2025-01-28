@@ -13,6 +13,8 @@ import { router, useNavigation } from 'expo-router';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { CommonActions, StackActions } from '@react-navigation/native';
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete"
+import useGetUsersLocation from '@/queries/user/getUsersLocation';
+import InviteModelBox from '@/components/InviteModelBox';
 
 interface LatLog {
   latitude: number;
@@ -48,6 +50,16 @@ interface Coordenadas {
   longitude: number;
 }
 
+interface UsersFetch {
+  cd_perfil: string;
+  foto_perfil: any;
+  cd_usuario: string,
+  latitude: string,
+  longitude: string,
+  nome_usuario: string,
+  distancia: string,
+}
+
 // Tipagem das props do MarkerComponent
 interface MarkerComponentProps {
   item: User & { coordinates: ColorGamut };
@@ -64,12 +76,12 @@ function Buscar() {
   const [openModal, setOpenModal] = useState(false)
   const [openInvite, setOpenInvite] = useState(false)
   const [openPerfil, setOpenPerfil] = useState(false)
-  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [selectedUser, setSelectedUser] = useState<string | null>(null);
   const [enableLinks, setEnableLinks] = useState(false)
   const { profile } = userStore()
-
+  const { data, refetch } = useGetUsersLocation({ latitude: userLocation.latitude, longitude: userLocation.longitude })
   const [markers, setMarkers] = useState(usersData);
-
+  const [markers2, setMarkers2] = useState<UsersFetch[] | undefined>([]);
   const navigation = useNavigation();
 
 
@@ -148,21 +160,26 @@ function Buscar() {
     }
   }, [userLocation]);
 
-  if (errorMsg) {
-    return (
-      <View style={styles.center}>
-        <Text>{errorMsg}</Text>
-      </View>
-    );
-  }
+  useEffect(() => {
+    console.log("🚀 ~ Buscar ~ data:", data)
+    setMarkers2(data)
+  }, [data])
 
-  if (!userLocation) {
-    return (
-      <View style={styles.center}>
-        <ActivityIndicator size="large" color="#33586C" />
-      </View>
-    );
-  }
+  // if (errorMsg) {
+  //   return (
+  //     <View style={styles.center}>
+  //       <Text>{errorMsg}</Text>
+  //     </View>
+  //   );
+  // }
+
+  // if (!userLocation) {
+  //   return (
+  //     <View style={styles.center}>
+  //       <ActivityIndicator size="large" color="#33586C" />
+  //     </View>
+  //   );
+  // }
 
   return (
     <View style={styles.container}>
@@ -198,9 +215,30 @@ function Buscar() {
         zoomEnabled
 
       >
-        {markers.map((item, index) => (
+        {/* {markers.map((item, index) => (
           <MarkerComponent key={index} item={item} onPress={() => handleMarkerPress} />
+        ))} */}
+
+        {markers2?.map((item) => (
+          <Marker key={item.cd_usuario}
+            coordinate={{ latitude: Number(item.latitude), longitude: Number(item.longitude) }}
+            // onPress={() => handleMarkerPress(item)}
+            onPress={() => {
+              setOpenInvite(true);
+              setSelectedUser(item?.cd_perfil ?? "")
+            }}
+          >
+            <TouchableOpacity>
+              {item?.foto_perfil == "" ? <View style={styles.marker}>
+                <Icons.user width={30} height={30} color={'#528A8C'} />
+              </View> :
+                <View style={styles.marker}>
+                  <Image style={styles.image} source={{ uri: item?.foto_perfil }} resizeMode='stretch' />
+                </View>}
+            </TouchableOpacity>
+          </Marker>
         ))}
+
 
         <Circle
           center={userLocation}
@@ -218,7 +256,9 @@ function Buscar() {
           </View>}
         </Marker>
       </MapView>
-      <Modal
+
+      <InviteModelBox invite={openInvite} setInvite={setOpenInvite} userCode={selectedUser} />
+      {/* <Modal
         visible={openInvite}
         transparent={true}
         presentationStyle='overFullScreen'
@@ -262,7 +302,7 @@ function Buscar() {
           </View>
         </View>
 
-      </Modal >
+      </Modal > */}
 
 
       <Modal
@@ -367,8 +407,6 @@ function Buscar() {
                 </View>
               }
 
-
-
             </LinearGradient>
           </View>
         </View >
@@ -392,6 +430,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   marker: {
+    backgroundColor: 'white',
     width: 40,
     height: 40,
     borderRadius: 40,

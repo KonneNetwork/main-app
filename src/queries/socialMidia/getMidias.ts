@@ -4,8 +4,6 @@ import { useQuery } from "@tanstack/react-query";
 async function getMidias() {
 
   const { data } = await api.get(`/social-medias`);
-
-  console.log("🚀 ~ getMidias ~ data:", data)
   return data;
 }
 

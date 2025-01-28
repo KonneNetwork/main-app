@@ -53,7 +53,6 @@ export default function Preference() {
   const [age, setAge] = useState<number>(18)
   const lastQuestion = etapas.length - 1;
   const { data } = useGetTags()
-  console.log("🚀 ~ Preference ~ data:", data)
 
   const handleSelectOption = (stageId: string, optionId: string) => {
     setSelectedOptions((prev) => {
@@ -78,8 +77,7 @@ export default function Preference() {
   }
 
   const optionsByStage = etapas.map(etapa => {
-    const options = data
-      ?.filter((tag: { tipo_tag: string | undefined }) => tag.tipo_tag === etapa.tipo_tag)
+    const options = data?.filter((tag: { tipo_tag: string | undefined }) => tag.tipo_tag === etapa.tipo_tag)
       .map((tag: { cd_tag: any; tag: any }) => ({ id: tag.cd_tag, title: tag.tag })) || [];
     return { ...etapa, options };
   });
@@ -116,9 +114,6 @@ export default function Preference() {
 
   const currentStage = optionsByStage[stage];
   const currentStageOptions = selectedOptions[currentStage.id] || [];
-
-
-  useEffect(() => { console.log("🚀 ~ Preference ~ selectedOptions:", selectedOptions, age) }, [selectedOptions, age])
 
   return (
     <FlatList

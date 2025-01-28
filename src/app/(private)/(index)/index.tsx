@@ -35,7 +35,6 @@ function Index() {
 
 
   if (konnexoes && konnexoes?.length <= 0 || konnexoes === undefined) {
-    console.log("🚀 ~ Index ~ konnexoes?.length:", konnexoes?.length)
     return (
       <View className='flex-1 bg-white p-8'>
         <View className='flex-row justify-between mt-10'>
