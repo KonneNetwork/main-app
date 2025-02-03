@@ -1,12 +1,12 @@
 import { LinearGradient } from "expo-linear-gradient"
-import { Modal, TouchableOpacity, TouchableWithoutFeedback, View, Text } from "react-native"
+import { Modal, TouchableOpacity, TouchableWithoutFeedback, View, Text, ActivityIndicator, TextInput } from "react-native"
 import InputImage from "../InputImage"
 import { Icons } from "../Icons"
-import { Profile, User } from "@/store/userStore"
+import { Profile, userStore } from "@/store/userStore"
 import { useEffect, useLayoutEffect, useState } from "react"
-import { useGetMidiaLinks } from "@/queries/Profile/getMidiaLinks"
-import useGetProfile from "@/queries/Profile/getProfile"
 import React from "react"
+import useGetOtherProfiles from "@/queries/Profile/getOtherProfiles"
+import useCreateKonnexao from "@/queries/konnexoes/createKonnexao"
 
 interface InviteModalProps {
   invite: boolean,
@@ -16,12 +16,20 @@ interface InviteModalProps {
 
 export default function InviteModelBox({ invite, setInvite, userCode }: InviteModalProps) {
   console.log("🚀 ~ InviteModelBox ~ userCode:", userCode)
+  const { userInfo: user } = userStore()
   const [infoUser, setInfoUser] = useState<Profile | null>()
-  const { data } = useGetProfile(userCode ?? "");
+  const { data, isLoading } = useGetOtherProfiles(userCode ?? "");
+  const { mutate: createKonnexao } = useCreateKonnexao()
   console.log("🚀 ~ InviteModelBox ~ userProfile:", data)
 
+  function createKonnection() {
+    createKonnexao({
+      cd_usuario: String(user?.cdUsuario),
+      cd_convidado: String(infoUser?.cdUsuario)
+    })
+  }
 
-  useLayoutEffect(() => { setInfoUser(data) }, [userCode])
+  useLayoutEffect(() => { setInfoUser(data) }, [infoUser])
 
   return (<>
     {data && <Modal
@@ -50,6 +58,20 @@ export default function InviteModelBox({ invite, setInvite, userCode }: InviteMo
                 </>}
 
               </View>
+              {
+                <View className='bg-black/20 p-5 rounded-3xl mt-8 w-full'>
+                  <Text className='color-[#FFFFFF] font-inter-500'>Sobre {infoUser?.nomePerfil?.split(" ").slice(0, 1).join("")}</Text>
+                  <TextInput
+                    editable={false}
+                    multiline
+                    maxLength={164}
+                    value={infoUser?.descricao}
+                    className="color-[#FFFFFFAD] font-inter-400"
+                  />
+
+                </View>
+              }
+
             </View>
 
             <View className='items-center gap-2'>
@@ -58,7 +80,7 @@ export default function InviteModelBox({ invite, setInvite, userCode }: InviteMo
               </Text>
 
               <TouchableOpacity className='flex-row  items-center gap-3 bg-surface-brand-main-default p-5  justify-center w-full rounded-md '
-                onPress={() => { }}
+                onPress={createKonnection}
               >
                 <Icons.heart color={"#fcf9f967"} />
                 <View className='flex-row gap-2'>

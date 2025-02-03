@@ -64,6 +64,7 @@ export interface Profile {
   ocupacao?: string;
   nomePerfil?: string;
   temaPerfil?: string;
+  cdUsuario?: string;
 }
 
 interface State {

@@ -36,7 +36,7 @@ export default function CardUsers({ name, distance, occupation, titleButton = ''
           </View>
           <View className=' flex-1'>
             <Text className='font-inter-600 text-lg'>{name}</Text>
-            {occupation && <Text className='font-inter-400 text-base text-[#3C3C4399]/60'>{occupation} - {distanceConvert}</Text>}
+            {occupation && <Text className='font-inter-400 text-base text-[#3C3C4399]/60'>{occupation} {occupation && distanceConvert && "-"} {distanceConvert && distanceConvert}</Text>}
 
           </View>
         </View>

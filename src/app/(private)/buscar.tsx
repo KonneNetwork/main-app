@@ -102,30 +102,30 @@ function Buscar() {
     PermissionLocation();
   }, []);
 
-  const handleMarkerPress = useCallback((user: User) => {
-    setSelectedUser(user);
-    setOpenInvite(true);
-  }, []);
+  // const handleMarkerPress = useCallback((user: User) => {
+  //   setSelectedUser(user);
+  //   setOpenInvite(true);
+  // }, []);
 
-  const MarkerComponent = useMemo(() => React.memo(({ item, onPress }: { item: User; onPress: () => void }) => (
-    <Marker
-      coordinate={item.coordenadas}
-      onPress={() => handleMarkerPress(item)}
-    >
-      <TouchableOpacity>
-        <View style={styles.marker}>
-          <Image style={styles.image} source={{ uri: item.image }} />
-        </View>
-      </TouchableOpacity>
-    </Marker>
-  )), [handleMarkerPress]);
+  // const MarkerComponent = useMemo(() => React.memo(({ item, onPress }: { item: User; onPress: () => void }) => (
+  //   <Marker
+  //     coordinate={item.coordenadas}
+  //     onPress={() => handleMarkerPress(item)}
+  //   >
+  //     <TouchableOpacity>
+  //       <View style={styles.marker}>
+  //         <Image style={styles.image} source={{ uri: item.image }} />
+  //       </View>
+  //     </TouchableOpacity>
+  //   </Marker>
+  // )), [handleMarkerPress]);
 
-  function handleAddKonnection(id: number | undefined) {
-    if (id) {
-      addKonnexao(id);
-    }
-    setEnableLinks(true);
-  }
+  // function handleAddKonnection(id: number | undefined) {
+  //   if (id) {
+  //     addKonnexao(id);
+  //   }
+  //   setEnableLinks(true);
+  // }
 
   function handleAddKonnectionPending() {
     setOpenInvite(false); setOpenPerfil(true); setEnableLinks(false)
@@ -258,51 +258,7 @@ function Buscar() {
       </MapView>
 
       <InviteModelBox invite={openInvite} setInvite={setOpenInvite} userCode={selectedUser} />
-      {/* <Modal
-        visible={openInvite}
-        transparent={true}
-        presentationStyle='overFullScreen'
-        animationType='fade'
-        style={{ backgroundColor: '#000', flex: 1 }} >
 
-        <View style={{ flex: 1 }}>
-
-          <TouchableWithoutFeedback onPress={() => setOpenInvite(false)}><View className='w-full h-full' /></TouchableWithoutFeedback>
-
-          <View className='w-full h-[80%] z-10 absolute bottom-0'>
-            <LinearGradient locations={[0, 0.2, 0.8, 1]}
-              colors={['#00000000', '#4f8f90', '#005c61', '#006560']}
-              style={{ flex: 1, width: '100%', justifyContent: 'center', alignContent: 'center', gap: 40, padding: 30 }}  >
-
-              <View className='justify-center items-center'>
-                <InputImage image={selectedUser?.image} isEdit={true} color='#B3CECF' />
-                <View className='flex-row gap-2 m-4'>
-                  <Text className='font-inter-600 text-2xl color-white'>{selectedUser?.nome.split(' ').map(word => word[0]).join('').toUpperCase()}</Text>
-                  <View className='h-full bg-white w-[2px]' />
-                  <Text className='font-inter-600 text-2xl color-white'>{selectedUser?.ocupacao}</Text>
-                </View>
-              </View>
-
-              <View className='items-center gap-2'>
-                <Text className='font-inter-500 text-base color-white'>
-                  Konnecte-se para entrar em contato
-                </Text>
-
-                <TouchableOpacity className='flex-row  items-center gap-3 bg-surface-brand-main-default p-5  justify-center w-full rounded-md '
-                  onPress={() => { handleAddKonnectionPending() }}
-                >
-                  <Icons.heart color={"#fcf9f967"} />
-                  <View className='flex-row gap-2'>
-                    <Text className='font-inter-500 text-xl color-white'>Solicitar</Text>
-                    <Text className='font-inter-700 text-xl color-white'>Konnexão</Text>
-                  </View>
-                </TouchableOpacity>
-              </View>
-            </LinearGradient>
-          </View>
-        </View>
-
-      </Modal > */}
 
 
       <Modal

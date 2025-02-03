@@ -1,5 +1,5 @@
 import { api } from "@/services/api";
-import { userStore } from "@/store/userStore";
+import { Profile, userStore } from "@/store/userStore";
 import { useQuery } from "@tanstack/react-query"
 
 interface getMidiaLinksProps {
