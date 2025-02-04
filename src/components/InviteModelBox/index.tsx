@@ -29,7 +29,9 @@ export default function InviteModelBox({ invite, setInvite, userCode }: InviteMo
     })
   }
 
-  useLayoutEffect(() => { setInfoUser(data) }, [infoUser])
+  useLayoutEffect(() => {
+    if (data) setInfoUser(data)
+  }, [data])
 
   return (<>
     {data && <Modal

@@ -51,7 +51,7 @@ function Index() {
     Konnexoes(activeAba)
   }, [activeAba])
 
-  if (data && data?.length <= 0 || data === undefined) {
+  if (konnexoes && konnexoes?.length <= 0 || konnexoes === undefined) {
     return (
       <View className='flex-1 bg-white p-8'>
         <View className='flex-row justify-between mt-10'>

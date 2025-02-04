@@ -41,8 +41,10 @@ export default function AddLink({ onClose, selectedLinks }: AddLinksProps) {
   };
 
   useEffect(() => {
-    setMidias(data)
-  }, [data])
+    if (data) {
+      setMidias(data);
+    }
+  }, [data]);
 
   return (
     <View className='flex-1 bg-surface-primary'>
@@ -61,7 +63,7 @@ export default function AddLink({ onClose, selectedLinks }: AddLinksProps) {
         }
         sections={Categorias.map(item => ({
           title: item,
-          data: Object.values(midias ?? '').filter(link => link?.tipo_midia === item)
+          data: midias?.length ? midias.filter(link => link?.tipo_midia === item) : []
         }))}
         keyExtractor={(item, index) => item?.midia + index}
         renderItem={() => null}

@@ -78,7 +78,7 @@ export default function Preference() {
 
   const optionsByStage = etapas.map(etapa => {
     const options = data?.filter((tag: { tipo_tag: string | undefined }) => tag.tipo_tag === etapa.tipo_tag)
-      .map((tag: { cd_tag: any; tag: any }) => ({ id: tag.cd_tag, title: tag.tag })) || [];
+      .map((tag: { cd_tag: any; tag: any }) => ({ id: tag.cd_tag, title: tag.tag })).sort((a:any, b:any) => a.title.localeCompare(b.title)) || [];
     return { ...etapa, options };
   });
 
