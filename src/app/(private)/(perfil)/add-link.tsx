@@ -63,7 +63,7 @@ export default function AddLink({ onClose, selectedLinks }: AddLinksProps) {
         }
         sections={Categorias.map(item => ({
           title: item,
-          data: midias?.length ? midias.filter(link => link?.tipo_midia === item) : []
+          data: midias?.length ? Object.values(midias).filter(link => link?.tipo_midia === item) : []
         }))}
         keyExtractor={(item, index) => item?.midia + index}
         renderItem={() => null}

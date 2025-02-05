@@ -44,12 +44,24 @@ function Index() {
   }
 
   useEffect(() => {
-    refetch();
-  }, [userInfo])
+    refetch(); // Garante que os dados são buscados ao montar
+  }, []);
 
   useEffect(() => {
-    Konnexoes(activeAba)
-  }, [activeAba])
+    if (userInfo?.cdUsuario) {
+      refetch();
+    }
+  }, [userInfo]);
+
+  useEffect(() => {
+    Konnexoes(activeAba);
+  }, [activeAba, data])
+
+  useEffect(() => {
+    if (data) {
+      Konnexoes(activeAba);
+    }
+  }, [activeAba, data]);
 
   if (konnexoes && konnexoes?.length <= 0 || konnexoes === undefined) {
     return (
