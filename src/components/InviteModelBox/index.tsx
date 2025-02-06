@@ -51,7 +51,7 @@ export default function InviteModelBox({ invite, setInvite, userCode }: InviteMo
             style={{ flex: 1, width: '100%', justifyContent: 'center', alignContent: 'center', gap: 40, padding: 30 }}  >
 
             <View className='justify-center items-center'>
-              <InputImage image={infoUser?.fotoPerfil} isEdit={true} color='#B3CECF' />
+              <InputImage image={infoUser?.fotoPerfil} isEdit={true} colorBorder='#B3CECF' colorIcon='#B3CECF' />
               <View className='flex-row gap-2 m-4'>
                 {infoUser?.nomePerfil && <Text className='font-inter-600 text-2xl color-white'>{infoUser?.nomePerfil?.split(' ').map(word => word[0]).join('').toUpperCase()}</Text>}
                 {infoUser?.ocupacao && <>

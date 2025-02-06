@@ -124,7 +124,7 @@ export default function EditPerfil({ onClosed }: EditPerfilProps) {
             name='image'
             control={control}
             render={({ field }) => (
-              <InputImage color={profile?.temaPerfil} image={field.value ?? profile?.fotoPerfil} onOpen={openOptionsImage} isEdit={true} {...field} />
+              <InputImage colorBorder={profile?.temaPerfil} image={field.value ?? profile?.fotoPerfil} onOpen={openOptionsImage} isEdit={true} {...field} />
             )} />
 
           <Controller name='name'

@@ -16,7 +16,7 @@ import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplet
 import useGetUsersLocation from '@/queries/user/getUsersLocation';
 import InviteModelBox from '@/components/InviteModelBox';
 
-interface LatLog {
+export interface LatLog {
   latitude: number;
   longitude: number;
 }
@@ -79,7 +79,7 @@ function Buscar() {
   const [selectedUser, setSelectedUser] = useState<string | null>(null);
   const [enableLinks, setEnableLinks] = useState(false)
   const { profile } = userStore()
-  const { data, refetch } = useGetUsersLocation({ latitude: userLocation.latitude, longitude: userLocation.longitude })
+  const { data } = useGetUsersLocation({ latitude: userLocation.latitude, longitude: userLocation.longitude })
   const [markers, setMarkers] = useState(usersData);
   const [markers2, setMarkers2] = useState<UsersFetch[] | undefined>([]);
   const navigation = useNavigation();
@@ -229,7 +229,7 @@ function Buscar() {
             }}
           >
             <TouchableOpacity>
-              {item?.foto_perfil == "" ? <View style={styles.marker}>
+              {item?.foto_perfil == "" || item?.foto_perfil == undefined ? <View style={styles.marker}>
                 <Icons.user width={30} height={30} color={'#528A8C'} />
               </View> :
                 <View style={styles.marker}>
@@ -248,7 +248,9 @@ function Buscar() {
         />
 
         <Marker coordinate={userLocation} onPress={() => router.navigate('/(perfil)/')}>
-          {profile?.fotoPerfil && <View className='rounded-full overflow-hidden border-[16px] border-[#33586C]'>
+          {profile?.fotoPerfil == "" || profile?.fotoPerfil == undefined ? <View className='bg-white rounded-full overflow-hidden border-[16px] border-[#33586C]'>
+            <Icons.user className='w-28 h-28' color={'#528A8C'} />
+          </View> : <View className='bg-white rounded-full overflow-hidden border-[16px] border-[#33586C]'>
             <Image
               source={{ uri: profile?.fotoPerfil }}
               className='w-28 h-28'

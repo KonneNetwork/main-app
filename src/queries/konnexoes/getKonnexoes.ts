@@ -11,7 +11,6 @@ async function getKonnexoes(id: string | undefined) {
 }
 
 export default function useGetKonnexoes(id: string | undefined) {
-  console.log("🚀 ~ useGetKonnexoes ~ id:", id)
   return useQuery({
     queryKey: ["getKonnexoes"],
     queryFn: () => getKonnexoes(id),

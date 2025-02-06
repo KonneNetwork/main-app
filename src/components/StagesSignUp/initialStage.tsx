@@ -74,7 +74,7 @@ export function InitialStage({ setStage, setPhoneNumber, onClose }: PropsPhone) 
         </View>
         {errors.codCountry && <Text className="color-red-700 text-right">{errors.codCountry?.message}</Text> ||
           errors.phoneNumber && <Text className="color-red-700 text-right">{errors.phoneNumber?.message}</Text>}
-        <Text className='w-full font-inter-400 text-base color-[#506773]'>{t('warning message cod')}</Text>
+        <Text className='w-full font-inter-400 text-base color-[#506773]'>{t('warning message')}</Text>
         <Button loading={isPending} variant='active' title={t('send')} onPress={handleSubmit(onSubmit)} />
       </View>
 

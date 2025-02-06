@@ -12,8 +12,11 @@ import { router, useFocusEffect } from 'expo-router'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { userStore } from '@/store/userStore'
 import AntDesign from '@expo/vector-icons/AntDesign';
+import * as Location from 'expo-location';
 import useGetKonnexoes from '@/queries/konnexoes/getKonnexoes'
 import { useUpdateStatusConnection } from '@/queries/konnexoes/updateStatusConnection'
+import useGetUsersLocation from '@/queries/user/getUsersLocation'
+import { LatLog } from '../buscar'
 
 function Index() {
 
@@ -24,10 +27,11 @@ function Index() {
 
   const { userInfo } = userStore()
   console.log(userInfo?.cdUsuario)
-  const { data, refetch } = useGetKonnexoes(String(userInfo?.cdUsuario));
+  const { data: dataKonnexoes, refetch: refetchKonnexoes, isError } = useGetKonnexoes(String(userInfo?.cdUsuario));
   const { mutate: updateStatusConnection } = useUpdateStatusConnection()
 
   const [konnexoes, setKonnexoes] = useState<any | undefined>()
+
 
   // const filteredData = data?.filter((user: any) => {
   //   console.log(user)
@@ -39,29 +43,25 @@ function Index() {
   // useEffect(() => { setKonnexoes(profile?.konnexoes) }, [profile?.konnexoes])
 
   function Konnexoes(status: string) {
-    const filterData = data?.filter((user: any) => { return user.status_conexao === status })
+    const filterData = dataKonnexoes?.filter((user: any) => { return user.status_conexao === status })
     setKonnexoes(filterData)
   }
 
   useEffect(() => {
-    refetch(); // Garante que os dados são buscados ao montar
+    refetchKonnexoes();
   }, []);
 
   useEffect(() => {
     if (userInfo?.cdUsuario) {
-      refetch();
+      refetchKonnexoes();
     }
   }, [userInfo]);
 
   useEffect(() => {
-    Konnexoes(activeAba);
-  }, [activeAba, data])
-
-  useEffect(() => {
-    if (data) {
+    if (dataKonnexoes) {
       Konnexoes(activeAba);
     }
-  }, [activeAba, data]);
+  }, [activeAba, dataKonnexoes]);
 
   if (konnexoes && konnexoes?.length <= 0 || konnexoes === undefined) {
     return (
@@ -121,11 +121,11 @@ function Index() {
       renderItem={({ item }) => {
         return (
           <CardUsers
-            thema={item.cd_usuario_fk.perfil.tema_perfil}
-            image={item.cd_usuario_fk.perfil.foto_perfil}
-            titleButton="aceitar"
-            name={item.cd_usuario_fk.perfil.nome_perfil} distance={item.cd_usuario_fk.perfil.distancia}
-            occupation={item.cd_usuario_fk.perfil.ocupacao}
+            thema={item.cd_convidado_fk.perfil.tema_perfil}
+            image={item.cd_convidado_fk.perfil.foto_perfil}
+            titleButton={item.status_conexao === "Konnectado" ? "Mensagem" : "aceitar"}
+            name={item.cd_convidado_fk.perfil.nome_perfil} distance={item.cd_convidado_fk.perfil.distancia}
+            occupation={item.cd_convidado_fk.perfil.ocupacao}
             onChange={() => {
               // konnectionAba && router.navigate({ pathname: '/(private)/(index)/chat/[id]', params: { id: item?.cd_usuario_fk.perfil } })
               updateStatusConnection(item.cd_conexao)
@@ -163,7 +163,7 @@ function Index() {
             })} onPress={() => setActiveAba('Pendente')}>
               <Text className={classNames({ 'font-inter-500 text-lg color-[#000] text-center ': activeAba === 'Pendente' },
                 { 'font-inter-500 text-lg color-[#506773] text-center': activeAba !== 'Pendente' })}>
-                Pedidos de Konnexão{(data.status_conexao === "Pendente" && data.length > 0) && `(${data.length})`}
+                Pedidos de Konnexão{(dataKonnexoes.status_conexao === "Pendente" && dataKonnexoes.length > 0) && `(${dataKonnexoes.length})`}
               </Text>
             </TouchableOpacity>
           </View>
@@ -172,26 +172,39 @@ function Index() {
         </>
       }
 
-      ListFooterComponent={
-        <>
-          {activeAba === 'Konnectado' && <><View className='flex-row justify-between'>
-            <Text className='text-xl font-inter-600'>Pessoas Próximas de você</Text>
-            <Text className='font-inter-400 color-[#528A8C] text-base'>Ver todas</Text>
-          </View>
-            <Text className='font-inter-400 text-sm color-[#3C3C4399]/60 py-2'>Konnexões a menos de 1 km de distância</Text>
-            <FlatList
-              showsHorizontalScrollIndicator={false}
-              className='flex-grow'
-              data={usersData.filter(item => item.distancia < 1000)}
-              contentContainerStyle={{ gap: 16, flexGrow: 1 }}
-              horizontal
-              keyExtractor={item => item.cpf}
-              renderItem={({ item }) => {
-                return <Card image={item.image} key={item.cpf} nome={item.nome} descricao={item.descricao} distance={item.distancia} onPress={() => router.navigate('/(private)/buscar')} />
-              }}
-            /></>}
-        </>
-      }
+    // ListFooterComponent={
+    //   <>
+    //     {activeAba === 'Konnectado' && <><View className='flex-row justify-between'>
+    //       <Text className='text-xl font-inter-600'>Pessoas Próximas de você</Text>
+    //       <Text className='font-inter-400 color-[#528A8C] text-base'>Ver todas</Text>
+    //     </View>
+    //       <Text className='font-inter-400 text-sm color-[#3C3C4399]/60 py-2'>Konnexões a menos de 1 km de distância</Text>
+    //       <FlatList
+    //         showsHorizontalScrollIndicator={false}
+    //         className='flex-grow'
+    //         data={usersByNear?.filter((item: any) => item.distancia < 1000)}
+    //         contentContainerStyle={{ gap: 16, flexGrow: 1 }}
+    //         horizontal
+    //         keyExtractor={(index) => index}
+    //         renderItem={({ item }) => {
+    //           // return <Card image={item.foto_perfil} key={item.documento} nome={item.nome_usuario} descricao={item.descricao} distance={item.distancia} onPress={() => router.navigate('/(private)/buscar')} />
+    //           return (
+    //             <View>
+    //               <Text>{item.cd_usuario}</Text>
+    //               <Text>{item.nome_usuario}</Text>
+    //               <Text>{item.latitude}</Text>
+    //               <Text>{item.longitude}</Text>
+    //               <Text>{item.documento}</Text>
+    //               <Text>{item.descricao}</Text>
+    //               <Text>{item.ocupacao}</Text>
+    //               <Text>{item.distancia}</Text>
+    //               <Text>{item.status_conexao}</Text>
+    //             </View>
+    //           )
+    //         }}
+    //       /></>}
+    //   </>
+    // }
     />
   )
 }

@@ -9,14 +9,15 @@ interface InputImageProps extends ImageProps {
   image?: string,
   isEdit?: boolean,
   onOpen?: () => void,
-  color?: string,
+  colorBorder?: string,
+  colorIcon?: string,
 }
-export default function InputImage({ image, isEdit, onOpen, color = "#528A8C", ...rest }: InputImageProps) {
+export default function InputImage({ image, isEdit, onOpen, colorBorder = "#528A8C", colorIcon = "#528A8C", ...rest }: InputImageProps) {
 
   return (
     <TouchableOpacity {...rest} onPress={onOpen}>
 
-      <View className='border-8 h-44 w-44 rounded-full items-center overflow-hidden' style={{ borderColor: color }}>
+      <View className='border-8 h-44 w-44 rounded-full items-center overflow-hidden' style={{ borderColor: colorBorder }}>
         {image ?
           <Image
             source={{ uri: image }}
@@ -27,7 +28,7 @@ export default function InputImage({ image, isEdit, onOpen, color = "#528A8C", .
           <Icons.user
             width={160}
             height={160}
-            color={'#528A8C'}
+            color={colorIcon}
           />
         }
 

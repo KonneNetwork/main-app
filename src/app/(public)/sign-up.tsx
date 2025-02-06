@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, Text, TouchableOpacity } from 'react-native'
 import classNames from 'classnames'
 import AntDesign from '@expo/vector-icons/AntDesign'
@@ -18,7 +18,7 @@ interface SignUpProps {
 function SignUp({ signUp, setSignUp }: SignUpProps) {
   const { t } = useTranslation('translation', { keyPrefix: "SignUp" })
   const [phoneNumber, setPhoneNumber] = useState<string | undefined>(undefined);
-  const [stage, setStage] = useState<'phone' | 'cod' | 'sign-up'>("phone")
+  const [stage, setStage] = useState<'phone' | 'cod' | 'sign-up'>("sign-up")
 
   const Titulos = [{
     phone: t('create account'),
@@ -36,7 +36,9 @@ function SignUp({ signUp, setSignUp }: SignUpProps) {
     setSignUp(false)
   }
 
-
+  useEffect(() => {
+    setStage("sign-up")
+  })
 
   return (
     <View className={classNames("bg-white  rounded-t-[30px] py-10 px-8 ",
