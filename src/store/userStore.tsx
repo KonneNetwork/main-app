@@ -4,6 +4,7 @@ import { ReactNode, useEffect } from "react";
 import { createJSONStorage, persist } from "zustand/middleware"
 import { api } from "@/services/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import useUpdateUserInfo from "@/queries/user/updateUser";
 
 
 interface Coordenadas {
@@ -73,6 +74,7 @@ interface State {
   shouldPersist: boolean;
   profile: Profile | null;
   socialMidiaLinks: any[] | null;
+  // isOnline:boolean;
 }
 
 interface Actions {
@@ -83,6 +85,7 @@ interface Actions {
   setShouldPersist: (shouldPersist: boolean) => void;
   setProfile: (profile: Profile) => void
   setSocialMidiaLinks: (item: any[]) => void
+  // setOnlineStatus:(isOnline:boolean) => void
 
   // addKonnexao: (id: string | number) => void;
   // addKonnexaoPending: (id: string | number) => void
@@ -97,6 +100,7 @@ export const userStore = create<State & Actions>()(
     userInfo: null,
     profile: null,
     socialMidiaLinks: [],
+    // isOnline:false,
 
 
     // login: (email, password) => {
@@ -119,7 +123,7 @@ export const userStore = create<State & Actions>()(
       })
     },
     setUserInfo: (userInfo: User) => {
-      set({ userInfo })
+      set({ userInfo });
     },
     setShouldPersist: (shouldPersist: boolean) => {
       set({ shouldPersist });
@@ -130,6 +134,14 @@ export const userStore = create<State & Actions>()(
     setSocialMidiaLinks(items) {
       set(() => ({ socialMidiaLinks: [...items] }))
     },
+    // setOnlineStatus: async(isOnline: boolean) => {
+    //   const user = get().userInfo;
+    //   const updateUserStatus = useUpdateUserInfo();
+    //     await updateUserStatus.mutateAsync({ id: user?.cdUsuario, data:{
+    //       online: isOnline,
+    //     } });
+    //   set({ isOnline });
+    // },
     // addKonnexaoPending: (id) => set((state) => {
     //   if (state.profile) {
     //     const updatedFriends = state.profile.konnexoes.includes(id)

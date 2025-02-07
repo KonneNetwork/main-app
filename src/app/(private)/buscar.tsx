@@ -16,7 +16,7 @@ import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplet
 import useGetUsersLocation from '@/queries/user/getUsersLocation';
 import InviteModelBox from '@/components/InviteModelBox';
 
-export interface LatLog {
+interface LatLog {
   latitude: number;
   longitude: number;
 }
@@ -58,6 +58,7 @@ interface UsersFetch {
   longitude: string,
   nome_usuario: string,
   distancia: string,
+  status_conexao:string
 }
 
 // Tipagem das props do MarkerComponent
@@ -75,11 +76,12 @@ function Buscar() {
   const [errorMsg, setErrorMsg] = useState('');
   const [openModal, setOpenModal] = useState(false)
   const [openInvite, setOpenInvite] = useState(false)
+  const [statuskonexao, setstatuskonexao] = useState(false)
   const [openPerfil, setOpenPerfil] = useState(false)
   const [selectedUser, setSelectedUser] = useState<string | null>(null);
   const [enableLinks, setEnableLinks] = useState(false)
-  const { profile } = userStore()
-  const { data } = useGetUsersLocation({ latitude: userLocation.latitude, longitude: userLocation.longitude })
+  const { profile,userInfo } = userStore()
+  const { data, refetch } = useGetUsersLocation({id:userInfo?.cdUsuario, latitude: userLocation.latitude, longitude: userLocation.longitude })
   const [markers, setMarkers] = useState(usersData);
   const [markers2, setMarkers2] = useState<UsersFetch[] | undefined>([]);
   const navigation = useNavigation();
@@ -226,10 +228,11 @@ function Buscar() {
             onPress={() => {
               setOpenInvite(true);
               setSelectedUser(item?.cd_perfil ?? "")
+              setstatuskonexao(item?.status_conexao)
             }}
           >
             <TouchableOpacity>
-              {item?.foto_perfil == "" || item?.foto_perfil == undefined ? <View style={styles.marker}>
+              {item?.foto_perfil == "" ? <View style={styles.marker}>
                 <Icons.user width={30} height={30} color={'#528A8C'} />
               </View> :
                 <View style={styles.marker}>
@@ -248,9 +251,7 @@ function Buscar() {
         />
 
         <Marker coordinate={userLocation} onPress={() => router.navigate('/(perfil)/')}>
-          {profile?.fotoPerfil == "" || profile?.fotoPerfil == undefined ? <View className='bg-white rounded-full overflow-hidden border-[16px] border-[#33586C]'>
-            <Icons.user className='w-28 h-28' color={'#528A8C'} />
-          </View> : <View className='bg-white rounded-full overflow-hidden border-[16px] border-[#33586C]'>
+          {profile?.fotoPerfil && <View className='rounded-full overflow-hidden border-[16px] border-[#33586C]'>
             <Image
               source={{ uri: profile?.fotoPerfil }}
               className='w-28 h-28'
@@ -259,7 +260,7 @@ function Buscar() {
         </Marker>
       </MapView>
 
-      <InviteModelBox invite={openInvite} setInvite={setOpenInvite} userCode={selectedUser} />
+      <InviteModelBox invite={openInvite} setInvite={setOpenInvite} userCode={selectedUser} status />
 
 
 

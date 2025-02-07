@@ -19,8 +19,12 @@ export default function InviteModelBox({ invite, setInvite, userCode }: InviteMo
   const { userInfo: user } = userStore()
   const [infoUser, setInfoUser] = useState<Profile | null>()
   const { data, isLoading } = useGetOtherProfiles(userCode ?? "");
-  const { mutate: createKonnexao } = useCreateKonnexao()
+  const { mutate: createKonnexao } = useCreateKonnexao({onClose})
   console.log("🚀 ~ InviteModelBox ~ userProfile:", data)
+
+function onClose(){
+  setInvite(false)
+}
 
   function createKonnection() {
     createKonnexao({
@@ -44,7 +48,7 @@ export default function InviteModelBox({ invite, setInvite, userCode }: InviteMo
       <View style={{ flex: 1 }}>
 
         <TouchableWithoutFeedback onPress={() => setInvite(false)}><View className='w-full h-full' /></TouchableWithoutFeedback>
-
+        
         <View className='w-full h-[80%] z-10 absolute bottom-0'>
           <LinearGradient locations={[0, 0.2, 0.8, 1]}
             colors={['#00000000', '#4f8f90', '#005c61', '#006560']}

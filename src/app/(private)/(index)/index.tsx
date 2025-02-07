@@ -16,7 +16,6 @@ import * as Location from 'expo-location';
 import useGetKonnexoes from '@/queries/konnexoes/getKonnexoes'
 import { useUpdateStatusConnection } from '@/queries/konnexoes/updateStatusConnection'
 import useGetUsersLocation from '@/queries/user/getUsersLocation'
-import { LatLog } from '../buscar'
 
 function Index() {
 
@@ -28,6 +27,7 @@ function Index() {
   const { userInfo } = userStore()
   console.log(userInfo?.cdUsuario)
   const { data: dataKonnexoes, refetch: refetchKonnexoes, isError } = useGetKonnexoes(String(userInfo?.cdUsuario));
+  console.log("🚀 ~ Index ~ dataKonnexoes:", dataKonnexoes)
   const { mutate: updateStatusConnection } = useUpdateStatusConnection()
 
   const [konnexoes, setKonnexoes] = useState<any | undefined>()
@@ -43,7 +43,9 @@ function Index() {
   // useEffect(() => { setKonnexoes(profile?.konnexoes) }, [profile?.konnexoes])
 
   function Konnexoes(status: string) {
-    const filterData = dataKonnexoes?.filter((user: any) => { return user.status_conexao === status })
+    const filterData = dataKonnexoes?.filter((user: any) =>{return user?.status_conexao === status })
+    
+    console.log("🚀 ~ Konnexoes ~ filterData:", filterData)
     setKonnexoes(filterData)
   }
 
@@ -121,11 +123,11 @@ function Index() {
       renderItem={({ item }) => {
         return (
           <CardUsers
-            thema={item.cd_convidado_fk.perfil.tema_perfil}
-            image={item.cd_convidado_fk.perfil.foto_perfil}
+            thema={item.usuario.perfil.tema_perfil}
+            image={item.usuario.perfil.foto_perfil}
             titleButton={item.status_conexao === "Konnectado" ? "Mensagem" : "aceitar"}
-            name={item.cd_convidado_fk.perfil.nome_perfil} distance={item.cd_convidado_fk.perfil.distancia}
-            occupation={item.cd_convidado_fk.perfil.ocupacao}
+            name={item.usuario.perfil.nome_perfil} distance={item.usuario.perfil.distancia}
+            occupation={item.usuario.perfil.ocupacao}
             onChange={() => {
               // konnectionAba && router.navigate({ pathname: '/(private)/(index)/chat/[id]', params: { id: item?.cd_usuario_fk.perfil } })
               updateStatusConnection(item.cd_conexao)

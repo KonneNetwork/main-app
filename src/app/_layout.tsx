@@ -18,8 +18,10 @@ import { toastConfig } from '@/services/ToastConfig';
 import React from 'react';
 import { I18nextProvider } from 'react-i18next';
 import i18n from '@/services/i18n';
+import { useOnlineStatus } from '@/hooks/useOnlineStatus';
 
 export default function RootLayout() {
+  // useOnlineStatus();
   const [loaded, error] = useFonts({
     Inter_400Regular,
     Inter_500Medium,
@@ -35,6 +37,7 @@ export default function RootLayout() {
     if (loaded || error) {
       SplashScreen.hideAsync();
     }
+    
   }, [loaded, error,]);
 
   if (!loaded && !error) {

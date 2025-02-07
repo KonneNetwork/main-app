@@ -12,7 +12,7 @@ async function getKonnexoes(id: string | undefined) {
 
 export default function useGetKonnexoes(id: string | undefined) {
   return useQuery({
-    queryKey: ["getKonnexoes"],
+    queryKey: ["getKonnexoes", id],
     queryFn: () => getKonnexoes(id),
   })
 }
