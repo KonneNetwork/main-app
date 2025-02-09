@@ -16,6 +16,7 @@ import * as Location from 'expo-location';
 import useGetKonnexoes from '@/queries/konnexoes/getKonnexoes'
 import { useUpdateStatusConnection } from '@/queries/konnexoes/updateStatusConnection'
 import useGetUsersLocation from '@/queries/user/getUsersLocation'
+import { StatusKonnexao } from '../buscar'
 
 function Index() {
 
@@ -43,8 +44,8 @@ function Index() {
   // useEffect(() => { setKonnexoes(profile?.konnexoes) }, [profile?.konnexoes])
 
   function Konnexoes(status: string) {
-    const filterData = dataKonnexoes?.filter((user: any) =>{return user?.status_conexao === status })
-    
+    const filterData = dataKonnexoes?.filter((user: any) => { return user?.status_conexao === status })
+
     console.log("🚀 ~ Konnexoes ~ filterData:", filterData)
     setKonnexoes(filterData)
   }
@@ -123,15 +124,20 @@ function Index() {
       renderItem={({ item }) => {
         return (
           <CardUsers
+            aba={activeAba}
             thema={item.usuario.perfil.tema_perfil}
             image={item.usuario.perfil.foto_perfil}
-            titleButton={item.status_conexao === "Konnectado" ? "Mensagem" : "aceitar"}
+            titleButtonActive={item.status_conexao === "Konnectado" ? "Mensagem" : "aceitar"}
             name={item.usuario.perfil.nome_perfil} distance={item.usuario.perfil.distancia}
             occupation={item.usuario.perfil.ocupacao}
-            onChange={() => {
+            onChangeActive={() => {
               // konnectionAba && router.navigate({ pathname: '/(private)/(index)/chat/[id]', params: { id: item?.cd_usuario_fk.perfil } })
-              updateStatusConnection(item.cd_conexao)
+              updateStatusConnection({ id: item.cd_conexao, statusKonnexao: "Konnectado" })
             }}
+            onChangeInactive={() => {
+              updateStatusConnection({ id: item.cd_conexao, statusKonnexao: "Konnectar" })
+            }}
+            titleButtonInactive='recusar'
           />
         )
       }}

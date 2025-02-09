@@ -1,16 +1,19 @@
+import { StatusKonnexao } from "@/app/(private)/buscar";
 import { api } from "@/services/api"
 import { queryClient } from "@/services/query";
 import { QueryClient, useMutation } from "@tanstack/react-query"
 import { AxiosError } from "axios";
 import Toast from "react-native-toast-message";
 
-interface KonnexaoProps {
+export interface KonnexaoProps {
+  status_conexao?: StatusKonnexao;
   cd_usuario: String;
   cd_convidado: String;
 }
 
-interface useProps{
-  onClose:()=>void}
+interface useProps {
+  onClose: () => void
+}
 
 async function createKonnexao(data: KonnexaoProps) {
   try {
@@ -24,14 +27,14 @@ async function createKonnexao(data: KonnexaoProps) {
   }
 }
 
-export default function useCreateKonnexao({onClose}:useProps) {
+export default function useCreateKonnexao({ onClose }: useProps) {
   return useMutation({
     mutationKey: ["createKonnexao"],
     mutationFn: (data: KonnexaoProps) => createKonnexao(data),
     onSuccess: (data) => {
-      queryClient.invalidateQueries({queryKey:["getKonnexoes", data.cd_usuario]});
-      queryClient.refetchQueries({queryKey:["getKonnexoes", data.cd_usuario]});
-      
+      queryClient.invalidateQueries({ queryKey: ["getKonnexoes", data.cd_usuario] });
+      queryClient.refetchQueries({ queryKey: ["getKonnexoes", data.cd_usuario] });
+
       Toast.show({
         type: 'success',
         text1: 'konnexão criada com sucesso!'

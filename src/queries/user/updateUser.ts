@@ -3,12 +3,11 @@ import { User } from "@/store/userStore";
 import { useMutation } from "@tanstack/react-query";
 
 
-interface Props
-{id:string | undefined, data:User}
+interface Props { id: string | undefined, data: User }
 
-async function updateUserInfo({id, data}:Props) {
+async function updateUserInfo({ id, data }: Props) {
     try {
-        const resultado = await api.put(`user/${id}`,{data})
+        const resultado = await api.put(`user/${id}`, { ...data })
         console.log("🚀 ~ updateUserInfo ~ resultado:", resultado)
         return resultado
     } catch (error) {
@@ -16,11 +15,11 @@ async function updateUserInfo({id, data}:Props) {
     }
 }
 
-export default function useUpdateUserInfo(){
- return useMutation({
+export default function useUpdateUserInfo() {
+    return useMutation({
 
-    mutationKey:["updateUserInfo"],
-    mutationFn:({id, data}:Props)=>updateUserInfo({id,data})
+        mutationKey: ["updateUserInfo"],
+        mutationFn: ({ id, data }: Props) => updateUserInfo({ id, data })
 
- })
+    })
 }

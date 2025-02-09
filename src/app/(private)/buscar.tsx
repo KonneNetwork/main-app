@@ -15,10 +15,17 @@ import { CommonActions, StackActions } from '@react-navigation/native';
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete"
 import useGetUsersLocation from '@/queries/user/getUsersLocation';
 import InviteModelBox from '@/components/InviteModelBox';
+import useUpdateUserInfo from '@/queries/user/updateUser';
 
 interface LatLog {
   latitude: number;
   longitude: number;
+}
+
+export enum StatusKonnexao {
+  Konnectado,
+  Pendente,
+  Konnectar,
 }
 
 interface User {
@@ -58,7 +65,7 @@ interface UsersFetch {
   longitude: string,
   nome_usuario: string,
   distancia: string,
-  status_conexao:string
+  status_conexao: StatusKonnexao | null
 }
 
 // Tipagem das props do MarkerComponent
@@ -74,17 +81,13 @@ function Buscar() {
     longitude: -46.73403872474612
   });
   const [errorMsg, setErrorMsg] = useState('');
-  const [openModal, setOpenModal] = useState(false)
   const [openInvite, setOpenInvite] = useState(false)
-  const [statuskonexao, setstatuskonexao] = useState(false)
-  const [openPerfil, setOpenPerfil] = useState(false)
+  const [statuskonexao, setstatuskonexao] = useState<StatusKonnexao | null>(null)
   const [selectedUser, setSelectedUser] = useState<string | null>(null);
-  const [enableLinks, setEnableLinks] = useState(false)
-  const { profile,userInfo } = userStore()
-  const { data, refetch } = useGetUsersLocation({id:userInfo?.cdUsuario, latitude: userLocation.latitude, longitude: userLocation.longitude })
-  const [markers, setMarkers] = useState(usersData);
-  const [markers2, setMarkers2] = useState<UsersFetch[] | undefined>([]);
-  const navigation = useNavigation();
+  const { profile, userInfo } = userStore()
+  const { mutate: updateUserInfo } = useUpdateUserInfo()
+  const { data } = useGetUsersLocation({ id: userInfo?.cdUsuario, latitude: userLocation.latitude, longitude: userLocation.longitude })
+  const [markers, setMarkers] = useState<UsersFetch[] | undefined>([]);
 
 
   async function PermissionLocation() {
@@ -104,84 +107,17 @@ function Buscar() {
     PermissionLocation();
   }, []);
 
-  // const handleMarkerPress = useCallback((user: User) => {
-  //   setSelectedUser(user);
-  //   setOpenInvite(true);
-  // }, []);
 
-  // const MarkerComponent = useMemo(() => React.memo(({ item, onPress }: { item: User; onPress: () => void }) => (
-  //   <Marker
-  //     coordinate={item.coordenadas}
-  //     onPress={() => handleMarkerPress(item)}
-  //   >
-  //     <TouchableOpacity>
-  //       <View style={styles.marker}>
-  //         <Image style={styles.image} source={{ uri: item.image }} />
-  //       </View>
-  //     </TouchableOpacity>
-  //   </Marker>
-  // )), [handleMarkerPress]);
-
-  // function handleAddKonnection(id: number | undefined) {
-  //   if (id) {
-  //     addKonnexao(id);
-  //   }
-  //   setEnableLinks(true);
-  // }
-
-  function handleAddKonnectionPending() {
-    setOpenInvite(false); setOpenPerfil(true); setEnableLinks(false)
-  }
-
-  useLayoutEffect(() => {
-    if (userLocation) {
-      setMarkers(usersData.map((user) => ({
-        ...user,
-        coordenadas: generateNearbyCoordinates(userLocation),
-      })));
-    }
-  }, [userLocation])
-
-  const handleResetAction = () => {
-    navigation.dispatch(CommonActions.reset({
-      routes: [{ key: "(tabs)", name: "(tabs)" }]
-    }))
-  }
-
-  function goBack() {
-    const rota = navigation.canGoBack();
-    const saida = navigation.dispatch(StackActions.pop(1))
-  }
-
-  useEffect(() => {
-    if (userLocation) {
-      setMarkers(usersData.map((user) => ({
-        ...user,
-        coordenadas: generateNearbyCoordinates(userLocation),
-      })));
-    }
-  }, [userLocation]);
 
   useEffect(() => {
     console.log("🚀 ~ Buscar ~ data:", data)
-    setMarkers2(data)
+    setMarkers(data)
   }, [data])
 
-  // if (errorMsg) {
-  //   return (
-  //     <View style={styles.center}>
-  //       <Text>{errorMsg}</Text>
-  //     </View>
-  //   );
-  // }
+  useEffect(() => {
+    updateUserInfo({ id: userInfo?.cdUsuario, data: { latitude: userLocation.latitude ?? null, longitude: userLocation.longitude ?? null } })
+  }, [userLocation])
 
-  // if (!userLocation) {
-  //   return (
-  //     <View style={styles.center}>
-  //       <ActivityIndicator size="large" color="#33586C" />
-  //     </View>
-  //   );
-  // }
 
   return (
     <View style={styles.container}>
@@ -208,7 +144,6 @@ function Buscar() {
         provider={PROVIDER_GOOGLE}
         style={{ width: '100%', height: '100%' }}
         region={{
-          //-23.53474453844267, -46.73403872474612
           latitude: userLocation?.latitude ? userLocation.latitude : -23.53474453844267,
           longitude: userLocation?.longitude ? userLocation?.longitude : -46.73403872474612,
           latitudeDelta: 0.0922,
@@ -217,18 +152,15 @@ function Buscar() {
         zoomEnabled
 
       >
-        {/* {markers.map((item, index) => (
-          <MarkerComponent key={index} item={item} onPress={() => handleMarkerPress} />
-        ))} */}
 
-        {markers2?.map((item) => (
+
+        {markers?.map((item) => (
           <Marker key={item.cd_usuario}
             coordinate={{ latitude: Number(item.latitude), longitude: Number(item.longitude) }}
-            // onPress={() => handleMarkerPress(item)}
             onPress={() => {
               setOpenInvite(true);
               setSelectedUser(item?.cd_perfil ?? "")
-              setstatuskonexao(item?.status_conexao)
+              setstatuskonexao(item?.status_conexao ?? null)
             }}
           >
             <TouchableOpacity>
@@ -260,117 +192,8 @@ function Buscar() {
         </Marker>
       </MapView>
 
-      <InviteModelBox invite={openInvite} setInvite={setOpenInvite} userCode={selectedUser} status />
+      <InviteModelBox invite={openInvite} setInvite={setOpenInvite} userCode={selectedUser} statusKonnexao={statuskonexao} />
 
-
-
-      <Modal
-        visible={openPerfil}
-        transparent={true}
-        presentationStyle='overFullScreen'
-        animationType='fade'
-        style={{ backgroundColor: '#000', flex: 1 }} >
-
-        <View style={{ flex: 1 }}>
-
-          <TouchableWithoutFeedback onPress={() => setOpenPerfil(false)}><View className='w-full h-full' /></TouchableWithoutFeedback>
-
-          <View className='w-full h-[80%]  absolute bottom-0' >
-            {enableLinks && <TouchableOpacity
-              style={{ backgroundColor: "#ffffff4f" }}
-              className=' absolute p-3 top-0 right-0 rounded-xl m-8 z-10'>
-              <Icons.heart color={'#528A8C'} width={30} height={30} />
-            </TouchableOpacity>}
-
-            <LinearGradient locations={[0, 0.2, 0.8, 1]}
-              colors={['#ffffff77', '#4f8f90', '#005c61', '#006560']}
-              style={{ position: 'relative', overflow: 'visible', flex: 1, width: '100%', justifyContent: 'center', alignContent: 'center', gap: 40, paddingHorizontal: 30, borderTopRightRadius: 40, borderTopLeftRadius: 40 }}  >
-              <View className='justify-center items-center absolute  top-[-70] self-center z-10'>
-                <InputImage image={selectedUser?.image} isEdit={true} />
-                <View className=' gap-2 m-4 items-center'>
-                  <Text className='font-inter-500 text-3xl color-white'>{selectedUser?.nome}</Text>
-                  <Text className='font-inter-400 text-sm color-white'>{selectedUser?.ocupacao}</Text>
-                </View>
-              </View>
-
-              {/* <View className='bg-black/20 p-5 rounded-3xl mt-16'>
-                <Text className='color-[#FFFFFF] font-inter-500'>Sobre {selectedUser?.nome.split(" ").slice(0, 1).join("")}</Text>
-                <TextInput
-                  editable={false}
-                  multiline
-                  value={selectedUser?.descricao?.length! > 150
-                    ? `${selectedUser?.descricao.substring(0, 147)}...`
-                    : selectedUser?.descricao}
-                  className="color-[#FFFFFFAD] font-inter-400"
-                />
-
-              </View> */}
-              {!enableLinks ? <View className='items-center gap-4'>
-                {/* <Text className='font-inter-500 text-base color-white'>
-                  {selectedUser?.nome.split(" ").slice(0, 1).join("")} fez um pedido de Konnexão
-                </Text> */}
-
-                {/* <TouchableOpacity className='flex-row  items-center gap-3 bg-surface-brand-main-default p-5  justify-center w-full rounded-md '
-                // onPress={() => handleAddKonnection(selectedUser?.id)}
-                >
-                  <Icons.heart color={"#fcf9f967"} />
-                  <View className='flex-row gap-2'>
-                    <Text className='font-inter-500 text-xl color-white'>Aceitar</Text>
-                    <Text className='font-inter-700 text-xl color-white'>Konnexão</Text>
-                  </View>
-                </TouchableOpacity>
-
-                <TouchableOpacity className='flex-row  items-center gap-3 border-2 border-[#528A8C] p-5  justify-center w-full rounded-md '
-                  onPress={() => setOpenPerfil(false)}
-                >
-                  <Text className='font-inter-500 text-xl color-white'>Recusar Pedido</Text>
-
-                </TouchableOpacity> */}
-                <Text className='font-inter-500 text-2xl color-white text-center'>Aguardando {selectedUser?.nome} aceitar sua solicitação</Text>
-
-                <TouchableOpacity className='flex-row  items-center gap-3 border-2 border-[#528A8C] p-5  justify-center w-full rounded-md '
-                  onPress={() => setOpenPerfil(false)}
-                >
-                  <Text className='font-inter-500 text-xl color-white mt-2'>Voltar</Text>
-
-                </TouchableOpacity>
-
-              </View>
-                :
-                <View className='gap-2'>
-                  <Text className='font-inter-500 text-base color-white'>
-                    Links {selectedUser?.nome.split(" ").slice(0, 1).join("")}
-                  </Text>
-
-                  <FlatList
-                    className='w-full'
-                    horizontal
-                    contentContainerStyle={{
-                      gap: 30,
-                      justifyContent: 'space-between',
-
-
-                    }}
-                    data={selectedUser?.links} renderItem={({ item }) => {
-                      return (<TouchableOpacity style={{ backgroundColor: '#ffffff3f' }} className='rounded-lg p-3 justify-center items-center'>
-                        {item.label === "Instagram" && <Icons.instagram />}
-                        {item.label === "Email" && <Icons.email />}
-                        {item.label === "WhatsApp" && <Icons.whatsapp />}
-
-
-                        <Text className='font-inter-500'>{item.label}</Text>
-                      </TouchableOpacity>)
-                    }
-                    } />
-
-                </View>
-              }
-
-            </LinearGradient>
-          </View>
-        </View >
-
-      </Modal >
     </View >
 
   );
