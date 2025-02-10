@@ -24,7 +24,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       googleMapsApiKey: process.env.GOOGLE_API_KEY,
     },
     bundleIdentifier: "com.egestao.konneapp",
-    buildNumber: '7'
+    buildNumber: '8'
   },
   android: {
     adaptiveIcon: {
@@ -43,7 +43,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       }
     },
     package: "com.egestao.konneapp",
-    versionCode: 7
+    versionCode: 8
   },
   web: {
     bundler: "metro",

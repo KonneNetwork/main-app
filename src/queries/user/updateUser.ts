@@ -3,7 +3,7 @@ import { User } from "@/store/userStore";
 import { useMutation } from "@tanstack/react-query";
 
 
-interface Props { id: string | undefined, data: User }
+interface Props { id: string | undefined, data: { latitude: number, longitude: number } }
 
 async function updateUserInfo({ id, data }: Props) {
     try {

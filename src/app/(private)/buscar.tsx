@@ -16,6 +16,7 @@ import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplet
 import useGetUsersLocation from '@/queries/user/getUsersLocation';
 import InviteModelBox from '@/components/InviteModelBox';
 import useUpdateUserInfo from '@/queries/user/updateUser';
+import SearchFilter from '@/components/SearchFilter';
 
 interface LatLog {
   latitude: number;
@@ -81,6 +82,7 @@ function Buscar() {
     longitude: -46.73403872474612
   });
   const [errorMsg, setErrorMsg] = useState('');
+  const [open, setOpen] = useState(false)
   const [openInvite, setOpenInvite] = useState(false)
   const [statuskonexao, setstatuskonexao] = useState<StatusKonnexao | null>(null)
   const [selectedUser, setSelectedUser] = useState<string | null>(null);
@@ -136,7 +138,7 @@ function Buscar() {
             language: 'pt-br',
           }}
         /> */}
-        <TouchableOpacity className='bg-[#528A8C]/30 p-2 rounded-full'>
+        <TouchableOpacity className='bg-[#528A8C]/30 p-2 rounded-full' onPress={() => setOpen(true)}>
           <Icons.filter width={32} height={32} />
         </TouchableOpacity>
       </View>
@@ -193,7 +195,7 @@ function Buscar() {
       </MapView>
 
       <InviteModelBox invite={openInvite} setInvite={setOpenInvite} userCode={selectedUser} statusKonnexao={statuskonexao} />
-
+      <SearchFilter open={open} setOpen={setOpen} />
     </View >
 
   );

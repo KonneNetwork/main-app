@@ -92,7 +92,7 @@ function Perfil() {
           ListHeaderComponentStyle={{ alignItems: 'center' }}
           ListHeaderComponent={
             <>
-              <Text className='font-roboto-700 text-xl mt-8'>Meu Perfil</Text>
+              <Text className='font-roboto-700  mt-8  text-3xl '>Meu Perfil</Text>
 
               <HeaderUser color={profile?.temaPerfil} image={profile?.fotoPerfil ?? userInfo?.fotoUsuario ?? ''} occupation={profile?.ocupacao} userName={profile?.nomePerfil ? profile?.nomePerfil : userInfo?.nomeUsuario} onOpen={handleOpenModalPerfil} />
 

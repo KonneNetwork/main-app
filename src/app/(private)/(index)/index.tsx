@@ -50,9 +50,14 @@ function Index() {
     setKonnexoes(filterData)
   }
 
+  function lengthPendentes() {
+    const lengthPendendetes = dataKonnexoes?.filter((user: any) => { return user?.status_conexao === "Pendente" }).length
+    return lengthPendendetes
+  }
+
   useEffect(() => {
     refetchKonnexoes();
-  }, []);
+  }, [refetchKonnexoes]);
 
   useEffect(() => {
     if (userInfo?.cdUsuario) {
@@ -66,7 +71,7 @@ function Index() {
     }
   }, [activeAba, dataKonnexoes]);
 
-  if (konnexoes && konnexoes?.length <= 0 || konnexoes === undefined) {
+  if (konnexoes && konnexoes?.length < 0 || konnexoes === undefined) {
     return (
       <View className='flex-1 bg-white p-8'>
         <View className='flex-row justify-between mt-10'>
@@ -90,6 +95,7 @@ function Index() {
             <Text className={classNames({ 'font-inter-500 text-lg color-[#000] text-center ': activeAba === 'Pendente' },
               { 'font-inter-500 text-lg color-[#506773] text-center': activeAba !== 'Pendente' })}>
               Pedidos de Konnexão
+              {/* {(lengthPendentes().length !== undefined && lengthPendentes().length > 0) && `(${lengthPendentes()})`} */}
             </Text>
           </TouchableOpacity>
         </View>
@@ -171,7 +177,8 @@ function Index() {
             })} onPress={() => setActiveAba('Pendente')}>
               <Text className={classNames({ 'font-inter-500 text-lg color-[#000] text-center ': activeAba === 'Pendente' },
                 { 'font-inter-500 text-lg color-[#506773] text-center': activeAba !== 'Pendente' })}>
-                Pedidos de Konnexão{(dataKonnexoes.status_conexao === "Pendente" && dataKonnexoes.length > 0) && `(${dataKonnexoes.length})`}
+                Pedidos de Konnexão
+                {/* {(lengthPendentes().length !== undefined && Number(lengthPendentes().length) > 0) && `(${lengthPendentes()})`} */}
               </Text>
             </TouchableOpacity>
           </View>
