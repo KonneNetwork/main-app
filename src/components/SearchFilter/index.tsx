@@ -5,6 +5,7 @@ import EvilIcons from "@expo/vector-icons/EvilIcons";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { z } from "zod";
+import { Ionicons } from "@expo/vector-icons";
 
 const filterSchema = z.object({
   tags: z.array(z.string()),
@@ -65,21 +66,25 @@ export default function SearchFilter({ open, setOpen }: Props) {
       animationType="slide"
       transparent={false}
     >
-      <View className="w-full h-full bg-slate-800 p-4">
-        <Text className="text-white text-xl font-bold">Filtro</Text>
-        
+      <View className="w-full h-full bg-white p-4">
+        <View className='flex-row items-center'>
+          <Ionicons name="chevron-back-outline" size={25} color="black" onPress={() => setOpen(false)} />
+          <Text className='color-[#374151] font-inter-900 text-3xl w-[85%] text-center'>Filtro</Text>
+        </View>
+        {/* <Text className="text-white text-xl font-bold">Filtro</Text>
+
         <TouchableOpacity onPress={() => setOpen(false)}>
           <Text className="text-red-500">Voltar</Text>
-        </TouchableOpacity>
-        
+        </TouchableOpacity> */}
+
         <View className="flex-row items-center border border-gray-400 rounded-md p-2 my-4">
           <EvilIcons name="search" size={24} color="white" />
           <TextInput
-            placeholder="Digite o que procura (usuário ou tag)"
+            placeholder="Digite e faça a busca"
             placeholderTextColor="gray"
             value={search}
             onChangeText={setSearch}
-            className="text-white flex-1"
+            className="flex-1"
           />
         </View>
 
@@ -88,11 +93,13 @@ export default function SearchFilter({ open, setOpen }: Props) {
           keyExtractor={(item) => item}
           renderItem={({ item }) => (
             <TouchableOpacity
-              style={{ backgroundColor: tagSelects.includes(item) ? "#087c50" : "#15dcff" }}
+              style={{ backgroundColor: tagSelects.includes(item) ? "#528A8C" : "#ffffff" }}
               className="border p-2 rounded-md m-1"
               onPress={() => handleSelect(item)}
             >
-              <Text className="text-center text-white">{item}</Text>
+              <Text className="text-center text-white"
+                style={{ color: tagSelects.includes(item) ? "#ffffff" : "#000000" }}
+              >{item}</Text>
             </TouchableOpacity>
           )}
           numColumns={2}

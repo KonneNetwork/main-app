@@ -109,7 +109,7 @@ function Buscar() {
     PermissionLocation();
   }, []);
 
-
+  // useMemo(() => { setMarkers(data) }, [data])
 
   useEffect(() => {
     console.log("🚀 ~ Buscar ~ data:", data)
