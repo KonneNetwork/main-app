@@ -119,7 +119,8 @@ export const userStore = create<State & Actions>()(
     },
     logout: () => {
       set({
-        token: null
+        token: null,
+        userInfo:null
       })
     },
     setUserInfo: (userInfo: User) => {
@@ -180,7 +181,6 @@ export const userStore = create<State & Actions>()(
     partialize: (state) => ({
       ...state,
       token: state.shouldPersist ? state.token : null,
-      userInfo: null,
       shouldPersist: true,
     })
   }),
