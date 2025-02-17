@@ -195,7 +195,7 @@ function Buscar() {
       </MapView>
 
       <InviteModelBox invite={openInvite} setInvite={setOpenInvite} userCode={selectedUser} statusKonnexao={statuskonexao} />
-      <SearchFilter open={open} setOpen={setOpen} />
+      <SearchFilter setUsersLocation={setMarkers} id={userInfo?.cdUsuario} latitude={userLocation.latitude} longitude={userLocation.longitude} open={open} setOpen={setOpen} />
     </View >
 
   );

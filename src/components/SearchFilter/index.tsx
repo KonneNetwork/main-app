@@ -1,11 +1,12 @@
 import useGetTags from "@/queries/tags/getTags";
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useReducer, useState } from "react";
 import { Modal, View, Text, TouchableOpacity, FlatList, TextInput } from "react-native";
 import EvilIcons from "@expo/vector-icons/EvilIcons";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { z } from "zod";
 import { Ionicons } from "@expo/vector-icons";
+import useGetUsersLocation from "@/queries/user/getUsersLocation";
 
 const filterSchema = z.object({
   tags: z.array(z.string()),
@@ -15,29 +16,33 @@ const filterSchema = z.object({
 interface Props {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  id: string | undefined,
+  latitude: number,
+  longitude: number
+  setUsersLocation?: Dispatch<SetStateAction<any[] | undefined>> | undefined
 }
 
-export default function SearchFilter({ open, setOpen }: Props) {
-  const { data } = useGetTags();
+export default function SearchFilter({ id, latitude, longitude, open, setOpen, setUsersLocation }: Props) {
+  const { data: tagsData } = useGetTags();
   const [tags, setTags] = useState<string[]>([]);
   const [filteredTags, setFilteredTags] = useState<string[]>([]);
   const [tagSelects, setTagSelects] = useState<string[]>([]);
   const [search, setSearch] = useState("");
+  const { data, refetch, isLoading } = useGetUsersLocation({ id, latitude, longitude, tags: tagSelects })
+  console.log("🚀 ~ SearchFilter ~ data:", data)
 
   useEffect(() => {
-    if (data) {
-      setTags(data.map((item: any) => item.tag));
-      setFilteredTags(data.map((item: any) => item.tag));
+    if (tagsData) {
+      setTags(tagsData.map((item: any) => item.tag));
+      setFilteredTags(tagsData.map((item: any) => item.tag));
     }
-  }, [data]);
+  }, [tagsData]);
 
   useEffect(() => {
-    if (search) {
-      setFilteredTags(tags.filter(tag => tag.toLowerCase().includes(search.toLowerCase())));
-    } else {
-      setFilteredTags(tags);
-    }
-  }, [search, tags]);
+
+    setFilteredTags(tags);
+
+  }, [tags]);
 
   function handleSelect(tag: string) {
     setTagSelects(prev =>
@@ -45,19 +50,34 @@ export default function SearchFilter({ open, setOpen }: Props) {
     );
   }
 
-  const filterMutation = useMutation({
-    mutationFn: async () => {
-      const validatedData = filterSchema.parse({ tags: tagSelects, search });
-      return axios.post("/api/filter", validatedData);
-    },
-    onSuccess: (response) => {
-      console.log("Filtros aplicados:", response.data);
-      setOpen(false);
-    },
-    onError: (error) => {
-      console.error("Erro ao aplicar filtros:", error);
+  function handleFilter() {
+    if (search) {
+      setTagSelects([...tagSelects, search])
     }
-  });
+    refetch();
+  }
+
+  useEffect(() => { console.log(tagSelects) }, [tagSelects])
+
+  useEffect(() => {
+    if (setUsersLocation) {
+      setUsersLocation(data)
+    }
+  }, [data])
+
+  // const filterMutation = useMutation({
+  //   mutationFn: async () => {
+  //     const validatedData = filterSchema.parse({ tags: tagSelects, search });
+  //     return axios.post("/api/filter", validatedData);
+  //   },
+  //   onSuccess: (response) => {
+  //     console.log("Filtros aplicados:", response.data);
+  //     setOpen(false);
+  //   },
+  //   onError: (error) => {
+  //     console.error("Erro ao aplicar filtros:", error);
+  //   }
+  // });
 
   return (
     <Modal
@@ -108,11 +128,11 @@ export default function SearchFilter({ open, setOpen }: Props) {
 
         <TouchableOpacity
           className="bg-green-500 p-3 rounded-md mt-4"
-          onPress={() => filterMutation.mutate()}
-          disabled={filterMutation?.isPending}
+          onPress={handleFilter}
+          disabled={isLoading}
         >
           <Text className="text-center text-white font-bold">
-            {filterMutation?.isPending ? "Aplicando..." : "Aplicar Filtros"}
+            {isLoading ? "Aplicando..." : "Aplicar Filtros"}
           </Text>
         </TouchableOpacity>
       </View>
