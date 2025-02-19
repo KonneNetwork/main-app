@@ -102,7 +102,7 @@ function Input({ label, password = false, variant = 'default', styleContainer, s
         <Animated.View style={[animStyle]}
           className={classNames('absolute top-[-14px] left-[15px] px-2 -z-10 rounded-lg', {
             'bg-white': variant === 'default',
-            'bg-background': isFocused
+            'bg-background': isFocused && val
           })}
         >
           <Text

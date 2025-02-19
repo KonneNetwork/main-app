@@ -1,6 +1,6 @@
 {
   "SignIn": {
-    "greeting": "Boas Vindas",
+    "greeting": "Bem vindo(a) á revolução do networking!",
     "message login": "Faça login e comece a se conectar com pessoas próximas a você.",
     "passwd": "Senha",
     "forget passwd": "Esqueci minha senha",
@@ -10,7 +10,7 @@
   "SignUp": {
     "create account": "Criar Conta",
     "cod valid": "Validação",
-    "end registragion": "Concluir Cadastro",
+    "end registragion": "Criar Conta",
     "question new-user": "Novo por aqui?",
     "country cod": "País",
     "phone": "DDD + Telefone",
