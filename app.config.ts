@@ -8,6 +8,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   orientation: "portrait",
   icon: "./assets/images/logoKonneSquare.png",
   scheme: "myapp",
+  platforms: ['android', 'ios'],
   userInterfaceStyle: "automatic",
   splash: {
     image: "./assets/images/splash.png",
@@ -15,6 +16,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     backgroundColor: "#ffffff"
   },
   ios: {
+    usesAppleSignIn: true,
     infoPlist: {
       UIViewControllerBasedStatusBarAppearance: "NO",
       NSLocationWhenInUseUsageDescription: "O aplicativo precisa de acesso à sua localização enquanto está em uso para fornecer a funcionalidade de mapas.",
@@ -24,7 +26,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       googleMapsApiKey: process.env.GOOGLE_API_KEY,
     },
     bundleIdentifier: "com.egestao.konneapp",
-    buildNumber: '8'
+    buildNumber: '9'
   },
   android: {
     adaptiveIcon: {
@@ -43,7 +45,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       }
     },
     package: "com.egestao.konneapp",
-    versionCode: 8
+    versionCode: 9
   },
   web: {
     bundler: "metro",
@@ -86,7 +88,8 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
         "savePhotosPermission": "Allow $(PRODUCT_NAME) to save photos.",
         "isAccessMediaLocationEnabled": true
       }
-    ]
+    ],
+    ["expo-apple-authentication"]
   ],
   experiments: {
     typedRoutes: true

@@ -16,6 +16,8 @@ import ForgotPassword from "@/components/ForgotPassword";
 import { useTranslation } from "react-i18next";
 import "@/services/i18n";
 import * as Localization from "expo-localization";
+import SignInLinkedin from "@/components/SignInLinkedin";
+import SignInApple from "@/components/SignInApple";
 
 const schema = z.object({
   email: z.string().email("email inválido!"),
@@ -92,9 +94,12 @@ export default function SignIn() {
                 <View style={styles.line} />
               </View>
 
-              <View className="bg-[#ffffff2b] rounded-lg items-center px-3 py-2 w-20 self-center mt-5 mb-3 border-2 border-[#EEEEEE]">
+              {/* <View className="bg-[#ffffff2b] rounded-lg items-center px-3 py-2 w-20 self-center mt-5 mb-3 border-2 border-[#EEEEEE]">
                 <Linkeding width={42} height={42} />
-              </View>
+              </View> */}
+              <SignInLinkedin />
+              {Platform.OS === "ios" && <SignInApple />}
+
             </>}
           </View>
           <SignUp signUp={signUp} setSignUp={setSignUp} />

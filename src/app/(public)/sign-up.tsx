@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, TouchableOpacity } from 'react-native'
+import { View, Text, TouchableOpacity, Platform } from 'react-native'
 import classNames from 'classnames'
 import AntDesign from '@expo/vector-icons/AntDesign'
 import Feather from '@expo/vector-icons/Feather'
@@ -7,6 +7,7 @@ import { InitialStage } from '@/components/StagesSignUp/initialStage'
 import { CodeStage } from '@/components/StagesSignUp/codeStage'
 import { FinalStage } from '@/components/StagesSignUp/finalStage'
 import { useTranslation } from 'react-i18next'
+import SignInApple from '@/components/SignInApple'
 
 interface SignUpProps {
   signUp: boolean;
@@ -71,6 +72,8 @@ function SignUp({ signUp, setSignUp }: SignUpProps) {
               color="#528A8C" />}
         </TouchableOpacity>
       </View >
+
+      {(signUp && stage == 'sign-up' && Platform.OS === "ios") && <SignInApple />}
 
       {(signUp && stage == 'phone') && <InitialStage setStage={setStage} setPhoneNumber={setPhoneNumber} onClose={handleOnClose} />}
 
