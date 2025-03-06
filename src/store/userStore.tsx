@@ -120,7 +120,7 @@ export const userStore = create<State & Actions>()(
     logout: () => {
       set({
         token: null,
-        userInfo:null
+        userInfo: null
       })
     },
     setUserInfo: (userInfo: User) => {
@@ -199,11 +199,11 @@ export function UserProvider({ children }: { children: ReactNode }) {
 
 
   useEffect(() => {
-    api.defaults.headers.common.Authorization = `Bearer ${token}`
+    const app = api.defaults.headers.common.Authorization = `Bearer ${token}`
 
     if (!rootNavigationState?.key) return;
     const inPublicGroup = segments[0] === '(public)';
-    if (!token && !inPublicGroup) {
+    if (!token && !inPublicGroup && token !== app) {
       router.replace('/(public)');
     } else if (token && inPublicGroup) {
       router.replace('/(private)/')

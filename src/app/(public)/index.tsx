@@ -18,6 +18,7 @@ import "@/services/i18n";
 import * as Localization from "expo-localization";
 import SignInLinkedin from "@/components/SignInLinkedin";
 import SignInApple from "@/components/SignInApple";
+import useSignInLinkedin from "@/hooks/useSignInLinkedin";
 
 const schema = z.object({
   email: z.string().email("email inválido!"),
@@ -31,6 +32,7 @@ export default function SignIn() {
   const [signUp, setSignUp] = useState(false);
   const [forgotPasswd, setForgotPasswd] = useState(false)
   const { mutate: signIn, isPending } = useSignIn();
+  const { promptAsync, request, response } = useSignInLinkedin();
   const changeLanguage = (value: string) => {
     i18n.changeLanguage(value).then(() => console.log("linguagem Alterada")).catch((err) => console.log(err))
   }
@@ -94,10 +96,13 @@ export default function SignIn() {
                 <View style={styles.line} />
               </View>
 
-              {/* <View className="bg-[#ffffff2b] rounded-lg items-center px-3 py-2 w-20 self-center mt-5 mb-3 border-2 border-[#EEEEEE]">
+              <TouchableOpacity
+                className="bg-[#ffffff2b] rounded-lg items-center px-3 py-2 w-20 self-center mt-5 mb-3 border-2 border-[#EEEEEE]"
+                onPress={() => promptAsync({})}
+              >
                 <Linkeding width={42} height={42} />
-              </View> */}
-              <SignInLinkedin />
+              </TouchableOpacity>
+              {/* <SignInLinkedin /> */}
               {Platform.OS === "ios" && <SignInApple />}
 
             </>}

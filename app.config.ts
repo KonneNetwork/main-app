@@ -8,7 +8,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   orientation: "portrait",
   icon: "./assets/images/logoKonneSquare.png",
   scheme: "myapp",
-  platforms: ['android', 'ios'],
+  platforms: ['android', 'ios', "web"],
   userInterfaceStyle: "automatic",
   splash: {
     image: "./assets/images/splash.png",
@@ -29,6 +29,20 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     buildNumber: '9'
   },
   android: {
+    intentFilters: [
+      {
+        action: "VIEW",
+        autoVerify: true,
+        data: [
+          {
+            scheme: "https",
+            host: "*.webapp.io",
+            pathPrefix: "/records"
+          }
+        ],
+        category: ["BROWSABLE", "DEFAULT"]
+      }
+    ],
     adaptiveIcon: {
       foregroundImage: "./assets/images/logoKonneSquare.png",
       backgroundColor: "#ffffff"

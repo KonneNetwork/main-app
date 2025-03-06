@@ -53,7 +53,7 @@ export function useUpdateProfile(id: string, onClose: () => void) {
         Toast.show({
           type: 'error',
           text1: 'Mensagem de erro',
-          text2: err.response?.data.message || 'Houve um erro tente novamente'
+          text2: err.response?.data
         })
       }
     }

@@ -1,0 +1,14 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "konne-app",
+      "package_name": "com.egestao.konneapp",
+      "sha256_cert_fingerprints": [
+        "3A:C5:76:B5:5D:E1:A7:93:46:24:3F:5A:32:4B:F5:47:E2:96:59:9A:F2:9E:8F:68:1A:CB:95:7D:82:7C:79:82"
+      ]
+    }
+  }
+]
