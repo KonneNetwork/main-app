@@ -16,7 +16,6 @@ import ForgotPassword from "@/components/ForgotPassword";
 import { useTranslation } from "react-i18next";
 import "@/services/i18n";
 import * as Localization from "expo-localization";
-import SignInLinkedin from "@/components/SignInLinkedin";
 import SignInApple from "@/components/SignInApple";
 import useSignInLinkedin from "@/hooks/useSignInLinkedin";
 
@@ -95,16 +94,17 @@ export default function SignIn() {
                 <Text style={styles.text}>{t('or midias')}</Text>
                 <View style={styles.line} />
               </View>
+              <View className=" flex-row justify-center items-center self-center gap-5">
 
-              <TouchableOpacity
-                className="bg-[#ffffff2b] rounded-lg items-center px-3 py-2 w-20 self-center mt-5 mb-3 border-2 border-[#EEEEEE]"
-                onPress={() => promptAsync({})}
-              >
-                <Linkeding width={42} height={42} />
-              </TouchableOpacity>
-              {/* <SignInLinkedin /> */}
-              {Platform.OS === "ios" && <SignInApple />}
+                <TouchableOpacity
+                  className="bg-[#ffffff2b] rounded-lg items-center px-3 py-2 w-20 self-center mt-5 mb-3 border-2 border-[#EEEEEE]"
+                  onPress={() => promptAsync({})}
+                >
+                  <Linkeding width={42} height={42} />
+                </TouchableOpacity>
 
+                {Platform.OS === "ios" && <SignInApple />}
+              </View>
             </>}
           </View>
           <SignUp signUp={signUp} setSignUp={setSignUp} />

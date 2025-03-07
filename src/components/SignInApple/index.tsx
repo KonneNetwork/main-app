@@ -1,5 +1,6 @@
 import * as AppleAuthentication from 'expo-apple-authentication';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import Facebook from '../../../assets/images/svgs/facebook.svg';
 
 export default function SignInApple() {
 
@@ -29,14 +30,13 @@ export default function SignInApple() {
     }
   }
   return (
-    <View style={styles.container}>
-      <AppleAuthentication.AppleAuthenticationButton
-        buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
-        buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.BLACK}
-        cornerRadius={5}
-        style={styles.button}
-        onPress={signIn}
-      />
+    <View>
+      <TouchableOpacity
+        className="bg-[#ffffff2b] rounded-lg items-center px-3 py-2 w-20 self-center mt-5 mb-3 border-2 border-[#EEEEEE]"
+        onPress={() => signIn()}
+      >
+        <Facebook width={42} height={42} />
+      </TouchableOpacity>
     </View>
   )
 }
