@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, TouchableOpacity, Platform } from 'react-native'
+import { View, Text, TouchableOpacity } from 'react-native'
 import classNames from 'classnames'
 import AntDesign from '@expo/vector-icons/AntDesign'
 import Feather from '@expo/vector-icons/Feather'
@@ -7,8 +7,6 @@ import { InitialStage } from '@/components/StagesSignUp/initialStage'
 import { CodeStage } from '@/components/StagesSignUp/codeStage'
 import { FinalStage } from '@/components/StagesSignUp/finalStage'
 import { useTranslation } from 'react-i18next'
-import SignInApple from '@/components/SignInApple'
-
 interface SignUpProps {
   signUp: boolean;
   setSignUp: (value: React.SetStateAction<boolean>) => void
@@ -20,6 +18,7 @@ function SignUp({ signUp, setSignUp }: SignUpProps) {
   const { t } = useTranslation('translation', { keyPrefix: "SignUp" })
   const [phoneNumber, setPhoneNumber] = useState<string | undefined>(undefined);
   const [stage, setStage] = useState<'phone' | 'cod' | 'sign-up'>("sign-up")
+
 
   const Titulos = [{
     phone: t('create account'),
@@ -73,7 +72,6 @@ function SignUp({ signUp, setSignUp }: SignUpProps) {
         </TouchableOpacity>
       </View >
 
-      {(signUp && stage == 'sign-up' && Platform.OS === "ios") && <SignInApple />}
 
       {(signUp && stage == 'phone') && <InitialStage setStage={setStage} setPhoneNumber={setPhoneNumber} onClose={handleOnClose} />}
 
@@ -87,3 +85,4 @@ function SignUp({ signUp, setSignUp }: SignUpProps) {
 }
 
 export default SignUp
+

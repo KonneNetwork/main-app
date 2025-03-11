@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity } from "react-native"
+import { View, Text, TouchableOpacity, Platform, StyleSheet } from "react-native"
 import Input from "../Input"
 import Button from "../Button"
 import { z } from "zod"
@@ -6,6 +6,10 @@ import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useCreateUser } from "@/queries/signUp/createUser";
 import { useTranslation } from "react-i18next";
+import ButtonSocialLogin from "../ButtonSocialLogin";
+import SignInApple from "../SignInApple";
+import useSignInLinkedin from "@/hooks/useSignInLinkedin";
+import Linkedin from '../../../assets/images/svgs/linkedin.svg';
 
 const schema = z.object({
   name: z.string(),
@@ -21,7 +25,8 @@ interface FinalStageProps {
 }
 
 export function FinalStage({ onClose }: FinalStageProps) {
-  const { t } = useTranslation("translation", { keyPrefix: "SignUp" })
+  const { t } = useTranslation("translation", { keyPrefix: "SignUp" });
+  const { promptAsync, request, response } = useSignInLinkedin();
   const { control, handleSubmit, formState: { errors } } = useForm({
     defaultValues: {
       name: "",
@@ -41,6 +46,22 @@ export function FinalStage({ onClose }: FinalStageProps) {
 
   return (
     <View className='flex-1 justify-between'>
+
+      <View className=" flex-row justify-center items-center self-center gap-5">
+
+        <ButtonSocialLogin typeMode='mode' action={() => promptAsync()}>
+          <Linkedin width={44} height={44} />
+        </ButtonSocialLogin>
+
+
+        {Platform.OS === "ios" && <SignInApple type='mode' />}
+
+      </View>
+      <View style={styles.container}>
+        <View style={styles.line} />
+        <Text style={styles.text}>OU</Text>
+        <View style={styles.line} />
+      </View>
 
       <View className=" mt-9 ">
         <Controller
@@ -117,3 +138,23 @@ export function FinalStage({ onClose }: FinalStageProps) {
     </View>
   )
 }
+
+const styles = StyleSheet.create({
+  container: {
+    marginTop: 15,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  line: {
+    flex: 1,
+    height: 1,
+    backgroundColor: '#528A8C',
+  },
+  text: {
+    marginHorizontal: 10,
+    color: '#528A8C',
+    fontSize: 16,
+    lineHeight: 25,
+    fontWeight: '400',
+  },
+});

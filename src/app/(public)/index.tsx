@@ -2,7 +2,7 @@ import { Text, View, Image, StyleSheet, ScrollView, KeyboardAvoidingView, Platfo
 import logo from "../../../assets/images/logo.png";
 import Input from "@/components/Input";
 import Button from "@/components/Button";
-import Linkeding from '../../../assets/images/svgs/linkeding.svg';
+import Linkedin from '../../../assets/images/svgs/linkedin.svg';
 import { useEffect, useState } from "react";
 import classNames from "classnames";
 import SignUp from "./sign-up";
@@ -18,6 +18,7 @@ import "@/services/i18n";
 import * as Localization from "expo-localization";
 import SignInApple from "@/components/SignInApple";
 import useSignInLinkedin from "@/hooks/useSignInLinkedin";
+import ButtonSocialLogin from "@/components/ButtonSocialLogin";
 
 const schema = z.object({
   email: z.string().email("email inválido!"),
@@ -89,21 +90,20 @@ export default function SignIn() {
               </View>
 
               <Button loading={isPending} variant="active" title={t('sign in')} onPress={handleSubmit(handleLogin)} />
+
               <View style={styles.container}>
                 <View style={styles.line} />
                 <Text style={styles.text}>{t('or midias')}</Text>
                 <View style={styles.line} />
               </View>
+
               <View className=" flex-row justify-center items-center self-center gap-5">
 
-                <TouchableOpacity
-                  className="bg-[#ffffff2b] rounded-lg items-center px-3 py-2 w-20 self-center mt-5 mb-3 border-2 border-[#EEEEEE]"
-                  onPress={() => promptAsync({})}
-                >
-                  <Linkeding width={42} height={42} />
-                </TouchableOpacity>
+                <ButtonSocialLogin typeMode='default' action={() => { console.log('teste'), promptAsync() }}>
+                  <Linkedin width={44} height={44} />
+                </ButtonSocialLogin>
 
-                {Platform.OS === "ios" && <SignInApple />}
+                {Platform.OS === "ios" && <SignInApple type='default' />}
               </View>
             </>}
           </View>

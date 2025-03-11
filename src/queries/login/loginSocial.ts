@@ -1,35 +1,38 @@
 import { api } from "@/services/api";
+import { userStore } from "@/store/userStore";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import Toast from "react-native-toast-message";
-import { User, userStore } from "@/store/userStore"; // Importando o Zustand
-import { useRouter } from "expo-router"; // Importando o router
 
-interface SingInRequest {
-  email: string,
-  passwd: string,
+interface LoginSocialRequest {
+  email?: string | null,
+  nome_usuario?: string,
+  integracao: string,
+  foto_usuario?: string,
+  uuid?: string
 }
 
-async function signIn(data: SingInRequest) {
+async function loginSocial(data: LoginSocialRequest) {
   try {
-    const resultado = await api.post('/session', {
-      email: data.email,
-      senha: data.passwd
-    })
-    console.log("🚀 ~ signIn ~ resultado:", resultado.data)
-    return resultado.data;
+    const resultado = await api.post('/login-social', data)
+    console.log("🚀 ~ loginSocial ~ resultado.data:", resultado.data)
+    return resultado.data
   } catch (error) {
     throw error
   }
+
 }
 
-export function useSignIn() {
+export default function useLoginSocial() {
+  console.log("entrou na função")
   const { setUserInfo, setToken, setProfile } = userStore();
 
   return useMutation({
-    mutationKey: ['signIn'],
-    mutationFn: (data: SingInRequest) => signIn(data),
+    mutationKey: ['loginSocial'],
+    mutationFn: (data: LoginSocialRequest) => loginSocial(data),
     onSuccess: (data) => {
+      console.log("🚀 ~ useLoginSocial ~ data:", data)
+
       const { nome_perfil, cd_perfil, foto_perfil, descricao, ocupacao, tema_perfil } = data.profileInfo
       const { nome_usuario, online, documento, email, cd_usuario } = data.userInfo
       const formatUserInfo = {
@@ -48,22 +51,24 @@ export function useSignIn() {
         cdPerfil: cd_perfil,
         fotoPerfil: foto_perfil,
       }
-      console.log("🚀 ~ useSignIn ~ formatProfileInfo:", formatProfileInfo)
+
       setToken(data.token);
       setUserInfo(formatUserInfo)
       setProfile(formatProfileInfo)
+
+
       Toast.show({
         type: 'success',
         text1: 'Seja bem-vindo!'
       });
     },
     onError: (err) => {
-
       if (err instanceof AxiosError) {
+        console.log(err)
         Toast.show({
           type: 'error',
           text1: 'Mensagem de erro',
-          text2: err.response?.data.error || 'Houve um erro tente novamente'
+          text2: err.response?.data.message
         })
       }
     }
