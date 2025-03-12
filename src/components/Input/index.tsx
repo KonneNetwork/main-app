@@ -20,7 +20,7 @@ interface InputProps extends TextInputProps {
   onChangeText?: (text: string) => void;
 }
 
-function Input({ label, password = false, variant = 'default', styleContainer, styleInput, value, errorShowInSide,errorShowOutSide, ...rest }: InputProps) {
+function Input({ label, password = false, variant = 'default', styleContainer, styleInput, value, errorShowInSide, errorShowOutSide, ...rest }: InputProps) {
   const [visiblePassword, setVisiblePassword] = useState(true)
   const inputRef = useRef<TextInput | null>(null);
   const [isFocused, setIsFocused] = useState(false);
@@ -142,6 +142,7 @@ function Input({ label, password = false, variant = 'default', styleContainer, s
             )}
             secureTextEntry={(password && visiblePassword) && visiblePassword}
             {...rest}
+            value={value}
             onFocus={onFocusHandler}
             onBlur={onBlurHandler}
             onChangeText={text => onChangeText(text)}

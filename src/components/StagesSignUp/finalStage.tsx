@@ -10,11 +10,12 @@ import ButtonSocialLogin from "../ButtonSocialLogin";
 import SignInApple from "../SignInApple";
 import useSignInLinkedin from "@/hooks/useSignInLinkedin";
 import Linkedin from '../../../assets/images/svgs/linkedin.svg';
+import { mask, unmask } from "remask";
 
 const schema = z.object({
   name: z.string(),
   email: z.string().email('email inválido.'),
-  cpf: z.string().min(11, "CPF inválido.").max(11, "CPF inválido."),
+  cpf: z.string().refine((text) => unmask(text).length === 11, "cpf deve possuir 11 caracteres"),
   passwd: z.string().min(6, "minimo de 6 caracteres."),
 })
 
@@ -39,7 +40,13 @@ export function FinalStage({ onClose }: FinalStageProps) {
   const { mutate: createUser, isPending } = useCreateUser({ onClose })
 
   function onSubmit(data: SignUpSchema) {
-    createUser(data);
+
+    const dataTransform = {
+      ...data, cpf: unmask(data.cpf)
+    }
+    console.log("🚀 ~ onSubmit ~ dataTransform: teste", dataTransform)
+
+    createUser(data)
 
   }
 
@@ -98,7 +105,7 @@ export function FinalStage({ onClose }: FinalStageProps) {
             <Input label='CPF' keyboardType='number-pad'
               onBlur={onBlur}
               value={value}
-              onChangeText={onChange}
+              onChangeText={(text) => (onChange(mask(text, ["999.999.999-99"])))}
               errorShowInSide={errors.cpf}
             />
           )} />
