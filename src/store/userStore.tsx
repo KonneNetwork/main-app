@@ -53,7 +53,8 @@ export interface User {
   online: boolean;
   rua?: string | null;
   uuid?: string | null;
-  coordenadas?: LatLog
+  primeiroAcesso:false;
+  coordenadas?: LatLog;
 }
 
 export interface Profile {

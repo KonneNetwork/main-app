@@ -17,16 +17,17 @@ import useGetKonnexoes from '@/queries/konnexoes/getKonnexoes'
 import { useUpdateStatusConnection } from '@/queries/konnexoes/updateStatusConnection'
 import useGetUsersLocation from '@/queries/user/getUsersLocation'
 import { StatusKonnexao } from '../buscar'
+import FirstAccessBox from '@/components/FirstAccessBox'
 
 function Index() {
 
   const [activeAba, setActiveAba] = useState<'Konnectado' | 'Pendente'>('Konnectado');
-
+  const valorTela = false;
   const konnectionAba = activeAba === 'Konnectado';
   const [search, setSearch] = useState('')
 
   const { userInfo } = userStore()
-  console.log(userInfo?.cdUsuario)
+
   const { data: dataKonnexoes, refetch: refetchKonnexoes, isError } = useGetKonnexoes(String(userInfo?.cdUsuario));
   console.log("🚀 ~ Index ~ dataKonnexoes:", dataKonnexoes)
   const { mutate: updateStatusConnection } = useUpdateStatusConnection()
@@ -123,7 +124,7 @@ function Index() {
     )
   }
 
-  return (
+  return (<>
     <FlatList
       className='flex-1 bg-surface-primary'
       data={konnexoes}
@@ -184,6 +185,7 @@ function Index() {
           </View>
 
           <Text className='font-inter-400 text-sm color-[#3C3C4399]/60 py-2'>{konnectionAba ? "Gerencie suas konnexões" : "Aceite ou rejeite pedidos de konnexões"}</Text>
+        
         </>
       }
 
@@ -221,7 +223,10 @@ function Index() {
     //   </>
     // }
     />
+     <FirstAccessBox open={valorTela}/>
+     </>
   )
+ 
 }
 
 export default Index
