@@ -39,8 +39,8 @@ export interface User {
   dataAtualizacao?: string | null;
   dataCriacao?: string;
   dataExclusao?: string | null;
-  documento: string;
-  email: string;
+  documento?: string;
+  email?: string;
   estado?: string | null;
   fotoUsuario?: string | null;
   idioma?: string | null;
@@ -53,7 +53,7 @@ export interface User {
   online: boolean;
   rua?: string | null;
   uuid?: string | null;
-  primeiroAcesso:false;
+  primeiroAcesso?: false;
   coordenadas?: LatLog;
 }
 
@@ -101,7 +101,7 @@ export const userStore = create<State & Actions>()(
     userInfo: null,
     profile: null,
     socialMidiaLinks: [],
-    // isOnline:false,
+    // isOnline: false,
 
 
     // login: (email, password) => {
@@ -136,12 +136,14 @@ export const userStore = create<State & Actions>()(
     setSocialMidiaLinks(items) {
       set(() => ({ socialMidiaLinks: [...items] }))
     },
-    // setOnlineStatus: async(isOnline: boolean) => {
+    // setOnlineStatus: async (isOnline: boolean) => {
     //   const user = get().userInfo;
     //   const updateUserStatus = useUpdateUserInfo();
-    //     await updateUserStatus.mutateAsync({ id: user?.cdUsuario, data:{
+    //   await updateUserStatus.mutateAsync({
+    //     id: user?.cdUsuario, data: {
     //       online: isOnline,
-    //     } });
+    //     }
+    //   });
     //   set({ isOnline });
     // },
     // addKonnexaoPending: (id) => set((state) => {

@@ -14,5 +14,6 @@ export default function useGetKonnexoes(id: string | undefined) {
   return useQuery({
     queryKey: ["getKonnexoes", id],
     queryFn: () => getKonnexoes(id),
+    refetchInterval: 1000
   })
 }

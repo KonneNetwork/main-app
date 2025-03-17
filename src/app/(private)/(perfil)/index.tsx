@@ -18,8 +18,9 @@ function Perfil() {
   const { userInfo, profile, socialMidiaLinks } = userStore();
   const { data: midiaLinks } = useGetMidiaLinks(profile?.cdPerfil ?? '')
   const { data: userProfile } = useGetProfile(userInfo?.cdUsuario ?? '');
+  const [add, setAdd] = useState(false)
 
-  const [addLink, setAddLink] = useState<any | { label: string, link: string, category: string }[] | undefined | null>(socialMidiaLinks?.sort((linkA, linkB) => linkB.data_criacao - linkA?.data_criacao));
+  const [addLink] = useState<any | { label: string, link: string, category: string }[] | undefined | null>(socialMidiaLinks);
   const [editLink, setEditLink] = useState<any | { label: string, link: string, category: string } | null>(socialMidiaLinks);
   function handleCloseModalPerfil() {
     setOpenPerfil(false)
@@ -30,7 +31,7 @@ function Perfil() {
   }
 
   function handleCloseModalLinks() {
-    setOpenAddLinks(false)
+    setOpenAddLinks(false);
   }
 
   function handleOpenModalLinks() {
@@ -79,6 +80,18 @@ function Perfil() {
 
   // }, [])
 
+  function handleOpenEditAfterCreateLink() {
+    if (midiaLinks.length !== 0) {
+      hadleOpenModalEditLinks(midiaLinks[0])
+    }
+  }
+
+  useEffect(() => {
+    if (add) {
+      handleOpenEditAfterCreateLink();
+      setAdd(false)
+    }
+  }, [midiaLinks])
 
 
   return (
@@ -144,7 +157,7 @@ function Perfil() {
         </Modal>
         <Modal visible={openAddLinks} presentationStyle='fullScreen' animationType='fade' style={{ backgroundColor: '#000', flex: 1 }} >
           <View style={{ flex: 1, backgroundColor: "#0000002f" }}>
-            <AddLink onClose={handleCloseModalLinks} selectingLinks={setAddLink} selectedLinks={addLink} />
+            <AddLink onClose={handleCloseModalLinks} selectedLinks={addLink} setAdd={setAdd} />
           </View>
         </Modal>
         <Modal visible={openEditLinks} transparent={true} presentationStyle='overFullScreen' animationType='fade' style={{ backgroundColor: '#000', flex: 1 }} >

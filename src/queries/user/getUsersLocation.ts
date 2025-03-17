@@ -18,7 +18,7 @@ export default function useGetUsersLocation({ id, latitude, longitude, tags }: Q
   const { data, error, isLoading, refetch } = useQuery({
     queryKey: ['getUsersLocation', id, latitude, longitude],
     queryFn: () => getUsersLocation({ id, latitude, longitude, tags }),
-    refetchInterval: 10000
+    refetchInterval: 1000
   })
 
   return { data, error, isLoading, refetch }

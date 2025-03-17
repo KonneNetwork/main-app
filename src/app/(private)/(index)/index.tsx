@@ -144,8 +144,8 @@ function Index() {
             name={item.usuario.perfil.nome_perfil} distance={item.usuario.perfil.distancia}
             occupation={item.usuario.perfil.ocupacao}
             onChangeActive={() => {
-              // konnectionAba && router.navigate({ pathname: '/(private)/(index)/chat/[id]', params: { id: item?.cd_usuario_fk.perfil } })
-              updateStatusConnection({ id: item.cd_conexao, statusKonnexao: "Konnectado" })
+              konnectionAba && router.navigate({ pathname: `/(private)/(index)/chat/[id]`, params: { id: item.usuario.perfil.cd_usuario } })
+
             }}
             onChangeInactive={() => {
               updateStatusConnection({ id: item.cd_conexao, statusKonnexao: "Konnectar" })

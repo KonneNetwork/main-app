@@ -19,7 +19,7 @@ export default function useUpdateUserInfo() {
     return useMutation({
 
         mutationKey: ["updateUserInfo"],
-        mutationFn: ({ id, data }: Props) => updateUserInfo({ id, data })
+        mutationFn: ({ id, data }: Props) => updateUserInfo({ id, data }),
 
     })
 }

@@ -40,8 +40,6 @@ export default function EditLink({ onClosed, linkEdit }: EditLinkProps) {
 
 
   function onSubmit(data: { url: string }) {
-    console.log("🚀 ~ onSubmit ~ data:", data)
-
     updateMidiaLinks(data)
   }
 

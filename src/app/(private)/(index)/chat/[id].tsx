@@ -28,7 +28,7 @@ export default function Chat() {
       <View style={{ flex: 1, backgroundColor: 'white', paddingTop: 30 }}>
         <View className='flex-row items-center gap-3'>
           <Ionicons name="chevron-back-outline" size={32} color="black" onPress={() => router.back()} />
-          <CardUsers imageCardSize={60} name={friendId.nome} thema={friendId.colorTheme} image={friendId.image} />
+          {/* <CardUsers imageCardSize={60} name={friendId.nome} thema={friendId.colorTheme} image={friendId.image} /> */}
         </View>
         <FlatList data={messages} style={{ flex: 1, backgroundColor: 'white' }}
           inverted

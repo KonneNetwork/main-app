@@ -38,7 +38,7 @@ export default function SignInApple({ type }: Props) {
 
     } catch (error: any) {
       if (error.code === "ERR_REQUEST_CANCELED") {
-        AppleAuthentication.signOutAsync({ user: "Carlos", state: "Canceled" })
+        AppleAuthentication.signOutAsync({ user: '', state: "Canceled" })
         Toast.show({
           type: 'error',
           text1: "Operação cancelada!",

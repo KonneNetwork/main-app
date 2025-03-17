@@ -11,13 +11,14 @@ import getMidias from '@/queries/socialMidia/getMidias';
 
 interface AddLinksProps {
   onClose: () => void;
-  selectingLinks: React.Dispatch<React.SetStateAction<any | { label: string, link: string, category: string }[] | undefined | null>>;
+  // selectingLinks: React.Dispatch<React.SetStateAction<any | { label: string, link: string, category: string }[] | undefined | null>>;
   selectedLinks: {
     midia: any; label: string, link: string, category: string
-  }[] | undefined | null
+  }[] | undefined | null;
+  setAdd: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export default function AddLink({ onClose, selectedLinks }: AddLinksProps) {
+export default function AddLink({ onClose, selectedLinks, setAdd }: AddLinksProps) {
   const { data } = getMidias();
   const { profile } = userStore()
   const [midias, setMidias] = useState<any[] | undefined>([])
@@ -36,6 +37,8 @@ export default function AddLink({ onClose, selectedLinks }: AddLinksProps) {
       //   const updatedLinks = prevState ? [...prevState, item] : [item];
       //   return updatedLinks;
       // });
+
+      setAdd(true)
     }
     onClose();
   };

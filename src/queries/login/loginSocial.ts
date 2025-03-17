@@ -24,7 +24,6 @@ async function loginSocial(data: LoginSocialRequest) {
 }
 
 export default function useLoginSocial() {
-  console.log("entrou na função")
   const { setUserInfo, setToken, setProfile } = userStore();
 
   return useMutation({
@@ -64,11 +63,11 @@ export default function useLoginSocial() {
     },
     onError: (err) => {
       if (err instanceof AxiosError) {
-        console.log(err)
+        console.log(err.response)
         Toast.show({
           type: 'error',
           text1: 'Mensagem de erro',
-          text2: err.response?.data.message
+          text2: err.response?.data.error
         })
       }
     }
