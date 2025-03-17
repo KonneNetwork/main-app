@@ -13,7 +13,7 @@ interface UserCardProps {
   onChangeActive?: () => void
   thema: string;
   imageCardSize?: number;
-  aba: string
+  aba?: string
 }
 
 export default function CardUsers({ name, distance, occupation, titleButtonActive = '', titleButtonInactive = "", aba, image, onChangeActive, onChangeInactive, thema, imageCardSize = 80 }: UserCardProps) {

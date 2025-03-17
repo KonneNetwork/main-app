@@ -191,7 +191,6 @@ export const userStore = create<State & Actions>()(
 
 export function UserProvider({ children }: { children: ReactNode }) {
   const segments = useSegments();
-
   const router = useRouter();
   const token = userStore((state) => state.token);
 

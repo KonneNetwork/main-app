@@ -19,7 +19,7 @@ function Perfil() {
   const { data: midiaLinks } = useGetMidiaLinks(profile?.cdPerfil ?? '')
   const { data: userProfile } = useGetProfile(userInfo?.cdUsuario ?? '');
 
-  const [addLink, setAddLink] = useState<any | { label: string, link: string, category: string }[] | undefined | null>(socialMidiaLinks);
+  const [addLink, setAddLink] = useState<any | { label: string, link: string, category: string }[] | undefined | null>(socialMidiaLinks?.sort((linkA, linkB) => linkB.data_criacao - linkA?.data_criacao));
   const [editLink, setEditLink] = useState<any | { label: string, link: string, category: string } | null>(socialMidiaLinks);
   function handleCloseModalPerfil() {
     setOpenPerfil(false)
@@ -52,12 +52,10 @@ function Perfil() {
   }
 
 
-  useEffect(() => { setAddLink(socialMidiaLinks) }, [editLink, socialMidiaLinks])
-
-
   useEffect(() => {
     midiasInfo();
   }, [])
+
 
   // useEffect(() => {
   //   const fetchData = async () => {

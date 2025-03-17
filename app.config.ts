@@ -26,7 +26,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       googleMapsApiKey: process.env.GOOGLE_API_KEY,
     },
     bundleIdentifier: "com.egestao.konneapp",
-    buildNumber: '10'
+    buildNumber: '11'
   },
   android: {
     intentFilters: [
@@ -59,7 +59,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       }
     },
     package: "com.egestao.konneapp",
-    versionCode: 10
+    versionCode: 11
   },
   web: {
     bundler: "metro",

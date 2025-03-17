@@ -62,11 +62,12 @@ export default function EditLink({ onClosed, linkEdit }: EditLinkProps) {
             render={({ field: { value, onChange, onBlur } }) => (
               <InputPerfil
                 isEditable={true}
-                label='Usuário'
-                placeholder='link'
+                label={midia === "Telefone" ? 'Contato' : 'Usuário'}
+                placeholder={midia === "Telefone" ? 'número' : 'link'}
                 value={value}
                 onBlur={onBlur}
                 onChangeText={onChange}
+                keyboardType={midia === "Telefone" ? 'number-pad' : 'default'}
               />
             )} />
 

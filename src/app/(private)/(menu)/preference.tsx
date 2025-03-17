@@ -3,7 +3,7 @@ import { ProgressBar } from '@/components/ProgressBar'
 import AgeSelector from '@/components/Seletor'
 import { Ionicons } from '@expo/vector-icons'
 import classNames from 'classnames'
-import { router } from 'expo-router'
+import { router, usePathname, useSegments } from 'expo-router'
 import React, { useEffect, useState } from 'react'
 import { View, Text, FlatList, TouchableOpacity, useWindowDimensions } from 'react-native'
 import Slider from '@react-native-community/slider';
@@ -53,6 +53,8 @@ export default function Preference() {
   const [age, setAge] = useState<number>(18)
   const lastQuestion = etapas.length - 1;
   const { data } = useGetTags()
+  const pathname = usePathname()
+
 
   const handleSelectOption = (stageId: string, optionId: string) => {
     setSelectedOptions((prev) => {
@@ -78,7 +80,7 @@ export default function Preference() {
 
   const optionsByStage = etapas.map(etapa => {
     const options = data?.filter((tag: { tipo_tag: string | undefined }) => tag.tipo_tag === etapa.tipo_tag)
-      .map((tag: { cd_tag: any; tag: any }) => ({ id: tag.cd_tag, title: tag.tag })).sort((a:any, b:any) => a.title.localeCompare(b.title)) || [];
+      .map((tag: { cd_tag: any; tag: any }) => ({ id: tag.cd_tag, title: tag.tag })).sort((a: any, b: any) => a.title.localeCompare(b.title)) || [];
     return { ...etapa, options };
   });
 
@@ -95,10 +97,19 @@ export default function Preference() {
   //   })
   // }
 
-  function nextProgress() {
-    if (stage === (lastQuestion)) {
+  function back() {
+    if (pathname === '/preference') {
+      router.replace('/(menu)/')
+    } else {
       router.back()
     }
+  }
+
+  function nextProgress() {
+    if (stage === (lastQuestion)) {
+      back()
+    }
+
     if (stage < (lastQuestion)) {
       setStage(stage + 1)
       setStatusBarProgress(statusBarProgress + statusBarInitialValue)
@@ -147,7 +158,7 @@ export default function Preference() {
       ListHeaderComponent={
         <>
           <View className='flex-row items-center gap-6 s'>
-            <Ionicons name="chevron-back-outline" size={25} color="black" onPress={() => router.back()} />
+            <Ionicons name="chevron-back-outline" size={32} color="black" onPress={back} />
             <Text className='color-[#374151] font-inter-400 text-lg'>Preferências</Text>
           </View>
           <ProgressBar progress={statusBarProgress} />

@@ -11,10 +11,11 @@ import SignInApple from "../SignInApple";
 import useSignInLinkedin from "@/hooks/useSignInLinkedin";
 import Linkedin from '../../../assets/images/svgs/linkedin.svg';
 import { mask, unmask } from "remask";
+import { router } from "expo-router";
 
 const schema = z.object({
-  name: z.string(),
-  email: z.string().email('email inválido.'),
+  name: z.string().min(1, { message: 'adicione o nome' }),
+  email: z.string().min(1, { message: 'adicione um email' }).email('email inválido.'),
   cpf: z.string().refine((text) => unmask(text).length === 11, "cpf deve possuir 11 caracteres"),
   passwd: z.string().min(6, "minimo de 6 caracteres."),
 })
@@ -131,11 +132,11 @@ export function FinalStage({ onClose }: FinalStageProps) {
           {t('agreement message')}
         </Text>
         <View className='self-center flex-row items-center'>
-          <TouchableOpacity onPress={() => { }}>
+          <TouchableOpacity onPress={() => { router.navigate('/terms-use') }}>
             <Text>{t('terms uses')}</Text>
           </TouchableOpacity>
           <Text className='color-[#506773]'> {t('and')} </Text>
-          <TouchableOpacity onPress={() => { }}>
+          <TouchableOpacity onPress={() => { router.navigate('/(public)/police-privacy') }}>
             <Text>{t('privacy policies')}</Text>
           </TouchableOpacity>
         </View>

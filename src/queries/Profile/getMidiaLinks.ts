@@ -9,6 +9,7 @@ interface getMidiaLinksProps {
 async function getMidiasLinks(id: string, setSocialMidiaLinks: (item: any[]) => void, socialMidiaLinks: any[] | null) {
   const { data } = await api.get(`midia-perfil/${id}`)
   const dataMidiasLinks = data
+  console.log("🚀 ~ getMidiasLinks ~ data:", data)
   setSocialMidiaLinks(data)
   return dataMidiasLinks;
 }

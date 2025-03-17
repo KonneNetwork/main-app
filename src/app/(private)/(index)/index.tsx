@@ -22,7 +22,7 @@ import FirstAccessBox from '@/components/FirstAccessBox'
 function Index() {
 
   const [activeAba, setActiveAba] = useState<'Konnectado' | 'Pendente'>('Konnectado');
-  const valorTela = false;
+  const [firstAccess, setFirtAccess] = useState<boolean>(false)
   const konnectionAba = activeAba === 'Konnectado';
   const [search, setSearch] = useState('')
 
@@ -55,6 +55,12 @@ function Index() {
     const lengthPendendetes = dataKonnexoes?.filter((user: any) => { return user?.status_conexao === "Pendente" }).length
     return lengthPendendetes
   }
+
+  useEffect(() => {
+    if (userInfo?.primeiroAcesso) {
+      setFirtAccess(true)
+    }
+  }, [userInfo?.primeiroAcesso])
 
   useEffect(() => {
     refetchKonnexoes();
@@ -185,7 +191,7 @@ function Index() {
           </View>
 
           <Text className='font-inter-400 text-sm color-[#3C3C4399]/60 py-2'>{konnectionAba ? "Gerencie suas konnexões" : "Aceite ou rejeite pedidos de konnexões"}</Text>
-        
+
         </>
       }
 
@@ -223,10 +229,10 @@ function Index() {
     //   </>
     // }
     />
-     <FirstAccessBox open={valorTela}/>
-     </>
+    <FirstAccessBox open={firstAccess} setBox={setFirtAccess} />
+  </>
   )
- 
+
 }
 
 export default Index

@@ -10,6 +10,7 @@ interface UpdateProfileRequest {
   themeColor: string;
   occupation: string;
   description: string;
+  primeiroAcesso: boolean;
 }
 
 interface UpdateProfileProps {
@@ -25,7 +26,8 @@ async function updateProfile({ data, id }: UpdateProfileProps) {
       nome_perfil: data.name,
       descricao: data.description,
       ocupacao: data.occupation,
-      tema_perfil: data.themeColor
+      tema_perfil: data.themeColor,
+      primeiro_acesso: data.primeiroAcesso
     })
     return resultado.data;
   } catch (error) {

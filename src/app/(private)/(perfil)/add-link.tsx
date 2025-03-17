@@ -55,7 +55,7 @@ export default function AddLink({ onClose, selectedLinks }: AddLinksProps) {
         ListHeaderComponent={
           <View className='m-8'>
             <View className='flex-row items-center justify-center'>
-              <Ionicons name="chevron-back-outline" size={30} color="black" onPress={onClose} />
+              <Ionicons name="chevron-back-outline" size={32} color="black" onPress={onClose} />
               <Text className='flex-1 text-center text-xl font-roboto-700'>Adicionar Link</Text>
             </View>
             <InputSearch value={search} onChangeText={setSearch} placeholder='Buscar por links' />

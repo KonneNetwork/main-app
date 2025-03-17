@@ -97,7 +97,7 @@ export default function SearchFilter({ id, latitude, longitude, open, setOpen, s
     >
       <View className="w-full h-full bg-white p-4">
         <View className='flex-row items-center'>
-          <Ionicons name="chevron-back-outline" size={25} color="black" onPress={() => setOpen(false)} />
+          <Ionicons name="chevron-back-outline" size={32} color="black" onPress={() => setOpen(false)} />
           <Text className='color-[#374151] font-inter-900 text-3xl w-[85%] text-center'>Filtro</Text>
         </View>
         {/* <Text className="text-white text-xl font-bold">Filtro</Text>
