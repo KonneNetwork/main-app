@@ -152,7 +152,7 @@ function Input({ label, password = false, variant = 'default', styleContainer, s
               <Ionicons
                 name={visiblePassword ? "eye" : "eye-off-sharp"}
                 size={26}
-                color="white"
+                color={variant === 'white' ? 'white' : '#528A8C'}
 
               />
             </TouchableOpacity>

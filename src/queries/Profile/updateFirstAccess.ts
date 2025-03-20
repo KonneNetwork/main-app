@@ -21,7 +21,6 @@ async function updateFirstAccess({ data, id }: UpdateFirstAccessProps) {
     }
 
     const resultado = await api.put(`user/${id}`, { ...dataTransform })
-    console.log("🚀 ~ updateUserInfo ~ resultado:", resultado)
     return resultado
   } catch (error) {
     throw error

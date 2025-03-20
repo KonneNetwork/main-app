@@ -13,7 +13,6 @@ const PROFILE_URL = "https://api.linkedin.com/v2/userinfo"
 const SCOPES = ['openid', 'profile', 'email'];
 
 function useSignInLinkedin() {
-  console.log("entro o SignInLinkedin")
   const [token, setToken] = useState();
   const [code, setCode] = useState();
   const url = Linking.useURL();
@@ -74,11 +73,9 @@ function useSignInLinkedin() {
   }
 
   useEffect(() => {
-    console.log("verificando resposta", response)
     if (url) {
       const { queryParams } = Linking.parse(url);
       setCode(queryParams.code)
-      console.log("🚀 ~ useEffect ~ queryParams:", queryParams.code)
     }
 
     if (code !== null && Platform.OS === 'ios') {

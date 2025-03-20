@@ -12,6 +12,9 @@ import useSignInLinkedin from "@/hooks/useSignInLinkedin";
 import Linkedin from '../../../assets/images/svgs/linkedin.svg';
 import { mask, unmask } from "remask";
 import { router } from "expo-router";
+import { useState } from "react";
+import TermsUse from "@/app/(public)/terms-use";
+import PolicePrivacy from "@/app/(public)/police-privacy";
 
 const schema = z.object({
   name: z.string().min(1, { message: 'adicione o nome' }),
@@ -38,6 +41,8 @@ export function FinalStage({ onClose }: FinalStageProps) {
     },
     resolver: zodResolver(schema)
   })
+  const [termsUse, setTermsUse] = useState(false)
+  const [policePrivacy, setPolicePrivacy] = useState(false)
   const { mutate: createUser, isPending } = useCreateUser({ onClose })
 
   function onSubmit(data: SignUpSchema) {
@@ -52,7 +57,7 @@ export function FinalStage({ onClose }: FinalStageProps) {
   }
 
 
-  return (
+  return (<>
     <View className='flex-1 justify-between'>
 
       <View className=" flex-row justify-center items-center self-center gap-5">
@@ -115,6 +120,7 @@ export function FinalStage({ onClose }: FinalStageProps) {
           control={control}
           render={({ field: { value, onChange, onBlur } }) => (
             <Input label={t('set passwd')}
+              password={true}
               onBlur={onBlur}
               value={value}
               onChangeText={onChange}
@@ -132,11 +138,11 @@ export function FinalStage({ onClose }: FinalStageProps) {
           {t('agreement message')}
         </Text>
         <View className='self-center flex-row items-center'>
-          <TouchableOpacity onPress={() => { router.navigate('/terms-use') }}>
+          <TouchableOpacity onPress={() => setTermsUse(true)}>
             <Text>{t('terms uses')}</Text>
           </TouchableOpacity>
           <Text className='color-[#506773]'> {t('and')} </Text>
-          <TouchableOpacity onPress={() => { router.navigate('/(public)/police-privacy') }}>
+          <TouchableOpacity onPress={() => setPolicePrivacy(true)}>
             <Text>{t('privacy policies')}</Text>
           </TouchableOpacity>
         </View>
@@ -144,6 +150,9 @@ export function FinalStage({ onClose }: FinalStageProps) {
       </View>
 
     </View>
+    <TermsUse terms={termsUse} setTerms={setTermsUse} setPolicy={setPolicePrivacy} />
+    <PolicePrivacy policy={policePrivacy} setPolicy={setPolicePrivacy} setTerms={setTermsUse} />
+  </>
   )
 }
 

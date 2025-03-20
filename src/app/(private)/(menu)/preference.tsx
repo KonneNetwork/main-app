@@ -8,6 +8,9 @@ import React, { useEffect, useState } from 'react'
 import { View, Text, FlatList, TouchableOpacity, useWindowDimensions } from 'react-native'
 import Slider from '@react-native-community/slider';
 import useGetTags from '@/queries/tags/getTags'
+import useSelectTags from '@/queries/tags/selectTags'
+import { userStore } from '@/store/userStore'
+import useGetTagsSelected from '@/queries/tags/getTagsSelects'
 
 const etapas = [
   {
@@ -47,14 +50,22 @@ const etapas = [
 
 export default function Preference() {
   const statusBarInitialValue = 100 / etapas.length
+  const { profile } = userStore()
   const [stage, setStage] = useState(0)
   const [statusBarProgress, setStatusBarProgress] = useState(statusBarInitialValue)
   const [selectedOptions, setSelectedOptions] = useState<{ [key: string]: string[] }>({})
   const [age, setAge] = useState<number>(18)
   const lastQuestion = etapas.length - 1;
-  const { data } = useGetTags()
+  const { data: dataTags } = useGetTags()
   const pathname = usePathname()
+  const { mutate: selectTags, isPending } = useSelectTags(profile?.cdPerfil || '')
+  const { data: tagsSelected } = useGetTagsSelected(profile?.cdPerfil || '')
 
+
+  function handleSelectTags() {
+    const selectsTags = { selectedOptions, age }
+    selectTags(selectsTags)
+  }
 
   const handleSelectOption = (stageId: string, optionId: string) => {
     setSelectedOptions((prev) => {
@@ -79,7 +90,7 @@ export default function Preference() {
   }
 
   const optionsByStage = etapas.map(etapa => {
-    const options = data?.filter((tag: { tipo_tag: string | undefined }) => tag.tipo_tag === etapa.tipo_tag)
+    const options = dataTags?.filter((tag: { tipo_tag: string | undefined }) => tag.tipo_tag === etapa.tipo_tag)
       .map((tag: { cd_tag: any; tag: any }) => ({ id: tag.cd_tag, title: tag.tag })).sort((a: any, b: any) => a.title.localeCompare(b.title)) || [];
     return { ...etapa, options };
   });
@@ -97,6 +108,7 @@ export default function Preference() {
   //   })
   // }
 
+
   function back() {
     if (pathname === '/preference') {
       router.replace('/(menu)/')
@@ -107,7 +119,8 @@ export default function Preference() {
 
   function nextProgress() {
     if (stage === (lastQuestion)) {
-      back()
+      handleSelectTags();
+      back();
     }
 
     if (stage < (lastQuestion)) {
@@ -123,8 +136,23 @@ export default function Preference() {
     }
   }
 
+
+
   const currentStage = optionsByStage[stage];
   const currentStageOptions = selectedOptions[currentStage.id] || [];
+
+  useEffect(() => {
+
+    if (tagsSelected) {
+
+      setSelectedOptions({ ...tagsSelected[0] });
+      setAge(tagsSelected[1]?.idade || 18);
+
+
+    }
+  }, [tagsSelected]);
+
+
 
   return (
     <FlatList
@@ -171,7 +199,7 @@ export default function Preference() {
           {stage === lastQuestion &&
 
             <>
-              <AgeSelector setAge={setAge} />
+              <AgeSelector age={age} setAge={setAge} />
             </>
           }
         </>

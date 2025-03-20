@@ -195,6 +195,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
   const segments = useSegments();
   const router = useRouter();
   const token = userStore((state) => state.token);
+  const { userInfo } = userStore()
 
   const rootNavigationState = useRootNavigationState();
 

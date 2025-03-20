@@ -8,6 +8,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import React, { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form';
 import { View, Text, KeyboardAvoidingView, ScrollView, Platform } from 'react-native'
+import { mask, unmask } from 'remask';
 import { z } from 'zod';
 
 interface EditLinkProps {
@@ -18,6 +19,8 @@ interface EditLinkProps {
 const schema = z.object({
   url: z.string(),
 })
+
+type updateUrlSchema = z.infer<typeof schema>
 
 export default function EditLink({ onClosed, linkEdit }: EditLinkProps) {
   const { profile } = userStore()
@@ -39,7 +42,7 @@ export default function EditLink({ onClosed, linkEdit }: EditLinkProps) {
   }
 
 
-  function onSubmit(data: { url: string }) {
+  function onSubmit(data: updateUrlSchema) {
     updateMidiaLinks(data)
   }
 
@@ -64,7 +67,7 @@ export default function EditLink({ onClosed, linkEdit }: EditLinkProps) {
                 placeholder={midia === "Telefone" ? 'número' : 'link'}
                 value={value}
                 onBlur={onBlur}
-                onChangeText={onChange}
+                onChangeText={(text) => onChange(midia === 'Telefone' ? mask(text, ["+99\n(99)\n99999-9999"]) : text)}
                 keyboardType={midia === "Telefone" ? 'number-pad' : 'default'}
               />
             )} />

@@ -16,7 +16,6 @@ export default function FirstAccessBox({ open = false, setBox }: Props) {
     const { height } = useWindowDimensions()
     const [valueHeight, setValueHeight] = useState(height)
     const { userInfo } = userStore()
-    console.log("🚀 ~ FirstAccessBox ~ userInfo:", userInfo?.cdUsuario)
     const { mutate: updateFirstAccess } = useUpdateFirstAccess(userInfo?.cdUsuario ?? "", onClosed);
 
     function onClosed() {

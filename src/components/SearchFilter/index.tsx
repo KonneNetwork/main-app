@@ -30,7 +30,6 @@ export default function SearchFilter({ id, latitude, longitude, open, setOpen, s
   const [tagSelects, setTagSelects] = useState<string[]>([]);
   const [search, setSearch] = useState("");
   const { data, refetch, isLoading } = useGetUsersLocation({ id, latitude, longitude, tags: tagSelects })
-  console.log("🚀 ~ SearchFilter ~ data:", data)
 
   useEffect(() => {
     if (tagsData) {

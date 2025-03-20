@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect, SetStateAction, Dispatch } from 'react';
 import { View, Text, ScrollView, StyleSheet, Dimensions } from 'react-native';
 
-const AgeSelector = ({setAge }: { setAge: (value: number) => void}) =>{
+const AgeSelector = ({ setAge, age }: { age: number, setAge: (value: number) => void }) => {
   const scrollRef = useRef<ScrollView>(null);
   const { width } = Dimensions.get('screen');
   const itemWidth = 60;
@@ -10,7 +10,7 @@ const AgeSelector = ({setAge }: { setAge: (value: number) => void}) =>{
   const repeatedAges = Array.from({ length: ageRange * 1 }, (_, i) => (i % ageRange) + 1);
 
 
-  const initialAge = 18;
+  const initialAge = age;
   const [selectedAge, setSelectedAge] = useState<number>(initialAge);
 
 
@@ -18,12 +18,12 @@ const AgeSelector = ({setAge }: { setAge: (value: number) => void}) =>{
     const offsetX = event.nativeEvent.contentOffset.x;
     const index = Math.round(offsetX / itemWidth);
     const age = repeatedAges[index];
-    if (age !== selectedAge) setSelectedAge(age); 
+    if (age !== selectedAge) setSelectedAge(age);
   };
 
   useEffect(() => {
     if (scrollRef.current) {
-      
+
       const initialOffset = (initialAge - 1) * itemWidth;
       scrollRef.current.scrollTo({
         x: initialOffset,
@@ -32,7 +32,7 @@ const AgeSelector = ({setAge }: { setAge: (value: number) => void}) =>{
     }
   }, []);
 
-  useEffect(()=>{setAge(selectedAge)},[selectedAge])
+  useEffect(() => { setAge(selectedAge) }, [selectedAge])
 
   return (
     <>

@@ -14,6 +14,7 @@ export const useOnlineStatus = () => {
     };
 
     const subscription = AppState.addEventListener("change", handleAppStateChange);
+    console.log("🚀 ~ useEffect ~ subscription:", subscription)
 
     return () => {
       subscription.remove();

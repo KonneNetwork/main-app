@@ -13,8 +13,6 @@ interface Props {
 
 export default function SignInApple({ type }: Props) {
   const { mutate: loginSocial, isPending, isError } = useLoginSocial()
-  console.log("🚀 ~ SignInApple ~ isError:", isError)
-  console.log("🚀 ~ SignInApple ~ isPending:", isPending)
   async function signIn() {
     try {
       const credential = await AppleAuthentication.signInAsync({

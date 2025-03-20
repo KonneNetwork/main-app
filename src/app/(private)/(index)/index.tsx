@@ -29,7 +29,6 @@ function Index() {
   const { userInfo } = userStore()
 
   const { data: dataKonnexoes, refetch: refetchKonnexoes, isError } = useGetKonnexoes(String(userInfo?.cdUsuario));
-  console.log("🚀 ~ Index ~ dataKonnexoes:", dataKonnexoes)
   const { mutate: updateStatusConnection } = useUpdateStatusConnection()
 
   const [konnexoes, setKonnexoes] = useState<any | undefined>()
@@ -44,10 +43,16 @@ function Index() {
 
   // useEffect(() => { setKonnexoes(profile?.konnexoes) }, [profile?.konnexoes])
 
+
+  function FirstAcessBox() {
+    if (userInfo?.primeiroAcesso) {
+      setFirtAccess(true)
+    }
+
+  }
+
   function Konnexoes(status: string) {
     const filterData = dataKonnexoes?.filter((user: any) => { return user?.status_conexao === status })
-
-    console.log("🚀 ~ Konnexoes ~ filterData:", filterData)
     setKonnexoes(filterData)
   }
 
@@ -57,9 +62,7 @@ function Index() {
   }
 
   useEffect(() => {
-    if (userInfo?.primeiroAcesso) {
-      setFirtAccess(true)
-    }
+    FirstAcessBox()
   }, [userInfo?.primeiroAcesso])
 
   useEffect(() => {
@@ -78,7 +81,7 @@ function Index() {
     }
   }, [activeAba, dataKonnexoes]);
 
-  if (konnexoes && konnexoes?.length < 0 || konnexoes === undefined) {
+  if (konnexoes && konnexoes?.length <= 0 || konnexoes === undefined) {
     return (
       <View className='flex-1 bg-white p-8'>
         <View className='flex-row justify-between mt-10'>
@@ -102,7 +105,7 @@ function Index() {
             <Text className={classNames({ 'font-inter-500 text-lg color-[#000] text-center ': activeAba === 'Pendente' },
               { 'font-inter-500 text-lg color-[#506773] text-center': activeAba !== 'Pendente' })}>
               Pedidos de Konnexão
-              {/* {(lengthPendentes().length !== undefined && lengthPendentes().length > 0) && `(${lengthPendentes()})`} */}
+              {lengthPendentes() > 0 && `(${lengthPendentes()})`}
             </Text>
           </TouchableOpacity>
         </View>
@@ -144,8 +147,8 @@ function Index() {
             name={item.usuario.perfil.nome_perfil} distance={item.usuario.perfil.distancia}
             occupation={item.usuario.perfil.ocupacao}
             onChangeActive={() => {
-              konnectionAba && router.navigate({ pathname: `/(private)/(index)/chat/[id]`, params: { id: item.usuario.perfil.cd_usuario } })
-
+              konnectionAba && item.status_conexao === "Konnectado" ? router.navigate({ pathname: `/(private)/(index)/chat/[id]`, params: { id: item.usuario.perfil.cd_usuario } })
+                : updateStatusConnection({ id: item.cd_conexao, statusKonnexao: "Konnectado" })
             }}
             onChangeInactive={() => {
               updateStatusConnection({ id: item.cd_conexao, statusKonnexao: "Konnectar" })
@@ -185,7 +188,7 @@ function Index() {
               <Text className={classNames({ 'font-inter-500 text-lg color-[#000] text-center ': activeAba === 'Pendente' },
                 { 'font-inter-500 text-lg color-[#506773] text-center': activeAba !== 'Pendente' })}>
                 Pedidos de Konnexão
-                {/* {(lengthPendentes().length !== undefined && Number(lengthPendentes().length) > 0) && `(${lengthPendentes()})`} */}
+                {lengthPendentes() > 0 && `(${lengthPendentes()})`}
               </Text>
             </TouchableOpacity>
           </View>
@@ -205,7 +208,7 @@ function Index() {
     //       <FlatList
     //         showsHorizontalScrollIndicator={false}
     //         className='flex-grow'
-    //         data={usersByNear?.filter((item: any) => item.distancia < 1000)}
+    //         data={konnexoes?.filter((item: any) => item.distancia < 1000)}
     //         contentContainerStyle={{ gap: 16, flexGrow: 1 }}
     //         horizontal
     //         keyExtractor={(index) => index}

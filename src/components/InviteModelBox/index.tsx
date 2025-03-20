@@ -19,14 +19,12 @@ interface InviteModalProps {
 }
 
 export default function InviteModelBox({ invite, setInvite, userCode, statusKonnexao }: InviteModalProps) {
-  console.log("🚀 ~ InviteModelBox ~ statusKonnexao:", statusKonnexao)
 
   const { userInfo: user } = userStore()
   const [infoUser, setInfoUser] = useState<Profile | null>()
   const { data, isLoading } = useGetOtherProfiles(userCode ?? "");
   const { mutate: createKonnexao } = useCreateKonnexao({ onClose })
   const { data: midiaLinks } = useGetMidiaLinks(infoUser?.cdPerfil ?? '')
-  console.log("🚀 ~ InviteModelBox ~ midiaLinks:", midiaLinks)
 
 
   function onClose() {
@@ -103,7 +101,7 @@ export default function InviteModelBox({ invite, setInvite, userCode, statusKonn
                   }}
                   scrollEnabled={false}
                   data={midiaLinks} renderItem={({ item }) => (
-                    <CardMedia infoCard={item.cd_social_midia_fk} infoMidiaLink={item} isEditabled={true} style={{ backgroundColor: '#ffffff3f' }} className='rounded-lg px-5 py-3' />
+                    <CardMedia infoCard={item.cd_social_midia_fk} infoMidiaLink={item} isEditabled={true} style={{ backgroundColor: '#ffffff3f', justifyContent: 'center', alignItems: 'center' }} className='rounded-lg px-5 py-3' />
                   )}
 
 

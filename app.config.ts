@@ -20,13 +20,19 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     infoPlist: {
       UIViewControllerBasedStatusBarAppearance: "NO",
       NSLocationWhenInUseUsageDescription: "O aplicativo precisa de acesso à sua localização enquanto está em uso para fornecer a funcionalidade de mapas.",
-      NSLocationAlwaysUsageDescription: "O aplicativo precisa de acesso à sua localização em segundo plano para fornecer atualizações contínuas."
+      NSLocationAlwaysUsageDescription: "O aplicativo precisa de acesso à sua localização em segundo plano para fornecer atualizações contínuas.",
+      UIBackgroundModes: ["location", "fetch", "remote-notification"],
+
     },
     config: {
       googleMapsApiKey: process.env.GOOGLE_API_KEY,
     },
     bundleIdentifier: "com.egestao.konneapp",
-    buildNumber: '11'
+    buildNumber: '14'
+  },
+  androidStatusBar: {
+    backgroundColor: '#1C2D4C',
+    barStyle: 'light-content',
   },
   android: {
     intentFilters: [
@@ -59,7 +65,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       }
     },
     package: "com.egestao.konneapp",
-    versionCode: 11
+    versionCode: 14
   },
   web: {
     bundler: "metro",

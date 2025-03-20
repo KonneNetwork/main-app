@@ -17,6 +17,8 @@ import useGetUsersLocation from '@/queries/user/getUsersLocation';
 import InviteModelBox from '@/components/InviteModelBox';
 import useUpdateUserInfo from '@/queries/user/updateUser';
 import SearchFilter from '@/components/SearchFilter';
+import * as TaskManager from 'expo-task-manager';
+import Toast from 'react-native-toast-message';
 
 interface LatLog {
   latitude: number;
@@ -76,6 +78,7 @@ interface MarkerComponentProps {
 }
 
 function Buscar() {
+  const LOCATION_TASK_NAME = 'background-location-task';
   const [userLocation, setUserLocation] = useState<LatLog
   >({
     latitude: -23.53474453844267,
@@ -92,12 +95,15 @@ function Buscar() {
   const [markers, setMarkers] = useState<UsersFetch[] | undefined>([]);
 
 
+
   async function PermissionLocation() {
-    const { status } = await Location.requestForegroundPermissionsAsync();
-    if (status !== 'granted') {
+    const { status: statusForeground } = await Location.requestForegroundPermissionsAsync();
+
+    if (statusForeground !== 'granted') {
       setErrorMsg('A permissão para acessar a localização foi negada!');
       return;
     }
+
 
     const location = await Location.getCurrentPositionAsync({
       accuracy: Location.Accuracy.Highest
@@ -105,14 +111,16 @@ function Buscar() {
     setUserLocation({ latitude: location.coords.latitude, longitude: location.coords.longitude });
   }
 
+
+
   useEffect(() => {
     PermissionLocation();
+
   }, []);
 
   // useMemo(() => { setMarkers(data) }, [data])
 
   useEffect(() => {
-    console.log("🚀 ~ Buscar ~ data:", data)
     setMarkers(data)
   }, [data])
 
@@ -177,20 +185,20 @@ function Buscar() {
         ))}
 
 
-        <Circle
+        {/* <Circle
           center={userLocation}
           radius={100}
           strokeColor="rgba(51, 88, 108, 0.4)"
           fillColor="rgba(51, 88, 108, 0.4)"
-        />
+        /> */}
 
-        <Marker coordinate={userLocation} onPress={() => router.navigate('/(perfil)/')}>
-          {profile?.fotoPerfil && <View className='rounded-full overflow-hidden border-[16px] border-[#33586C]'>
+        <Marker coordinate={userLocation} onPress={() => router.navigate('/(perfil)/')} zIndex={1}>
+          {/* {profile?.fotoPerfil && <View className='rounded-full overflow-hidden border-[16px] border-[#33586C]'>
             <Image
               source={{ uri: profile?.fotoPerfil }}
               className='w-28 h-28'
             />
-          </View>}
+          </View>} */}
         </Marker>
       </MapView>
 
@@ -222,7 +230,7 @@ const styles = StyleSheet.create({
     borderColor: '#528A8C',
     overflow: 'hidden',
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center', zIndex: 1
   },
   image: {
     width: 40,

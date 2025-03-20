@@ -8,12 +8,14 @@ import CardConfiguration from '@/components/CardConfiguration';
 import classNames from 'classnames';
 import { userStore } from '@/store/userStore';
 import Entypo from '@expo/vector-icons/Entypo';
+import useUpdateUserInfo from '@/queries/user/updateUser';
 
 
 
 function Menu() {
 
   const { userInfo, profile, logout } = userStore()
+  const { mutate: updateUserInfo } = useUpdateUserInfo()
   function Faq() {
     Linking.openURL(`http://api.whatsapp.com/send?phone=${+5511997881651}`)
   }
@@ -84,14 +86,15 @@ function Menu() {
               <Icons.update width={25} height={25} />
             </CardConfiguration>
 
-            <CardConfiguration title='Fale Conosco' onPress={Faq}>
+            <CardConfiguration title='Fale Konnosco' onPress={Faq}>
               <Entypo name="megaphone" size={24} color="black" />
             </CardConfiguration>
 
           </View>
         </View>
         <Button title='Sair da Conta' variant='exit' onPress={() => {
-          logout()
+          updateUserInfo({ id: userInfo?.cdUsuario, data: { online: false } });
+          logout();
         }} />
       </View >
     </ScrollView>
