@@ -16,9 +16,10 @@ interface InviteModalProps {
   setInvite: (value: React.SetStateAction<boolean>) => void
   userCode: string | null,
   statusKonnexao?: StatusKonnexao | null
+  statusUsuario: string | null
 }
 
-export default function InviteModelBox({ invite, setInvite, userCode, statusKonnexao }: InviteModalProps) {
+export default function InviteModelBox({ invite, setInvite, userCode, statusKonnexao, statusUsuario }: InviteModalProps) {
 
   const { userInfo: user } = userStore()
   const [infoUser, setInfoUser] = useState<Profile | null>()
@@ -110,7 +111,7 @@ export default function InviteModelBox({ invite, setInvite, userCode, statusKonn
 
 
               {statusKonnexao === "Pendente" && <>
-                <Text className='font-inter-500 text-2xl color-white text-center my-6'>Aguardando {infoUser?.nomePerfil} aceitar sua solicitação</Text>
+                <Text className='font-inter-500 text-2xl color-white text-center my-6'>{statusUsuario === 'convidado' ? 'Você precisa Aceitar a Konnexão, vá para Konexões Pendentes' : `Aguardando ${infoUser?.nomePerfil} aceitar sua solicitação`}</Text>
 
                 <TouchableOpacity className='flex-row  items-center gap-3 border-2 border-[#528A8C] p-8  justify-center w-full rounded-md '
                   onPress={onClose}

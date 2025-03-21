@@ -3,8 +3,6 @@ import { useQuery } from "@tanstack/react-query";
 
 async function getTagsSelected(id: string) {
   const { data } = await api.get(`/get-preferences/${id}`);
-
-  console.log("🚀 ~ getTagsSelected ~ data:", data)
   return data;
 }
 

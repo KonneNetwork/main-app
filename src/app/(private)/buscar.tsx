@@ -69,6 +69,7 @@ interface UsersFetch {
   nome_usuario: string,
   distancia: string,
   status_conexao: StatusKonnexao | null
+  status_usuario: string | null
 }
 
 // Tipagem das props do MarkerComponent
@@ -88,6 +89,7 @@ function Buscar() {
   const [open, setOpen] = useState(false)
   const [openInvite, setOpenInvite] = useState(false)
   const [statuskonexao, setstatuskonexao] = useState<StatusKonnexao | null>(null)
+  const [statusUsuario, setstatusUsuario] = useState<string | null>(null)
   const [selectedUser, setSelectedUser] = useState<string | null>(null);
   const { profile, userInfo } = userStore()
   const { mutate: updateUserInfo } = useUpdateUserInfo()
@@ -118,11 +120,10 @@ function Buscar() {
 
   }, []);
 
-  // useMemo(() => { setMarkers(data) }, [data])
-
   useEffect(() => {
     setMarkers(data)
   }, [data])
+
 
   useEffect(() => {
     updateUserInfo({ id: userInfo?.cdUsuario, data: { latitude: userLocation.latitude ?? null, longitude: userLocation.longitude ?? null } })
@@ -171,6 +172,7 @@ function Buscar() {
               setOpenInvite(true);
               setSelectedUser(item?.cd_perfil ?? "")
               setstatuskonexao(item?.status_conexao ?? null)
+              setstatusUsuario(item.status_usuario)
             }}
           >
             <TouchableOpacity>
@@ -202,7 +204,7 @@ function Buscar() {
         </Marker>
       </MapView>
 
-      <InviteModelBox invite={openInvite} setInvite={setOpenInvite} userCode={selectedUser} statusKonnexao={statuskonexao} />
+      <InviteModelBox invite={openInvite} setInvite={setOpenInvite} userCode={selectedUser} statusKonnexao={statuskonexao} statusUsuario={statusUsuario} />
       <SearchFilter setUsersLocation={setMarkers} id={userInfo?.cdUsuario} latitude={userLocation.latitude} longitude={userLocation.longitude} open={open} setOpen={setOpen} />
     </View >
 

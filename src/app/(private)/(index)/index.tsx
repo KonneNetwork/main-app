@@ -61,9 +61,6 @@ function Index() {
     return lengthPendendetes
   }
 
-  useEffect(() => {
-    FirstAcessBox()
-  }, [userInfo?.primeiroAcesso])
 
   useEffect(() => {
     refetchKonnexoes();
@@ -81,8 +78,15 @@ function Index() {
     }
   }, [activeAba, dataKonnexoes]);
 
+  useEffect(() => {
+    FirstAcessBox()
+  }, [userInfo, userInfo?.primeiroAcesso])
+  useEffect(() => {
+    FirstAcessBox()
+  }, [])
+
   if (konnexoes && konnexoes?.length <= 0 || konnexoes === undefined) {
-    return (
+    return (<>
       <View className='flex-1 bg-white p-8'>
         <View className='flex-row justify-between mt-10'>
           <Text className='font-inter-700 text-3xl '>Konnexões</Text>
@@ -130,6 +134,8 @@ function Index() {
         </View>
 
       </View >
+      <FirstAccessBox open={firstAccess} setBox={setFirtAccess} />
+    </>
     )
   }
 
