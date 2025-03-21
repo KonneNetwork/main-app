@@ -16,7 +16,7 @@ web-build/
 .env
 /app.json
 /app.config.ts.old
-
+/yarn-erro.log
 # macOS
 .DS_Store
 

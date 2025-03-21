@@ -13,13 +13,17 @@
         "simulator": true,
         "resourceClass": "m-medium"
       },
-      "android": {}
+      "android": {
+        "buildType": "apk"
+      }
     },
     "production": {
       "ios": {
         "resourceClass": "m-medium"
       },
-      "android": {}
+      "android": {
+        "buildType": "apk"
+      }
     }
   },
   "submit": {

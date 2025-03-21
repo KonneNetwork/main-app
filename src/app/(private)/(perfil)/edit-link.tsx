@@ -1,19 +1,51 @@
 import Button from '@/components/Button'
 import { Icons } from '@/components/Icons';
 import InputPerfil from '@/components/InputPerfil'
-import React, { useState } from 'react'
+import { useDeleteMidiaLinks } from '@/queries/Profile/deleteMidiaLinks';
+import { useUpdateMidiaLinks } from '@/queries/Profile/updataMidiaLinks';
+import { userStore } from '@/store/userStore';
+import { zodResolver } from '@hookform/resolvers/zod';
+import React, { useEffect, useState } from 'react'
+import { Controller, useForm } from 'react-hook-form';
 import { View, Text, KeyboardAvoidingView, ScrollView, Platform } from 'react-native'
+import { mask, unmask } from 'remask';
+import { z } from 'zod';
 
 interface EditLinkProps {
   onClosed: () => void;
-  linkEdit: { label: string, link: string, category: string } | null;
-  remove: (link: string) => void;
+  linkEdit: any | { label: string, link: string, category: string } | null;
 }
 
-export default function EditLink({ onClosed, linkEdit, remove }: EditLinkProps) {
-  const [link, setLink] = useState(linkEdit?.link)
-  const name = linkEdit?.label.toLowerCase().toString().replace(" ", '')
+const schema = z.object({
+  url: z.string(),
+})
+
+type updateUrlSchema = z.infer<typeof schema>
+
+export default function EditLink({ onClosed, linkEdit }: EditLinkProps) {
+  const { profile } = userStore()
+  const { midia } = linkEdit.cd_social_midia_fk
+  const { mutate: updateMidiaLinks } = useUpdateMidiaLinks(linkEdit?.cd_social_midia_link || "", profile?.cdPerfil || "", onClosed)
+  const { mutate: deleteMidiaLinks } = useDeleteMidiaLinks(profile?.cdPerfil || '', onClosed)
+  const name = midia.toLowerCase().toString().replace(" ", '')
   const Icon = Icons[name as keyof typeof Icons];
+  // const [link, setLink] = useState(linkEdit?.url)
+  const { control, handleSubmit, formState: { errors } } = useForm({
+    defaultValues: {
+      url: linkEdit?.url || ""
+    },
+    resolver: zodResolver(schema)
+  })
+
+  function deleteMidiaLink() {
+    deleteMidiaLinks(linkEdit.cd_social_midia_link)
+  }
+
+
+  function onSubmit(data: updateUrlSchema) {
+    updateMidiaLinks(data)
+  }
+
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
@@ -22,16 +54,24 @@ export default function EditLink({ onClosed, linkEdit, remove }: EditLinkProps) 
       <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'flex-end' }} showsVerticalScrollIndicator={false} bounces={false} keyboardShouldPersistTaps="handled">
 
         <View className='  w-full items-center gap-2 bg-surface-primary pt-8 px-8 pb-4 rounded-t-[30px]'>
-          <Icons.trash width={23} height={23} style={{ position: 'absolute', right: 30, top: 30 }} onPress={() => { remove(linkEdit?.label!); onClosed() }} />
+          <Icons.trash width={23} height={23} style={{ position: 'absolute', right: 30, top: 30 }} onPress={deleteMidiaLink} />
           <Icon width={150} height={150} />
-          <Text className='font-roboto-700 text-xl mb-3'>{linkEdit?.label}</Text>
-          <InputPerfil
-            isEditable={true}
-            label='Usuário'
-            placeholder='link'
-            value={link}
-            onChangeText={setLink}
-          />
+          <Text className='font-roboto-700 text-xl mb-3'>{midia}</Text>
+          <Controller
+            name='url'
+            control={control}
+            render={({ field: { value, onChange, onBlur } }) => (
+              <InputPerfil
+                isEditable={true}
+                label={midia === "Telefone" ? 'Contato' : 'Usuário'}
+                placeholder={midia === "Telefone" ? 'número' : 'link'}
+                value={value}
+                onBlur={onBlur}
+                onChangeText={(text) => onChange(midia === 'Telefone' ? mask(text, ["+99\n(99)\n99999-9999"]) : text)}
+                keyboardType={midia === "Telefone" ? 'number-pad' : 'default'}
+              />
+            )} />
+
 
 
           <View className='flex-row gap-3 w-full'>
@@ -45,7 +85,7 @@ export default function EditLink({ onClosed, linkEdit, remove }: EditLinkProps) 
               variant='active'
               title=' Salvar'
               mediumButton={true}
-              onPress={onClosed}
+              onPress={handleSubmit(onSubmit)}
             />
           </View>
         </View>

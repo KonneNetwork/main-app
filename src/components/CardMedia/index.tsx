@@ -4,13 +4,14 @@ import IconEdit from '../IconEdit';
 import { Icons } from '../Icons';
 
 interface CardMedia extends TouchableOpacityProps {
-  infoCard: { label: string, link: string, category: string };
+  infoCard: any | { label: string, link: string, category: string };
+  infoMidiaLink?: any
   isEditabled?: boolean;
   openModal?: (link: { label: string, link: string, category: string } | null) => void
 }
 
-export default function CardMedia({ infoCard, isEditabled = true, openModal = () => { }, ...rest }: CardMedia) {
-  const name = infoCard?.label.toLowerCase().toString().replace(" ", '')
+export default function CardMedia({ infoCard, isEditabled = true, openModal = () => { }, infoMidiaLink, ...rest }: CardMedia) {
+  const name = infoCard?.midia.toLowerCase().toString().replace(" ", '')
   const Icon = Icons[name as keyof typeof Icons];
   const dimenssaoWidth = Dimensions.get('screen').width;
   const itemWidth = (dimenssaoWidth - 100) / 3;
@@ -19,13 +20,13 @@ export default function CardMedia({ infoCard, isEditabled = true, openModal = ()
 
     <TouchableOpacity style={[styles.item, { width: itemWidth }]} {...rest} disabled={!isEditabled} >
       <Icon width={60} height={60} />
-      <Text className='font-roboto-500 text-sm'>{infoCard?.label}</Text>
+      <Text className='font-roboto-500 text-sm'>{infoCard?.midia}</Text>
       {!isEditabled &&
         <IconEdit
           colorIcon='#fff'
           sizeIcon={20}
           className='absolute top-[-15] right-[-15] bg-[#222222]/30 p-2 rounded-full m-2'
-          onPress={() => openModal(infoCard)}
+          onPress={() => openModal(infoMidiaLink)}
         />
       }
     </TouchableOpacity>

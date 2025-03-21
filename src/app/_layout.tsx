@@ -9,10 +9,19 @@ import { Image } from "react-native";
 import { Slot } from 'expo-router';
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { StatusBar } from 'expo-status-bar';
-import { SafeAreaView } from "react-native-safe-area-context";
 import { UserProvider } from '@/store/userStore';
+import { QueryClientProvider } from "@tanstack/react-query";
+import { queryClient } from '@/services/query';
+import Toast from 'react-native-toast-message';
+import { toastConfig } from '@/services/ToastConfig';
+// import '@/services/i18next';
+import React from 'react';
+import { I18nextProvider } from 'react-i18next';
+import i18n from '@/services/i18n';
+import { useOnlineStatus } from '@/hooks/useOnlineStatus';
 
 export default function RootLayout() {
+  // useOnlineStatus();
   const [loaded, error] = useFonts({
     Inter_400Regular,
     Inter_500Medium,
@@ -28,6 +37,7 @@ export default function RootLayout() {
     if (loaded || error) {
       SplashScreen.hideAsync();
     }
+    
   }, [loaded, error,]);
 
   if (!loaded && !error) {
@@ -37,10 +47,15 @@ export default function RootLayout() {
   return (
     <>
       <GestureHandlerRootView className='flex-1'>
-        <UserProvider>
-          <StatusBar style="light" />
-          <Slot />
-        </UserProvider>
+        <QueryClientProvider client={queryClient} >
+          <I18nextProvider i18n={i18n} defaultNS={"translation"}>
+            <UserProvider>
+              <StatusBar style="light" />
+              <Slot />
+              <Toast config={toastConfig} />
+            </UserProvider>
+          </I18nextProvider>
+        </QueryClientProvider>
       </GestureHandlerRootView>
     </>
   );

@@ -2,6 +2,7 @@ import { Tabs, Stack } from "expo-router";
 import { Icons } from "@/components/Icons";
 import TabBarIcon from "@/components/TabBarIcon";
 import { StatusBar } from "expo-status-bar";
+import React from "react";
 
 
 

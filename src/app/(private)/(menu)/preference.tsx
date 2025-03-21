@@ -3,87 +3,69 @@ import { ProgressBar } from '@/components/ProgressBar'
 import AgeSelector from '@/components/Seletor'
 import { Ionicons } from '@expo/vector-icons'
 import classNames from 'classnames'
-import { router } from 'expo-router'
-import React, { useState } from 'react'
-import { View, Text, FlatList, TouchableOpacity, useWindowDimensions, LayoutChangeEvent } from 'react-native'
+import { router, usePathname, useSegments } from 'expo-router'
+import React, { useEffect, useState } from 'react'
+import { View, Text, FlatList, TouchableOpacity, useWindowDimensions } from 'react-native'
 import Slider from '@react-native-community/slider';
-import { Picker } from '@react-native-picker/picker'
+import useGetTags from '@/queries/tags/getTags'
+import useSelectTags from '@/queries/tags/selectTags'
+import { userStore } from '@/store/userStore'
+import useGetTagsSelected from '@/queries/tags/getTagsSelects'
 
 const etapas = [
   {
     id: "1",
-    title: "Qual seu assunto preferido?",
+    title: "Qual a sua área de atuação?",
     subtitle: "Escolha até 5 assuntos:",
     maxSelections: 5,
-    options: [
-      { id: 1, title: 'Networking' },
-      { id: 2, title: 'Marketing' },
-      { id: 3, title: 'TI' },
-      { id: 4, title: 'Publicidade' },
-      { id: 5, title: 'Cibersegurança' },
-      { id: 6, title: 'Dança' },
-      { id: 7, title: 'Musica' },
-      { id: 8, title: 'Escrita' },
-      { id: 9, title: 'Esporte' },
-      { id: 10, title: 'Design' }
-    ]
+    tipo_tag: "Interesses",
   },
   {
     id: "2",
-    title: "Quais são seus objetivos?",
+    title: "Quais são seus objetivos na Konne?",
     subtitle: "Selecione até 2:",
     maxSelections: 2,
-    options: [
-      { id: 1, title: "Networking" },
-      { id: 2, title: "Contratar" },
-      { id: 3, title: "Social" },
-      { id: 4, title: "Educação" }
-    ]
+    tipo_tag: "Objetivos",
   },
   {
     id: "3",
     title: "Quero me Konnectar com pessoas das seguintes áreas:",
     subtitle: "Escolha até 5:",
     maxSelections: 5,
-    options: [
-      { id: 1, title: 'Design' },
-      { id: 2, title: 'Arquitertura' },
-      { id: 3, title: 'Negócios' },
-      { id: 4, title: 'Devs' },
-      { id: 5, title: 'Cibersegurança' },
-      { id: 6, title: 'Dança' },
-      { id: 7, title: 'Musica' },
-      { id: 8, title: 'Escrita' },
-      { id: 9, title: 'Esporte' },
-    ]
+    tipo_tag: "Interesses",
   },
   {
     id: "4",
     title: "Como você se identifica?",
     maxSelections: 1,
-    options: [
-      { id: 1, title: 'Homem' },
-      { id: 2, title: 'Mulher' },
-      { id: 4, title: 'Prefiro não informar' },
-    ]
+    tipo_tag: "Gênero",
   },
   {
     id: "5",
     title: "Qual a sua idade?",
-    slider: [18, 101]
-  }
-]
+    slider: [18, 101],
+  },
+];
 
 
 export default function Preference() {
   const statusBarInitialValue = 100 / etapas.length
+  const { profile } = userStore()
   const [stage, setStage] = useState(0)
   const [statusBarProgress, setStatusBarProgress] = useState(statusBarInitialValue)
   const [selectedOptions, setSelectedOptions] = useState<{ [key: string]: string[] }>({})
   const [age, setAge] = useState<number>(18)
-  const { width, height } = useWindowDimensions()
-  // console.log("🚀 ~ Preference ~ selectedOptions:", selectedOptions)
   const lastQuestion = etapas.length - 1;
+  const { data: dataTags } = useGetTags()
+  const pathname = usePathname()
+  const { mutate: selectTags, isPending } = useSelectTags(profile?.cdPerfil || '')
+  const { data: tagsSelected } = useGetTagsSelected(profile?.cdPerfil || '')
+
+
+  function handleSelectTags() {
+    const selectsTags = { selectedOptions, age }
+    selectTags(selectsTags)
+  }
 
   const handleSelectOption = (stageId: string, optionId: string) => {
     setSelectedOptions((prev) => {
@@ -107,7 +89,11 @@ export default function Preference() {
     })
   }
 
-
+  const optionsByStage = etapas.map(etapa => {
+    const options = dataTags?.filter((tag: { tipo_tag: string | undefined }) => tag.tipo_tag === etapa.tipo_tag)
+      .map((tag: { cd_tag: any; tag: any }) => ({ id: tag.cd_tag, title: tag.tag })).sort((a: any, b: any) => a.title.localeCompare(b.title)) || [];
+    return { ...etapa, options };
+  });
 
   // const handleSelectOption = (stageId: string, optionId: string) => {
   //   setSelectedOptions(prev => {
@@ -122,10 +108,21 @@ export default function Preference() {
   //   })
   // }
 
-  function nextProgress() {
-    if (stage === (lastQuestion)) {
+
+  function back() {
+    if (pathname === '/preference') {
+      router.replace('/(menu)/')
+    } else {
       router.back()
     }
+  }
+
+  function nextProgress() {
+    if (stage === (lastQuestion)) {
+      handleSelectTags();
+      back();
+    }
+
     if (stage < (lastQuestion)) {
       setStage(stage + 1)
       setStatusBarProgress(statusBarProgress + statusBarInitialValue)
@@ -139,43 +136,57 @@ export default function Preference() {
     }
   }
 
-  const currentStageOptions = selectedOptions[etapas[stage].id] || []
+
+
+  const currentStage = optionsByStage[stage];
+  const currentStageOptions = selectedOptions[currentStage.id] || [];
+
+  useEffect(() => {
+
+    if (tagsSelected) {
+
+      setSelectedOptions({ ...tagsSelected[0] });
+      setAge(tagsSelected[1]?.idade || 18);
+
+
+    }
+  }, [tagsSelected]);
+
+
 
   return (
     <FlatList
-      showsVerticalScrollIndicator={false}
-      bounces={false}
       className='bg-white'
-      data={etapas[stage].options}
-      contentContainerStyle={{ paddingHorizontal: 30, paddingVertical: 64, flexGrow: 1, justifyContent: 'center', alignContent: 'center' }}
+      data={currentStage.options}
+      contentContainerStyle={{ padding: 30, flexGrow: 1, justifyContent: 'center', alignContent: 'center' }}
       renderItem={({ item }) => {
-        const isSelected = currentStageOptions.includes(item.title)
+        const isSelected = currentStageOptions.includes(item.id);
         return (
           <TouchableOpacity
-            className={
-              classNames(' my-2 justify-center items-center p-6 rounded-xl ',
-                {
-                  "bg-surface-brand-main-selected border-2 border-surface-brand-main-selected": isSelected
-                }, {
-                'border-2 border-[#528A8C] bg-[#EEEEEE]': !isSelected
-              })
-            }
-            onPress={() => handleSelectOption(etapas[stage].id, item.title)}
+            className={classNames(
+              'my-2 justify-center items-center p-6 rounded-xl',
+              { 'bg-surface-brand-main-selected border-2 border-surface-brand-main-selected': isSelected },
+              { 'border-2 border-[#528A8C] bg-[#EEEEEE]': !isSelected }
+            )}
+            onPress={() => handleSelectOption(currentStage.id, item.id)}
           >
-            <Text className={classNames('color-[#528A8C] font-outfit-600 text-lg', {
-              'color-white': isSelected
-            }, {
-              'color-[#528A8C]': !isSelected
-            })}
-            >{item.title}</Text>
+            <Text
+              className={classNames(
+                'color-[#528A8C] font-outfit-600 text-lg',
+                { 'color-white': isSelected },
+                { 'color-[#528A8C]': !isSelected }
+              )}
+            >
+              {item.title}
+            </Text>
           </TouchableOpacity>
-        )
+        );
       }}
       ListHeaderComponentStyle={{ marginBottom: 30 }}
       ListHeaderComponent={
         <>
           <View className='flex-row items-center gap-6 s'>
-            <Ionicons name="chevron-back-outline" size={25} color="black" onPress={() => router.back()} />
+            <Ionicons name="chevron-back-outline" size={32} color="black" onPress={back} />
             <Text className='color-[#374151] font-inter-400 text-lg'>Preferências</Text>
           </View>
           <ProgressBar progress={statusBarProgress} />
@@ -186,24 +197,9 @@ export default function Preference() {
             <Text className=''>Ola</Text>
           </View> */}
           {stage === lastQuestion &&
-            <>
-              {/* <Picker >
-                <Picker.Item value={1} label='1' />
 
-              </Picker>
-              <View className=' justify-center mt-9 gap-5'>
-                <Text className='font-outfit-700 text-2xl text-center'>{age}</Text>
-                <Slider
-                  value={age}
-                  onValueChange={(e) => { setAge(Math.trunc(Number(e))) }}
-                  style={{ transform: [{ rotate: '90deg' }], height: (height / 2.5) }}
-                  minimumValue={0}
-                  maximumValue={150}
-                  inverted
-                  vertical={true}
-                />
-              </View> */}
-              <AgeSelector />
+            <>
+              <AgeSelector age={age} setAge={setAge} />
             </>
           }
         </>

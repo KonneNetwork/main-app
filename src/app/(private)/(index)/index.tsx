@@ -8,35 +8,85 @@ import { View, Text, TouchableOpacity, FlatList } from 'react-native'
 import { usersData } from '@/mock/userData'
 import Card from '@/components/Card'
 import CardUsers from '@/components/CardUsers'
-import { router } from 'expo-router'
+import { router, useFocusEffect } from 'expo-router'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { userStore } from '@/store/userStore'
 import AntDesign from '@expo/vector-icons/AntDesign';
+import * as Location from 'expo-location';
+import useGetKonnexoes from '@/queries/konnexoes/getKonnexoes'
+import { useUpdateStatusConnection } from '@/queries/konnexoes/updateStatusConnection'
+import useGetUsersLocation from '@/queries/user/getUsersLocation'
+import { StatusKonnexao } from '../buscar'
+import FirstAccessBox from '@/components/FirstAccessBox'
 
 function Index() {
 
-  const [activeAba, setActiveAba] = useState<'konnectados' | 'pedido-konnexao'>('konnectados');
-
-  const konnectionAba = activeAba === 'konnectados';
+  const [activeAba, setActiveAba] = useState<'Konnectado' | 'Pendente'>('Konnectado');
+  const [firstAccess, setFirtAccess] = useState<boolean>(false)
+  const konnectionAba = activeAba === 'Konnectado';
   const [search, setSearch] = useState('')
 
-  const { profile } = userStore()
+  const { userInfo } = userStore()
 
-  const [konnexoes, setKonnexoes] = useState(profile?.konnexoes)
+  const { data: dataKonnexoes, refetch: refetchKonnexoes, isError } = useGetKonnexoes(String(userInfo?.cdUsuario));
+  const { mutate: updateStatusConnection } = useUpdateStatusConnection()
 
-  const filteredData = usersData?.filter((user) => {
-    const userInfo = konnexoes?.includes(user.id);
-    const matchesKonnectado = user.konnectado === (konnectionAba ? true : false) && userInfo;
-    // const matchesSearch = user.nome.toLowerCase().includes(search.toLowerCase());
-    return matchesKonnectado;
-  });
+  const [konnexoes, setKonnexoes] = useState<any | undefined>()
 
-  useEffect(() => { setKonnexoes(profile?.konnexoes) }, [profile?.konnexoes])
 
+  // const filteredData = data?.filter((user: any) => {
+  //   console.log(user)
+  //   const matchesKonnectado = user.status_conexao === "Pendente" ? setActiveAba('Pendente') : setActiveAba('Konnectado');
+  //   // const matchesSearch = user.nome.toLowerCase().includes(search.toLowerCase());
+  //   return matchesKonnectado;
+  // });
+
+  // useEffect(() => { setKonnexoes(profile?.konnexoes) }, [profile?.konnexoes])
+
+
+  function FirstAcessBox() {
+    if (userInfo?.primeiroAcesso) {
+      setFirtAccess(true)
+    }
+
+  }
+
+  function Konnexoes(status: string) {
+    const filterData = dataKonnexoes?.filter((user: any) => { return user?.status_conexao === status })
+    setKonnexoes(filterData)
+  }
+
+  function lengthPendentes() {
+    const lengthPendendetes = dataKonnexoes?.filter((user: any) => { return user?.status_conexao === "Pendente" }).length
+    return lengthPendendetes
+  }
+
+
+  useEffect(() => {
+    refetchKonnexoes();
+  }, [refetchKonnexoes]);
+
+  useEffect(() => {
+    if (userInfo?.cdUsuario) {
+      refetchKonnexoes();
+    }
+  }, [userInfo]);
+
+  useEffect(() => {
+    if (dataKonnexoes) {
+      Konnexoes(activeAba);
+    }
+  }, [activeAba, dataKonnexoes]);
+
+  useEffect(() => {
+    FirstAcessBox()
+  }, [userInfo, userInfo?.primeiroAcesso])
+  useEffect(() => {
+    FirstAcessBox()
+  }, [])
 
   if (konnexoes && konnexoes?.length <= 0 || konnexoes === undefined) {
-    console.log("🚀 ~ Index ~ konnexoes?.length:", konnexoes?.length)
-    return (
+    return (<>
       <View className='flex-1 bg-white p-8'>
         <View className='flex-row justify-between mt-10'>
           <Text className='font-inter-700 text-3xl '>Konnexões</Text>
@@ -44,21 +94,22 @@ function Index() {
         </View>
 
         <View className='flex-row justify-between mt-10'>
-          <TouchableOpacity className={classNames({ 'border-b-4 border-b-[#528A8C] flex-1 p-3': activeAba === 'konnectados' }, {
-            'border-b-1 border-b-[#E7EEF0] flex-1  p-3': activeAba !== 'konnectados'
-          })} onPress={() => setActiveAba('konnectados')}>
-            <Text className={classNames({ 'font-inter-500 text-lg color-[#000] text-center': activeAba === 'konnectados' },
-              { 'font-inter-500 text-lg color-[#506773] text-center': activeAba !== 'konnectados' })}>
+          <TouchableOpacity className={classNames({ 'border-b-4 border-b-[#528A8C] flex-1 p-3': activeAba === 'Konnectado' }, {
+            'border-b-1 border-b-[#E7EEF0] flex-1  p-3': activeAba !== 'Konnectado'
+          })} onPress={() => setActiveAba('Konnectado')}>
+            <Text className={classNames({ 'font-inter-500 text-lg color-[#000] text-center': activeAba === 'Konnectado' },
+              { 'font-inter-500 text-lg color-[#506773] text-center': activeAba !== 'Konnectado' })}>
               Konnectados
             </Text>
           </TouchableOpacity>
 
-          <TouchableOpacity className={classNames({ 'border-b-4 border-b-[#528A8C] w-3/5 p-3': activeAba === 'pedido-konnexao' }, {
-            'border-b-1 border-b-[#E7EEF0] w-3/5  p-3': activeAba !== 'pedido-konnexao'
-          })} onPress={() => setActiveAba('pedido-konnexao')}>
-            <Text className={classNames({ 'font-inter-500 text-lg color-[#000] text-center ': activeAba === 'pedido-konnexao' },
-              { 'font-inter-500 text-lg color-[#506773] text-center': activeAba !== 'pedido-konnexao' })}>
+          <TouchableOpacity className={classNames({ 'border-b-4 border-b-[#528A8C] w-3/5 p-3': activeAba === 'Pendente' }, {
+            'border-b-1 border-b-[#E7EEF0] w-3/5  p-3': activeAba !== 'Pendente'
+          })} onPress={() => setActiveAba('Pendente')}>
+            <Text className={classNames({ 'font-inter-500 text-lg color-[#000] text-center ': activeAba === 'Pendente' },
+              { 'font-inter-500 text-lg color-[#506773] text-center': activeAba !== 'Pendente' })}>
               Pedidos de Konnexão
+              {lengthPendentes() > 0 && `(${lengthPendentes()})`}
             </Text>
           </TouchableOpacity>
         </View>
@@ -74,7 +125,7 @@ function Index() {
             <Text className='font-inter-700 text-xl text-center'>{konnectionAba ? "Você ainda não possui konnexões" : "Aceite ou rejeite pedidos de konnexões"}</Text>
             <View className=' flex-row flex-wrap'>
               <Text className='font-inter-400 text-lg color-[#506773] text-center align-middle justify-center items-center'>
-                Para enviar um pedido de konnexão basta selecionar o ícone {<Ionicons name='heart' size={24} color={'#528A8C'} className='absolute mb-[-14px]' />} no perfil dos usuários que desejar se konnectar.
+                Para enviar um pedido de konnexão basta selecionar o ícone {<Ionicons name='heart' size={24} color={'#528A8C'} className='absolute mb-[-14px]' />} com quem deseja se conectar.
               </Text>
             </View>
           </View>
@@ -83,22 +134,32 @@ function Index() {
         </View>
 
       </View >
+      <FirstAccessBox open={firstAccess} setBox={setFirtAccess} />
+    </>
     )
   }
 
-  return (
+  return (<>
     <FlatList
       className='flex-1 bg-surface-primary'
-      data={filteredData}
+      data={konnexoes}
       renderItem={({ item }) => {
         return (
           <CardUsers
-            thema={item.colorTheme}
-            image={item.image}
-            titleButton={konnectionAba ? 'mensagem' : 'aceitar'}
-            name={item.nome} distance={item.distancia}
-            occupation={item.ocupacao}
-            onChange={() => konnectionAba && router.navigate({ pathname: '/(private)/(index)/chat/[id]', params: { id: item?.id } })}
+            aba={activeAba}
+            thema={item.usuario.perfil.tema_perfil}
+            image={item.usuario.perfil.foto_perfil}
+            titleButtonActive={item.status_conexao === "Konnectado" ? "Mensagem" : "aceitar"}
+            name={item.usuario.perfil.nome_perfil} distance={item.usuario.perfil.distancia}
+            occupation={item.usuario.perfil.ocupacao}
+            onChangeActive={() => {
+              konnectionAba && item.status_conexao === "Konnectado" ? router.navigate({ pathname: `/(private)/(index)/chat/[id]`, params: { id: item.usuario.perfil.cd_usuario } })
+                : updateStatusConnection({ id: item.cd_conexao, statusKonnexao: "Konnectado" })
+            }}
+            onChangeInactive={() => {
+              updateStatusConnection({ id: item.cd_conexao, statusKonnexao: "Konnectar" })
+            }}
+            titleButtonInactive='recusar'
           />
         )
       }}
@@ -106,6 +167,7 @@ function Index() {
         flexGrow: 1,
         paddingHorizontal: 30,
         paddingVertical: 64
+
       }}
       bounces={false}
       showsVerticalScrollIndicator={false}
@@ -117,51 +179,69 @@ function Index() {
           </View>
 
           <View className='flex-row justify-between mt-10'>
-            <TouchableOpacity className={classNames({ 'border-b-4 border-b-[#528A8C] flex-1 p-3': activeAba === 'konnectados' }, {
-              'border-b-1 border-b-[#E7EEF0] flex-1  p-3': activeAba !== 'konnectados'
-            })} onPress={() => setActiveAba('konnectados')}>
-              <Text className={classNames({ 'font-inter-500 text-lg color-[#000] text-center ': activeAba === 'konnectados' },
-                { 'font-inter-500 text-lg color-[#506773] text-center': activeAba !== 'konnectados' })}>
-                Konnectados
+            <TouchableOpacity className={classNames({ 'border-b-4 border-b-[#528A8C] flex-1 p-3': activeAba === 'Konnectado' }, {
+              'border-b-1 border-b-[#E7EEF0] flex-1  p-3': activeAba !== 'Konnectado'
+            })} onPress={() => setActiveAba('Konnectado')}>
+              <Text className={classNames({ 'font-inter-500 text-lg color-[#000] text-center ': activeAba === 'Konnectado' },
+                { 'font-inter-500 text-lg color-[#506773] text-center': activeAba !== 'Konnectado' })}>
+                Konnectado
               </Text>
             </TouchableOpacity>
 
-            <TouchableOpacity className={classNames({ 'border-b-4 border-b-[#528A8C] w-3/5 p-3': activeAba === 'pedido-konnexao' }, {
-              'border-b-1 border-b-[#E7EEF0] w-3/5  p-3': activeAba !== 'pedido-konnexao'
-            })} onPress={() => setActiveAba('pedido-konnexao')}>
-              <Text className={classNames({ 'font-inter-500 text-lg color-[#000] text-center ': activeAba === 'pedido-konnexao' },
-                { 'font-inter-500 text-lg color-[#506773] text-center': activeAba !== 'pedido-konnexao' })}>
-                Pedidos de Konnexão{(filteredData.length > 0) && `(${filteredData.length})`}
+            <TouchableOpacity className={classNames({ 'border-b-4 border-b-[#528A8C] w-3/5 p-3': activeAba === 'Pendente' }, {
+              'border-b-1 border-b-[#E7EEF0] w-3/5  p-3': activeAba !== 'Pendente'
+            })} onPress={() => setActiveAba('Pendente')}>
+              <Text className={classNames({ 'font-inter-500 text-lg color-[#000] text-center ': activeAba === 'Pendente' },
+                { 'font-inter-500 text-lg color-[#506773] text-center': activeAba !== 'Pendente' })}>
+                Pedidos de Konnexão
+                {lengthPendentes() > 0 && `(${lengthPendentes()})`}
               </Text>
             </TouchableOpacity>
           </View>
 
           <Text className='font-inter-400 text-sm color-[#3C3C4399]/60 py-2'>{konnectionAba ? "Gerencie suas konnexões" : "Aceite ou rejeite pedidos de konnexões"}</Text>
+
         </>
       }
 
-      ListFooterComponent={
-        <>
-          {activeAba === 'konnectados' && <><View className='flex-row justify-between'>
-            <Text className='text-xl font-inter-600'>Pessoas Próximas de você</Text>
-            <Text className='font-inter-400 color-[#528A8C] text-base'>Ver todas</Text>
-          </View>
-            <Text className='font-inter-400 text-sm color-[#3C3C4399]/60 py-2'>Konnexões a menos de 1 km de distância</Text>
-            <FlatList
-              showsHorizontalScrollIndicator={false}
-              className='flex-grow'
-              data={usersData.filter(item => item.distancia < 1000)}
-              contentContainerStyle={{ gap: 16, flexGrow: 1 }}
-              horizontal
-              keyExtractor={item => item.cpf}
-              renderItem={({ item }) => {
-                return <Card image={item.image} key={item.cpf} nome={item.nome} descricao={item.descricao} distance={item.distancia} onPress={() => router.navigate('/(private)/buscar')} />
-              }}
-            /></>}
-        </>
-      }
+    // ListFooterComponent={
+    //   <>
+    //     {activeAba === 'Konnectado' && <><View className='flex-row justify-between'>
+    //       <Text className='text-xl font-inter-600'>Pessoas Próximas de você</Text>
+    //       <Text className='font-inter-400 color-[#528A8C] text-base'>Ver todas</Text>
+    //     </View>
+    //       <Text className='font-inter-400 text-sm color-[#3C3C4399]/60 py-2'>Konnexões a menos de 1 km de distância</Text>
+    //       <FlatList
+    //         showsHorizontalScrollIndicator={false}
+    //         className='flex-grow'
+    //         data={konnexoes?.filter((item: any) => item.distancia < 1000)}
+    //         contentContainerStyle={{ gap: 16, flexGrow: 1 }}
+    //         horizontal
+    //         keyExtractor={(index) => index}
+    //         renderItem={({ item }) => {
+    //           // return <Card image={item.foto_perfil} key={item.documento} nome={item.nome_usuario} descricao={item.descricao} distance={item.distancia} onPress={() => router.navigate('/(private)/buscar')} />
+    //           return (
+    //             <View>
+    //               <Text>{item.cd_usuario}</Text>
+    //               <Text>{item.nome_usuario}</Text>
+    //               <Text>{item.latitude}</Text>
+    //               <Text>{item.longitude}</Text>
+    //               <Text>{item.documento}</Text>
+    //               <Text>{item.descricao}</Text>
+    //               <Text>{item.ocupacao}</Text>
+    //               <Text>{item.distancia}</Text>
+    //               <Text>{item.status_conexao}</Text>
+    //             </View>
+    //           )
+    //         }}
+    //       /></>}
+    //   </>
+    // }
     />
+    <FirstAccessBox open={firstAccess} setBox={setFirtAccess} />
+  </>
   )
+
 }
 
 export default Index

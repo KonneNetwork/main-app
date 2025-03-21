@@ -6,14 +6,17 @@ interface UserCardProps {
   name: string;
   occupation?: string;
   distance?: number;
-  titleButton?: string;
+  titleButtonActive?: string;
+  titleButtonInactive?: string;
   image?: string;
-  onChange?: () => void
+  onChangeInactive?: () => void
+  onChangeActive?: () => void
   thema: string;
   imageCardSize?: number;
+  aba?: string
 }
 
-export default function CardUsers({ name, distance, occupation, titleButton = '', image, onChange, thema, imageCardSize = 80 }: UserCardProps) {
+export default function CardUsers({ name, distance, occupation, titleButtonActive = '', titleButtonInactive = "", aba, image, onChangeActive, onChangeInactive, thema, imageCardSize = 80 }: UserCardProps) {
 
   const [distanceConvert, setDistanceConvert] = useState('')
 
@@ -28,7 +31,7 @@ export default function CardUsers({ name, distance, occupation, titleButton = ''
 
   return (
     <>
-      <View className='flex-row items-center justify-between py-3 gap-2'>
+      <View className='flex-row items-center justify-between py-3 gap-2 rounded-md'>
         <View className='flex-row items-center  flex-1 gap-5'>
           <View className='bg-[#D9D9D9] rounded-full overflow-hidden' style={{ borderWidth: 2, borderColor: thema, height: imageCardSize, width: imageCardSize }}>
             {image && <Image source={{ uri: image }} className='w-full h-full' />}
@@ -36,11 +39,15 @@ export default function CardUsers({ name, distance, occupation, titleButton = ''
           </View>
           <View className=' flex-1'>
             <Text className='font-inter-600 text-lg'>{name}</Text>
-            {occupation && <Text className='font-inter-400 text-base text-[#3C3C4399]/60'>{occupation} - {distanceConvert}</Text>}
+            {occupation && <Text className='font-inter-400 text-base text-[#3C3C4399]/60'>{occupation} {occupation && distanceConvert && "-"} {distanceConvert && distanceConvert}</Text>}
 
           </View>
         </View>
-        {onChange && <Button smallButton title={titleButton} variant='active' onPress={onChange} />}
+        <View className='gap-3'>
+          {onChangeActive && <Button smallButton title={titleButtonActive} variant='active' onPress={onChangeActive} />}
+
+          {(aba === "Pendente" && onChangeInactive) && <Button smallButton title={titleButtonInactive} variant='inactive' onPress={onChangeInactive} />}
+        </View>
 
       </View>
     </>

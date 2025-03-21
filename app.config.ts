@@ -8,6 +8,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   orientation: "portrait",
   icon: "./assets/images/logoKonneSquare.png",
   scheme: "myapp",
+  platforms: ['android', 'ios', "web"],
   userInterfaceStyle: "automatic",
   splash: {
     image: "./assets/images/splash.png",
@@ -15,18 +16,39 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     backgroundColor: "#ffffff"
   },
   ios: {
+    usesAppleSignIn: true,
     infoPlist: {
       UIViewControllerBasedStatusBarAppearance: "NO",
       NSLocationWhenInUseUsageDescription: "O aplicativo precisa de acesso à sua localização enquanto está em uso para fornecer a funcionalidade de mapas.",
-      NSLocationAlwaysUsageDescription: "O aplicativo precisa de acesso à sua localização em segundo plano para fornecer atualizações contínuas."
+      NSLocationAlwaysUsageDescription: "O aplicativo precisa de acesso à sua localização em segundo plano para fornecer atualizações contínuas.",
+      UIBackgroundModes: ["location", "fetch", "remote-notification"],
+
     },
     config: {
       googleMapsApiKey: process.env.GOOGLE_API_KEY,
     },
     bundleIdentifier: "com.egestao.konneapp",
-    buildNumber: '4'
+    buildNumber: '14'
+  },
+  androidStatusBar: {
+    backgroundColor: '#1C2D4C',
+    barStyle: 'light-content',
   },
   android: {
+    intentFilters: [
+      {
+        action: "VIEW",
+        autoVerify: true,
+        data: [
+          {
+            scheme: "https",
+            host: "*.webapp.io",
+            pathPrefix: "/records"
+          }
+        ],
+        category: ["BROWSABLE", "DEFAULT"]
+      }
+    ],
     adaptiveIcon: {
       foregroundImage: "./assets/images/logoKonneSquare.png",
       backgroundColor: "#ffffff"
@@ -43,7 +65,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       }
     },
     package: "com.egestao.konneapp",
-    versionCode: 4
+    versionCode: 14
   },
   web: {
     bundler: "metro",
@@ -52,6 +74,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   plugins: [
     "expo-router",
     "expo-font",
+    "expo-localization",
     [
       "expo-location",
       {
@@ -69,7 +92,24 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       {
         launchMode: "most-recent"
       }
-    ]
+    ],
+    [
+      "expo-camera",
+      {
+        "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera",
+        "microphonePermission": "Allow $(PRODUCT_NAME) to access your microphone",
+        "recordAudioAndroid": true
+      }
+    ],
+    [
+      "expo-media-library",
+      {
+        "photosPermission": "Allow $(PRODUCT_NAME) to access your photos.",
+        "savePhotosPermission": "Allow $(PRODUCT_NAME) to save photos.",
+        "isAccessMediaLocationEnabled": true
+      }
+    ],
+    ["expo-apple-authentication"]
   ],
   experiments: {
     typedRoutes: true

@@ -7,17 +7,21 @@ import EditPerfil from './edit-perfil';
 import AddLink from './add-link';
 import CardMedia from '@/components/CardMedia';
 import EditLink from './edit-link';
-import { useStore } from 'zustand';
 import { userStore } from '@/store/userStore';
-import Slider from '@react-native-community/slider';
+import useGetProfile from '@/queries/Profile/getProfile';
+import { useGetMidiaLinks } from '@/queries/Profile/getMidiaLinks';
 
 function Perfil() {
   const [openPerfil, setOpenPerfil] = useState(false);
   const [openAddLinks, setOpenAddLinks] = useState(false);
   const [openEditLinks, setOpenEditLinks] = useState(false);
-  const { profile } = userStore();
-  const [addLink, setAddLink] = useState<{ label: string, link: string, category: string }[] | undefined | null>(undefined);
-  const [editLink, setEditLink] = useState<{ label: string, link: string, category: string } | null>(null);
+  const { userInfo, profile, socialMidiaLinks } = userStore();
+  const { data: midiaLinks } = useGetMidiaLinks(profile?.cdPerfil ?? '')
+  const { data: userProfile } = useGetProfile(userInfo?.cdUsuario ?? '');
+  const [add, setAdd] = useState(false)
+
+  const [addLink] = useState<any | { label: string, link: string, category: string }[] | undefined | null>(socialMidiaLinks);
+  const [editLink, setEditLink] = useState<any | { label: string, link: string, category: string } | null>(socialMidiaLinks);
   function handleCloseModalPerfil() {
     setOpenPerfil(false)
   }
@@ -27,7 +31,7 @@ function Perfil() {
   }
 
   function handleCloseModalLinks() {
-    setOpenAddLinks(false)
+    setOpenAddLinks(false);
   }
 
   function handleOpenModalLinks() {
@@ -43,28 +47,65 @@ function Perfil() {
     setOpenEditLinks(true)
   }
 
-  function removeLink(link: string | undefined) {
-    const itemRemove = addLink?.findIndex(item => item.label === link)
-    addLink?.splice(itemRemove!, 1)
+  function midiasInfo() {
+    userProfile;
+    midiaLinks;
   }
 
 
   useEffect(() => {
-    return setAddLink(profile?.links);
+    midiasInfo();
   }, [])
+
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     if (data) {
+  //       await refetch(); // Força o refetch após o dado ser alterado
+  //     }
+  //   };
+  //   fetchData();
+  // }, [data, refetch]);
+
+  // useFocusEffect(
+  //   React.useCallback(() => {
+  //     refetch(); // Força o refetch dos dados sempre que a tela for focada
+  //   }, [refetch]) // O refetch será executado toda vez que a tela ganhar o foco
+  // );
+
+  // useEffect(() => {
+  //   console.log(userInfo)
+
+  //   return setAddLink(userInfo?.links);
+
+  // }, [])
+
+  function handleOpenEditAfterCreateLink() {
+    if (midiaLinks.length !== 0) {
+      hadleOpenModalEditLinks(midiaLinks[0])
+    }
+  }
+
+  useEffect(() => {
+    if (add) {
+      handleOpenEditAfterCreateLink();
+      setAdd(false)
+    }
+  }, [midiaLinks])
+
 
   return (
     <View className='flex-1'>
       <KeyboardAvoidingView className="flex-1" behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
         <FlatList
           className='bg-surface-primary flex-1'
-          data={addLink}
+          data={midiaLinks}
           ListHeaderComponentStyle={{ alignItems: 'center' }}
           ListHeaderComponent={
             <>
-              <Text className='font-roboto-700 text-xl mt-8'>Meu Perfil</Text>
+              <Text className='font-roboto-700  mt-8  text-3xl '>Meu Perfil</Text>
 
-              <HeaderUser image={profile?.image} occupation={profile?.ocupacao} userName={profile?.nome} onOpen={handleOpenModalPerfil} />
+              <HeaderUser color={profile?.temaPerfil} image={profile?.fotoPerfil ?? userInfo?.fotoUsuario ?? ''} occupation={profile?.ocupacao} userName={profile?.nomePerfil ? profile?.nomePerfil : userInfo?.nomeUsuario} onOpen={handleOpenModalPerfil} />
 
               <InputPerfil
                 isEditable={false}
@@ -103,9 +144,9 @@ function Perfil() {
           }}
           bounces={false}
           showsVerticalScrollIndicator={false}
-          keyExtractor={(item) => item.label}
+          keyExtractor={(item) => item.cd_social_midia_link}
           renderItem={({ item }) => (
-            <CardMedia infoCard={item} isEditabled={false} openModal={hadleOpenModalEditLinks} />
+            <CardMedia infoCard={item.cd_social_midia_fk} infoMidiaLink={item} isEditabled={false} openModal={hadleOpenModalEditLinks} />
           )}
           numColumns={3}
         />
@@ -116,14 +157,14 @@ function Perfil() {
         </Modal>
         <Modal visible={openAddLinks} presentationStyle='fullScreen' animationType='fade' style={{ backgroundColor: '#000', flex: 1 }} >
           <View style={{ flex: 1, backgroundColor: "#0000002f" }}>
-            <AddLink onClose={handleCloseModalLinks} selectingLinks={setAddLink} selectedLinks={addLink} />
+            <AddLink onClose={handleCloseModalLinks} selectedLinks={addLink} setAdd={setAdd} />
           </View>
         </Modal>
         <Modal visible={openEditLinks} transparent={true} presentationStyle='overFullScreen' animationType='fade' style={{ backgroundColor: '#000', flex: 1 }} >
-          <View className=''
+          <View
             style={{ flex: 1, backgroundColor: "#0000002f" }}
           >
-            <EditLink onClosed={handleCloseModalEditLinks} linkEdit={editLink} remove={removeLink} />
+            <EditLink onClosed={handleCloseModalEditLinks} linkEdit={editLink} />
           </View>
         </Modal>
       </KeyboardAvoidingView>

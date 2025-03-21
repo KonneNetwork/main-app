@@ -15,7 +15,6 @@ export default function Chat() {
   const friendId = usersData[usersData.findIndex(item => item.id === Number(id))]
 
   const screenHeight = Dimensions.get('screen').height;
-  console.log("🚀 ~ Chat ~ screenHeight:", screenHeight)
   const insets = useSafeAreaInsets();
   function sendMessage() {
     if (message) {
@@ -28,8 +27,8 @@ export default function Chat() {
     <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}  >
       <View style={{ flex: 1, backgroundColor: 'white', paddingTop: 30 }}>
         <View className='flex-row items-center gap-3'>
-          <Ionicons name="chevron-back-outline" size={36} color="black" onPress={() => router.back()} />
-          <CardUsers imageCardSize={60} name={friendId.nome} thema={friendId.colorTheme} image={friendId.image} />
+          <Ionicons name="chevron-back-outline" size={32} color="black" onPress={() => router.back()} />
+          {/* <CardUsers imageCardSize={60} name={friendId.nome} thema={friendId.colorTheme} image={friendId.image} /> */}
         </View>
         <FlatList data={messages} style={{ flex: 1, backgroundColor: 'white' }}
           inverted

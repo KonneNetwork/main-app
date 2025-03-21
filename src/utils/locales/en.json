@@ -1,0 +1,50 @@
+{
+  "SignIn": {
+    "greeting": "Welcome to the networking revolution!",
+    "message login": "Log in and start connecting with people near you.",
+    "passwd": "Password",
+    "forget passwd": "Forgot my password",
+    "sign in": "Login",
+    "or midias": "or enter with"
+  },
+  "SignUp": {
+    "create account": "Create Account",
+    "cod valid": "Validation",
+    "end registragion": "Complete Registration",
+    "question new-user": "New here?",
+    "country cod": "Country",
+    "phone": "DDD + Phone",
+    "have account": "Already have an account?",
+    "sign in": "Login",
+    "warning message cod": "You will receive a code via SMS to confirm your number.",
+    "send": "Send",
+    "warning message valid": "We send a code to",
+    "full name": "Full Name",
+    "set passwd": "Set a password",
+    "end sign up": "Complete Registration",
+    "agreement message": "By continuing you agree to the",
+    "terms uses": "Terms of Use",
+    "and": "and",
+    "privacy policies": "Privacy Policies."
+  },
+  "ForgotPasswd": {
+    "create account": "Create Account",
+    "cod valid": "Validation",
+    "end registragion": "Complete Registration",
+    "question new-user": "New here?",
+    "country cod": "Country",
+    "phone": "DDD + Phone",
+    "have account": "Already have an account?",
+    "sign in": "Login",
+    "warning message cod": "You will receive a code via SMS to confirm your number.",
+    "send": "Send",
+    "warning message valid": "We send a code to",
+    "full name": "Full Name",
+    "set passwd": "Set a password",
+    "end sign up": "Complete Registration",
+    "agreement message": "By continuing you agree to the",
+    "terms uses": "Terms of Use",
+    "and": "and",
+    "privacy policies": "Privacy Policies."
+  }
+}

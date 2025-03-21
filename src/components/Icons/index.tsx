@@ -32,6 +32,8 @@ import Feedback from '../../../assets/images/svgs/feedback.svg';
 import Preference from '../../../assets/images/svgs/preference.svg';
 import Trash from '../../../assets/images/svgs/trash.svg';
 import Filter from '../../../assets/images/svgs/icon-filter.svg';
+import X from "../../../assets/images/svgs/x-social.svg"
+import Threads from "../../../assets/images/svgs/threads.svg"
 
 
 
@@ -43,7 +45,7 @@ export const Icons = {
   user: (props: SvgProps) => <User {...props} />,
   pencil: (props: SvgProps) => <Pencil {...props} />,
   instagram: (props: SvgProps) => <Instagram {...props} />,
-  linkeding: (props: SvgProps) => <Linkeding {...props} />,
+  linkedin: (props: SvgProps) => <Linkeding {...props} />,
   skype: (props: SvgProps) => <Skype {...props} />,
   snapchat: (props: SvgProps) => <Snapchat {...props} />,
   facebook: (props: SvgProps) => <Facebook {...props} />,
@@ -68,5 +70,7 @@ export const Icons = {
   preference: (props: SvgProps) => <Preference {...props} />,
   feedback: (props: SvgProps) => <Feedback {...props} />,
   filter: (props: SvgProps) => <Filter {...props} />,
+  x: (props: SvgProps) => <X {...props} />,
+  threads: (props: SvgProps) => <Threads {...props} />,
 
 }

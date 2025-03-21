@@ -1,7 +1,7 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, SetStateAction, Dispatch } from 'react';
 import { View, Text, ScrollView, StyleSheet, Dimensions } from 'react-native';
 
-const AgeSelector = () => {
+const AgeSelector = ({ setAge, age }: { age: number, setAge: (value: number) => void }) => {
   const scrollRef = useRef<ScrollView>(null);
   const { width } = Dimensions.get('screen');
   const itemWidth = 60;
@@ -10,59 +10,29 @@ const AgeSelector = () => {
   const repeatedAges = Array.from({ length: ageRange * 1 }, (_, i) => (i % ageRange) + 1);
 
 
-  const initialAge = 18;
+  const initialAge = age;
   const [selectedAge, setSelectedAge] = useState<number>(initialAge);
 
-
-  useEffect(() => {
-    if (scrollRef.current) {
-      // Garante que current não é nulo antes de acessar scrollTo
-      const initialOffset = (initialAge - 1) * itemWidth; // Calcula a posição inicial
-      scrollRef.current.scrollTo({
-        x: initialOffset,
-        animated: false, // Sem animação no carregamento inicial
-      });
-    }
-  }, []);
-
-  // useEffect(() => {
-  //   if (scrollRef?.current) {
-  //     scrollRef?.current?.scrollTo({
-  //       x: (ageRange + selectedAge + 1),
-  //       animated: true,
-  //     });
-  //   };
-  // }, []);
-
-  // useEffect(() => {
-  //   if (scrollRef.current && scrollRef.current.scrollTo) { // Verificação para garantir que scrollTo está disponível
-  //     // Posiciona o seletor na idade inicial centralizada ao carregar
-  //     scrollRef.current.scrollTo({
-  //       x: (ageRange + selectedAge - 3) * itemWidth,
-  //       animated: true,
-  //     });
-  //   }
-  // }, [selectedAge]);
-
-  // const handleScroll = (event: { nativeEvent: { contentOffset: { x: any; }; }; }) => {
-  //   console.log('oi')
-  //   const offsetX = event.nativeEvent.contentOffset.x;
-
-  //   const index = Math.round(offsetX / itemWidth);
-  //   const age = repeatedAges[index];
-  //   setSelectedAge(age);
-  // };
 
   const handleScroll = (event: { nativeEvent: { contentOffset: { x: number } } }) => {
     const offsetX = event.nativeEvent.contentOffset.x;
     const index = Math.round(offsetX / itemWidth);
     const age = repeatedAges[index];
-    if (age !== selectedAge) setSelectedAge(age); // Evita atualizações desnecessárias
+    if (age !== selectedAge) setSelectedAge(age);
   };
 
-  // function removeSelection() {
-  //   setSelectedAge(18)
-  // }
+  useEffect(() => {
+    if (scrollRef.current) {
+
+      const initialOffset = (initialAge - 1) * itemWidth;
+      scrollRef.current.scrollTo({
+        x: initialOffset,
+        animated: false,
+      });
+    }
+  }, []);
+
+  useEffect(() => { setAge(selectedAge) }, [selectedAge])
 
   return (
     <>
